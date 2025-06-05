@@ -1,0 +1,3 @@
+GOAL: Refactor codebase to make it more modular
+IMPLEMENTATION: Restructure code so each file serves a single purpose. Move LLM extractors into separate files, create dedicated prompt files, organize data ingestion functions into a sub-directory with centralized utility functions.
+COMPLETED: 05-06-2025 10:50

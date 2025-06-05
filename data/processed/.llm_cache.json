@@ -1,0 +1,2302 @@
+{
+  "cfcc14977e679d2af845bef4efbcbb8450f530f92b7077bd6b103ec8281ae912": {
+    "subprimal": "blade meat",
+    "grade": "Natural/Off",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": true,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "6f3a8cce6f9a2e6088917ad2ac52928f23da2ccc34bfeb7a231666a776f86854": {
+    "subprimal": "chuck flap",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "AAA Exc",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "c7f4f24f1b361eb7cb47c94214c8e6585c0cffa9726235b4d928abaf29900f7a": {
+    "subprimal": "clod",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Angus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "c5ba945be30da47b3b155fe7bf10df4ca646b49c65f55396d7c74167a97b312a": {
+    "subprimal": "mock tender",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Ute Lpr",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "8c6d3bd06358884befe8563677014c0fa45cdcfa19a0ae174166758f011b3480": {
+    "subprimal": "chuck flap",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Ang",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "dc91be309af5ad53ad9240d227fd09597b7bb6611a491b58ac315341a15edadb": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Nat",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "bbcf24f521f5c668f2e73a7180ba86d8489fb076778173a2e1964b3d1c1641e9": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "007d25f380b6278fdab74413640efccf6e8d5baa93b403925a54c01ec1510872": {
+    "subprimal": "flat iron",
+    "grade": "Choice",
+    "size": 8,
+    "size_uom": "ounces",
+    "brand": "",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "a9e354f09a1fcafa76acab0350b3ce7658a0441fa3b5f1680fa2c5292dd33923": {
+    "subprimal": "chuck flap",
+    "grade": "Select",
+    "size": null,
+    "size_uom": null,
+    "brand": "Natural",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "fd3fb9fb06ecdd54fc26cf1ea32525e0f39834aba256ca79f02528eb7637cde0": {
+    "subprimal": "chuck roll",
+    "grade": "AAA Grade",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ca Har",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "6aaf8d4e44853d4373a91cfab373c3c124bd32d81cea4ab89815cf7f50e78313": {
+    "subprimal": "chuck flap",
+    "grade": "Select",
+    "size": null,
+    "size_uom": null,
+    "brand": "Natural",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "bf99acf826932ad360cb8892572219ecae5b449e0932e7282fde498bdd13a0a8": {
+    "subprimal": "top blade",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "273c6f080de6548d328164a1691f6e8005959eaf139075c4a8918722c42f9711": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "6f9e0574d82da10d401a4ff63b7dd518acee216691fb2373b75279f97044172b": {
+    "subprimal": "blade meat",
+    "grade": "Select",
+    "size": 50,
+    "size_uom": "pounds",
+    "brand": "Me Suk",
+    "bone_in": true,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "cda0d1dba2b290dd0ed6a04ae7f010a9efbfd80c90cd3c6204a648e23afff81c": {
+    "subprimal": "chuck flap",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Angus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "ec2874ea180ca1e27e66ea805d8b50c2a46191afab26aa619224572e375225d6": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Excel",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "25dea6b3c4ede164795e39290a9a5d03fb77f926a94ab9aedbc8ad8c7ad6d46a": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Cab Ibp",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "76631f658293867932123a8d4fdbe59460c1d709d880440023d357164b161ede": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "3e329b67151eb80c52a3249707f09f742d89bf24cb330489cff19b84011f5bdd": {
+    "subprimal": "chuck roll",
+    "grade": "Natural",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "c46e3ef66bbb11df40d307b4c94c02e17c125930c077c5a9f664727b11645e1e": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ame",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "13e20b6837bf9bab0745e5e7002391fa7a6890bfcfa79b6650a3c30dd77d74af": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": 10,
+    "size_uom": "pounds",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "9b28e90c0971452b4292cdeddba217c1b3b7972f212a9329724214749c692363": {
+    "subprimal": "mock tender",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Ame",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "3b7be0a10f8de45cd083ba39b2a275e84022a0e086353d2a867ed5af69111888": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "7cdd329302baf78c5284dd71039c3121baa4d62ea1e5cb29bea0cfc3cc742e14": {
+    "subprimal": "chuck flap",
+    "grade": "Choice",
+    "size": 10,
+    "size_uom": "pounds",
+    "brand": "Vp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "c76ef6fdb31b209fc9b68c053bd49675edf962ce71f836cfd6a632383daf7213": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "7b2a24ba493c6905a162ab6ae5f67cd0b7fa2be8bd97139bff4815e580915b0e": {
+    "subprimal": "teres major",
+    "grade": "Choice",
+    "size": 2.25,
+    "size_uom": "pounds",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "773b9a08fa73df73b9a415cc7812ead84a055a11e24825ff8a68fb26b3debd6c": {
+    "subprimal": "chuck flap",
+    "grade": "Prime",
+    "size": 36,
+    "size_uom": "pounds",
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "dd29fa8407f21c8bcbce500775c04b7edde5402f90edf5101517abfdb4b3161e": {
+    "subprimal": "teres major",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Crk-M",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "49bb3e2e985dea23a1492f2211f87dd6432a2749554ff88ce7065224fabff1bf": {
+    "subprimal": "chuck flap",
+    "grade": "Choice-AAA",
+    "size": null,
+    "size_uom": null,
+    "brand": "Har",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "0b5e52f36f4939df05ebf308284f8fc6b5cdaf6435a6ee48f87b63e8533facea": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "4ceb4cfbb3ea9a133da1fa76a357cb3cd163e3316044157bc0db75a53bd5eb6a": {
+    "subprimal": "chuck flap",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "468612b6f7cbc04912950a90dd728a31a3e637750994933bf49dd1c69be6f38a": {
+    "subprimal": "teres major",
+    "grade": "Select",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "1d192c06cb74dfdfa9ae973e747599039aff9e23b2542d86a186c4a0520d08a1": {
+    "subprimal": "bone in arm",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Aurora",
+    "bone_in": true,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "0b65292fec1c6141675cf78d0f3554310d3ab5dd41a342918985603abc0a246b": {
+    "subprimal": "chuck roll",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "1b93274fbcc5f80e04115fdd62ab9b1b882b2f1241ee4b2860dc666f7eabae48": {
+    "subprimal": "teres major",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "808eda863ca4e93d60a9adc79047e1dfbec79574f722d15443859263c68d6e0d": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Amh",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "03f380cb3328fa3d946dedda36051067d6a25f642abc41833a9be492c21b6b94": {
+    "subprimal": "blade meat",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Aurora",
+    "bone_in": true,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "4662c3c329def0ec805867eeb9a860026389995784c61733889be117bc829f37": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Oma-Hrf",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "814a40eae4243f1d963e7119616a53edf8157ea02406e488aea728b48af38e90": {
+    "subprimal": "chuck roll",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "ff89f5500909bb6334b07e7d8df58b746bb9012421d828c5256deef6f962eec3": {
+    "subprimal": "blade meat",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": true,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "3ef878c3676ba198f174881212488742fd876551eada257c443faab6cabfd1da": {
+    "subprimal": "stew meat",
+    "grade": "N/A",
+    "size": 16,
+    "size_uom": "oz",
+    "brand": "Z Gf Grf",
+    "bone_in": false,
+    "confidence": 0.6000000000000001,
+    "needs_review": true
+  },
+  "ce626c369213c8ec0c649c791f2d0edd5f508b90ca0ec6659f91bf4291c0b5ee": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "15d911149c6b32694e394e2c108a3784dccb535c010a6925f65d8b52854660d4": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "9be33385518eab34eb0ac61328db597665a26546b509991edcda0625e1da865c": {
+    "subprimal": "chuck roll",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "a311671976dbf583542b06299fca39a82d76be9277890e44fca78439bb2a4754": {
+    "subprimal": "chuck roll",
+    "grade": "AAA Grade",
+    "size": null,
+    "size_uom": null,
+    "brand": "JBS",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "bb85168b90753fd82cb73449b3fb9daaf558ae6793d5c6a1dc5a62ebb204adf9": {
+    "subprimal": "bone in arm",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": true,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "8bf8429d4a17f51211aa4c0195798b1141fd3d22b5705d537491180b12980063": {
+    "subprimal": "clod",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "a7604a47c407197e477ced040e1a0e6db7cff3f74d4adc0f54128136d93f57e7": {
+    "subprimal": "clod",
+    "grade": "prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "bf88c2bc9ddfeec849c7081f288d2bbc1ddcadd6faccf0199a4bb6e64b9d8e71": {
+    "subprimal": "teres major",
+    "grade": "Choice",
+    "size": 2.8,
+    "size_uom": "pounds",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "a46f11db026bd4d8efa6c59e3380c138fc623c6e2b58b9c426d07370ab178145": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Cab Oma-H",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "06ffc9a68cb507440d6bd1f6c875d706000d06585449819bd1cad19fe75a419a": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "9a46da160ac963cdfc5ddea06146ef771909f89d7cf19b86238c79577da0e0f6": {
+    "subprimal": "chuck flap",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cab Oma",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "84c943f5cd315948295cd6e16a5dafbc5b61d43e1b9aa1ec7befe5ef5cc5d882": {
+    "subprimal": "flat iron",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Blm",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "7b1f7eb3980003abcaf50f35035e286048b769c7bccf62fe2f11ce094e41fd54": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "32f8797f377e3043c59bb169d64d05bf04d97b6f1df6bb817e859701a26f1e8c": {
+    "subprimal": "mock tender",
+    "grade": "Nr",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "8f94bde389556868263399cbdba2b05e42db37acac92cd028adad6cc9f050c37": {
+    "subprimal": "chuck",
+    "grade": "",
+    "size": 5,
+    "size_uom": "#",
+    "brand": "",
+    "bone_in": false,
+    "confidence": 0.6000000000000001,
+    "needs_review": true
+  },
+  "62ee99fe610fbbc5c2b341f2ff3db4b7f3892e1aadde25b677fea31ddc7710b7": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Grf",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "1d71c3dc68b608e76da30c85ed3ba87910977f9913ad9e277a5afc51b2c2d23e": {
+    "subprimal": "chuck roll",
+    "grade": "AAA Grade",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ca Cad",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "3bcaa4763ac6b19098c7d0529231243d00eed9535df6711ae60037fe273a16a8": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "b12275fba2b8fa35829e1d0e46204e95b1a78efa01ac66cae5911c928d7e56a1": {
+    "subprimal": "top blade",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "1a9c913e6bb1c7ae6426ea08f5eee46b84f545891c46b2c6e1a242ca2e0facb3": {
+    "subprimal": "mock tender",
+    "grade": "Select",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "886980da7d255b590a73dba37f617432ba4016cc59aa437dc16b35f2f1ad40d3": {
+    "subprimal": "teres major",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Ang Oma",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "3c051ae91f541b1a0ff302c8fbdb9cbee574fe41985bd5e4b06338117fe773c8": {
+    "subprimal": "flat iron",
+    "grade": "Choice",
+    "size": 6,
+    "size_uom": "ounces",
+    "brand": "",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "eba06cd84884b076fb02218e447f0f569240db42642c62f6e480cfe173a01e88": {
+    "subprimal": "chuck roll",
+    "grade": "Natural/Off",
+    "size": null,
+    "size_uom": null,
+    "brand": "Amh",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "f7ce8dcca4d171294c04570f1bc669c26f45355ccb646d8b17ff06e124433611": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "e2e50241f3fcbb8d327f938f4a0c31532e4966ceff41d8e8bd0516242da0ff10": {
+    "subprimal": "teres major",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "a5561c6f8b8b346c59a0648be6d5e9cf31893a466270d6bd3de14b42fea8e39c": {
+    "subprimal": "teres major",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "1bde7b91a6673659c795efe6c72efa7be87aa8aec3886f0915a8b7dff75382fb": {
+    "subprimal": "chuck flap",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma-Hrf",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "c7f41e85d712137492244fd4b5736ab613906bbeadf60423a4754735eadb1a63": {
+    "subprimal": "clod",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "0a1d517d9dc0089ceb0b2c3d4f37455d8b11c7f6ea6d3a7ec4739cd56645c18c": {
+    "subprimal": "top blade",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "1faf5a25a00d8e979a7cb579990c8509728ed3f5c06cf4f5208d59a9fd6b6292": {
+    "subprimal": "chuck flap",
+    "grade": "Prime",
+    "size": 36,
+    "size_uom": "pounds",
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "adebde202be124aa90d5d50642374ae75712ee55ef785d908e3cc742f7c0f265": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Can-Her",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "b4d924cf03dbe6b72547261a9c7d1088ac1ef9ac995d069615a20004af890c27": {
+    "subprimal": "chuck roll",
+    "grade": "Natural/Off",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ca Iap Z",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "3acfbb7f5a202d9c5643bcb5f706beed4757860a49517501acb504eb4bd4ae49": {
+    "subprimal": "chuck roll",
+    "grade": "Natural/Off",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ca Iap",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "5388c0dc72cac482b73d8d7d7366da0c6bfaa9dd08067cc88489c8735b0275e2": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": 9,
+    "size_uom": "pounds",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "6fd6a00df0041d281f383a5d9b9e5b9f4d0ef6603c2b55dfc01119c571ac91e7": {
+    "subprimal": "chuck roll",
+    "grade": "AAA Grade",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ca Cad",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "e1aa485c4ecbfcf4f6d28c59330b2fa6f0bc395b85ecd1dad554ef1e07a31852": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "7c976a0ed31745d8c23fa31bb63c9ede61fc0ee2d1418bbc99b117632f060faf": {
+    "subprimal": "chuck roll",
+    "grade": "AAA Grade",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ca Sth",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "bf4d547d70ba27027ff2fb3dde96b6f3101b35ecd7a247714b97ca44a400a32b": {
+    "subprimal": "clod",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Cab Oma",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "14987e5654dffce35079ce8e651fc85fd2dd68268fc0a9b8243fb9a1630ceeeb": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma-Hal",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "3e2c122e034e0240f70b206b1b6f304bd75a0fd066c1dec09f7154140bfc69f6": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "f6356a96ce857b91fdef641c42137072d3df4af1b2d4179b41e859f3975397b2": {
+    "subprimal": "blade meat",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Aurora",
+    "bone_in": true,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "524c6bb0fbf4419240fccac3e999680736e811e0f5791055f568aa7fcb762fd7": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": 21620,
+    "size_uom": "pounds",
+    "brand": "Aur",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "bae82d42b1988f35504bec265275de1ab06df8a299e22ee3c57418c96655cf96": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cab Oma",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "71c354fa17fc71f960495433cbfbf6fa4c70820c05a894eddc21d548700112ef": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Me Suk",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "3e1666cfe2b4b8d1543fce8dbf64b805c8cb4e56eaa5b2e2de0e758c39d84616": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "c0baaeb12cbeb346246a417ffc38366cf267dbf61f21f30e47261b3af7a05c7f": {
+    "subprimal": "mock tender",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Z Ute Lpr",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "1100fea2ffd5ee7a5caac95ebcdb91f770e494ddb3709a1dc29cc3e55f7be6d1": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "fc88071c50a2be2e45dd1f07a9de0fa72c2cdffe9b3c74ce321a15ad3933d6c3": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "249b4e0fc08ee05f17f3f37eb08dfa245ce95d85b1919ae6ff42f0131f18dcc3": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": 3,
+    "size_uom": "count",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "6bd58ffd9e0ec3ae2fedf3a06cbfddc3d004da9f7e699db419c7ea9fb27d5320": {
+    "subprimal": "chuck roll",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "c508112ec7d8643fedd3ff8cf4192c8ce72a46143140a80910b62e8955313bc6": {
+    "subprimal": "chuck roll",
+    "grade": "Natural/Off",
+    "size": null,
+    "size_uom": null,
+    "brand": "Me Suk",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "60fde6892c567698d2fc98a2943545926f00be85e087de803aa608cd8bf45cac": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "b44e0598f35fc3b074663669ff20ba167ebc78672dff317fab86a6f2126af34e": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": 5,
+    "size_uom": "#",
+    "brand": "",
+    "bone_in": false,
+    "confidence": 0.9000000000000001,
+    "needs_review": false
+  },
+  "23cac164bcb2788bc77442ed106843e9a431c7cf40c22390636b1f173c236bd4": {
+    "subprimal": "clod",
+    "grade": "Select",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "6a2da0baab31f05367db937335d1609e460f52ac5fc3794dd3d9ff959ae0d9b2": {
+    "subprimal": "mock tender",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Crk",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "b000a5456754dfca88c06bd2cef7bae0f3e86a4aa6af4f7bfa5fc94e4c7a7dcd": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Omaha-Heritage Farms",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "c9019602828c77bc7fdcf6d31e9aeb8b5281775034ef6b4908aab9c61dd8df06": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma-H",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "9512527d384d64c73d3b6d48d45cf56f8b6164135c163ea20b3ebd1990f7480a": {
+    "subprimal": "chuck flap",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "553976e6000ec752bcff376cfce9ae8c6f0b226f0c0f6864d3e0214b802b0267": {
+    "subprimal": "flat iron",
+    "grade": "Prime",
+    "size": 6,
+    "size_uom": "Steaks",
+    "brand": "",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "b5777f27ad7dfc63a501a566c69b86addf35ea9e82745a20ae09ed4a73547c65": {
+    "subprimal": "stew meat",
+    "grade": "N/A",
+    "size": 1,
+    "size_uom": "#",
+    "brand": "Z Gf Wgf",
+    "bone_in": false,
+    "confidence": 0.6000000000000001,
+    "needs_review": true
+  },
+  "87f1aa0d492186cc0b574377ddc8ab5c24a6601643a165c17662ecfcb8a2a7ca": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "cd33a0b906e43eebf21a0c2367a311f1794147b422ef9d53bf76c419ff83f93a": {
+    "subprimal": "chuck flap",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "fb731701c941fa0ae083523890dc101547446aff7e9eb40ae54dfc3bc0292b89": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma-Hrf",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "01e1a908fc23b03066aa5be65d55fa178d528763807680994ed47f6f03c60b1c": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Angus Omaha",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "0a61e9ba1fb1cc840d1faa528b721f94c066165406e575af87cc5d1ce1c4416d": {
+    "subprimal": "clod",
+    "grade": "Select",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "09e38c9da53bf7435aa5326562e6ceb35bce876df29d648eb493ae8d86be906c": {
+    "subprimal": "teres major",
+    "grade": "Choice",
+    "size": 11,
+    "size_uom": "pounds",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true
+  },
+  "3e05de31bf0678ee28c84772509c4fe28caf321362e725106d3a032aa9a6d2af": {
+    "subprimal": "clod hearts",
+    "grade": "choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Grf",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "650119a452369e98f9512ca53e1ebd3b0b166c0c692a774a13c79de56d093cfd": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "6951f06ec6b9d64dec74859d9a75d6f5801bf4c04027415d88a0833cda8d456e": {
+    "subprimal": "chuck flap",
+    "grade": "Select",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "bbe32781fbc4d4315b7a79c48e5d72243625dc04bc3d4ca89dfe2e2ffaaa5125": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Blm",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "b3b426e6159cfb16af993eaa614a050c96bf737d2b20d73363ef12baf603d397": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "8b2a319729f62e23c7da7712ff27e0d3ed8035494eaf1bf443b68cc9cd0575c4": {
+    "subprimal": "chuck flap",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Natural",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "9338ccb55d78e9cd7b77976bfd01eededd43ebb4558907b49603b3d4545104f0": {
+    "subprimal": "chuck roll",
+    "grade": "Select",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "32aa15454603c5886dd50678bcb89aead84d0847bbcf7d96eeb81d8ebed93962": {
+    "subprimal": "chuck flap",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Hrf-Cls",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "43963b90a6c8917049ff7e3aa2e675c51d07a52a47fdaf06fb2a6ad4987e9427": {
+    "subprimal": "chuck flap",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "336f555c7501759b101b54cd00cbae79ef7cf5644c107fbba1f842c582fa55c9": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "b454fb1326a53ad5b0ca906dc0277cdc75b0545c1725f4cb4b12ab87d44d681d": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Aur",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "ff40c69b43e44e8bd51173b96a7e1ecb088bc35b2cd664602518273d08dbe950": {
+    "subprimal": "flat iron",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "fd7dca9dbfdca9fd02cc11a2350681d59cbd9df51d74b7e48bfc9bee5f203dbf": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "fa082a15301e634f6d66e08d43451cf42397b5c477adba24fa507945c402f3ec": {
+    "subprimal": "chuck flap",
+    "grade": "No Roll",
+    "size": null,
+    "size_uom": null,
+    "brand": "Unidentified",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "f3e0503e17b93c625339db750a3b544670c4626724abb9fa770a25b962950fdf": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "6d41b805c9ff655128c2cd88dc6e686d66df005790c588bba7c357d0baaa276e": {
+    "subprimal": "chuck",
+    "grade": null,
+    "size": 5,
+    "size_uom": "#",
+    "brand": null,
+    "bone_in": true,
+    "confidence": 0.6000000000000001,
+    "needs_review": true
+  },
+  "a6f7206579531f72809f69f62922b36a8479be835ae2c20e575a72f9200e5cc4": {
+    "subprimal": "teres major",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Oma",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "e713b33a46f19fca39751196d2807845b4383d660952b1c84adf88a20c2ec82c": {
+    "subprimal": "hanging tender",
+    "grade": "Choice",
+    "size": 6,
+    "size_uom": "oz",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.7000000000000001,
+    "needs_review": true
+  },
+  "80ec4ea4c38b56e14dce09a04d2e4a0b4b1d8966998f6779c16642d6e98b8097": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Greateromaha",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "2595c504e4b36e37c2c137424394bd4c8cd6d1d991df525bff62ed80fd1ea4cf": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Ca Aur",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "11bef0284489d43a5bffa906f95ceb51e7053640fef1fdf4c19e78726f32f6fb": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Mex Praderas",
+    "bone_in": true,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "87a29401ded999d8ee4df2c83697cf89b03153b61f34bf30ace16c090076dd94": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "edc97bfb0e9a574bf6f8af98907b333936431256bf1977975ca7c9d9a7576523": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Greateromaha",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "b14f8b6f459220c8da5737272c808c2a1659f577806d1ebbd8ab86c61bf5b87c": {
+    "subprimal": "mock tender",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Greater O",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "904d8cfa496362cb8be2cadfdbdc9e40735983458aa15f26a8c3baa2507e6a71": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "3d7e46c5df18026a811f96ef821a647bd7445227d5f2df44e16ec580dcf01b7b": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "National",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "91a920fa98b02ff1495d7377a0db4185671d3a27ccbaf2a55aa6f9350dff75f0": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "5e67286a27cfa5a3717c22034e94575b65aff7e1316d364bd0589a722940e758": {
+    "subprimal": "clod",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Greateromaha",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "821f7d78594c063e4623457ee10186c0880b830a09d923a0c205a124577a7a55": {
+    "subprimal": "clod",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "5166c5dd241817d5c4c4fe0f9fb76a8812af2bff62ca904e2af9467f35ff032a": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "c6acafd1a4b4219214c6d34d51b81309e5b5f374ac4fcd9fc19cda27ea4507fe": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "35baf40cecb37f48e68c00baaec1bdc8bbbe9e58336c726b09032a597b4b5ea7": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "e8fda6191fec79a932d8bf633297bb43157c7e13d6816fe9f494375255290590": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "7f53950f3d60f4c9e634f7d56cd8a1284f45b5f75279f6fac4f26033532c3240": {
+    "subprimal": "chuck roll",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "3ac3acc155a1d43f57a35e5d2ccd03a43a87c98fd2ef3191818722f97de54be7": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "919fc7009af314936fa71e025aa1a881ffa63201fbd0533d93424e668e318088": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "37171fcd84cc34072b8e47e4c8e0a76c7ade4ac5b993c4493fa1e2d90dfc9da6": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cangus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "b837fcf21d747136d74c8b2740f073f0abe7d5aa0373be0521f19a37cff22c87": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cangus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "aed421ba7f73232f1a482db125d53ee78ddd6eccc5cfd65111951bf0bfe90f11": {
+    "subprimal": "chuck roll",
+    "grade": "Natural/Off",
+    "size": null,
+    "size_uom": null,
+    "brand": "Ibp",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "1176e5c8631ac9f6453c09853152595705b0507497eae9c4b0e5cb2fa13f274a": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "9ee21b117c210bfc4225322dd29ad31b9d7e4ba52f65d1e32358e2aba6468dfa": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "14f7492e40c4026efb2d04e6363b44f19458f562c710f7b641a0b521eb6d9e78": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "0f4d9f4eb28c32d259ed8b6542fd157e8d2769fd66b025b8dbfef0599b38fac5": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "eb25187db67999266725919761b861feae3f037e6ef53b5d793e94cfc27d7fab": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "c875070d79b2b308c4525792ac733911e04a1a617f44177f131f0ec3b61f9c0a": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Demkota",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "f9850beb0050b7c8914f1258d4fbb6e9d7f013db181a0c9a11114082bacb0b97": {
+    "subprimal": "mock tender",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Greatero(C_Angus)",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "18ade076170dbad527de90208b261c113f611dfb9196039720ef62471d403a7f": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "38a12d6227ce732cb21c412fcc665e0a13b333906d79b4ffcb6dbeb46f4c5dc2": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "820af9c4c5b56fdc3847395140ec8a5c0bc2a1f92f3399e15a74fd710dc256dc": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "0779d1851470599787de5537889a91cf70d53b253b5f7252ce3143a89e4fc0c4": {
+    "subprimal": "chuck roll",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "30c5caa59dd2738906dade3aab0e1950585ae0dc9d7d6e1a8459127cdad21645": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cangus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "5ab9bbe55a2169655f721cb9b7fdd3de8d9f7ad2d8bf86df9f97827936084ab5": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "c8ad3fda47956c6d2f4f13bfe50e130146c556e7966d1e3e4a82c75cb3309dd3": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "e889b62f2a8b0584ef385c1cacee8035a294c946002d8bd8004c1d853d77b2c0": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Scotties",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "52451a00ddf6a894a381b267b70c880ef6855278413d12f51edf57d21f15a961": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Swift",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "a0854db569e96783ad84f60eb20e026261e8f677242d374dd34329eb8c436461": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Ibp Chairman`S Reserve",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "e6b439c38d12665dccbc9c3f5dd59f7fb039b0696c1060eba02f122e7b356abe": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "366792f184455b922cc5580e3eaa829598d9fc96d124e315f1055c7696a65fc7": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "21a673b1ebcdb505146bf73796cd5fc893c8dd37b6ce7fc953669cc167e6989c": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Greateromaha Halal",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "b3bebbda5f11319cc550c8fb3470f75a2058885c34bc83fe17288f4041d517f3": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "667472b11924dc7f5e60a75d4de70196fa2ea2e5fe89294b0f35887747e6a060": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "267fd2d03766cd4d214d48d62da746fe418b5d45f1ec8740b7d35532abaca974": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "bcda7b89f753b3493e47f7e4391d1761d3ea329812c39adce6032401be6906ea": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Mex Sukarne",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "684226bbca8a69076fc68ec9d55306fa7330f17b15e1e25b3cdcc0bf3b82129b": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "16030cb32ed3cba88096782ed05d03e45a13eea5265af9bc9716d3040d06f653": {
+    "subprimal": "bone in arm",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Black Mountain",
+    "bone_in": true,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "0b01849a1f9d198d9a083f4e24616f3505c98b5f6754cf5059ebdb3c87ea0589": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "National",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "219788f4a7de6b3bc2f5554f450c98f4bf40ef65ed5345cd04bc2314dab60c18": {
+    "subprimal": "chuck roll",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "07329d15db01d0d116a7c6b86d041ed7a29dfc6e9c9c5d69632c02c2513a5522": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": true,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "6eb25ff564f52ccffea645787095536f3e6fada6c2082a3a43412735b615eb78": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "3b552c575f67c77227c631b8728738aa95277463e3bd17a75f9aafcecd4c120f": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "aa30c03bba8d4dc18f81aa3fc7b2d6d305e61b6a2da4d9903c654b89bb2a9a01": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "e1691731d643dd5fd46665344a35de793a0767231cfc63858659d4067ff0757c": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "0e0809a5e6b7e13809801dda0f4348f441ea179f4ed047a1d4354fcc0cec6180": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Mex Gusi",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "6bb2390105716e73bd5d9d507e9b49be397f1f36d90650a577d0a2eb3586a00b": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "3df85c5448de148704fc344e161376e677d2a4c99bded5e959060cd4cb6d70b7": {
+    "subprimal": null,
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.65,
+    "needs_review": false
+  },
+  "974a18f663a50e0f82862005dd960615273c0fbc2107431ceae936bb6e7194ea": {
+    "subprimal": "mock tender",
+    "grade": "N/R",
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "fb1006669bb96ebc0cd1d750e9d1c95d84bf45c2a22a2639dfb299b09e80ca43": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "b77400816464b0462b202ff6e194e81b8ce032399e1c68e742b663de20c91ce3": {
+    "subprimal": "chuck flap",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Greater Omaha",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "faf0eaecd1153814fb3755d0714ea674bc9b5ed64d214c3420e18a40d505e772": {
+    "subprimal": "mock tender",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "1396fcbdd9b028867462ab64bd38a0aa0dc1f3b6a42e6135c6b3c7d5c75d47ff": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Afg S. B.",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "879c8e32a583183502411ce1d0839cd568b5bff06775ade910a152d82ab8df53": {
+    "subprimal": "mock tender",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "d61b007e5aa4c0e3ea6194775df9703cacb25d92933fab800d8f8f9f25da4eeb": {
+    "subprimal": "mock tender",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Aurora",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "3f055536391e10f775e64dcc5004fee389052a4e5d279536bf615a74f44d020c": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cangus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "ea3fb78d088b597b66c1e6f5e631a6c7fc8460ce8f58ea50d178f712e28042f0": {
+    "subprimal": "mock tender",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "972d85a25a423841e1c761183ef65726cbd037ae87dfdb513e4897807fd5bdff": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "0b21a444b2dfa58244d23f6e93ea717089c7ecad50dbd38c9134a086e4d1a29c": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "d8233c5bcad310d2cd2703139a94a0937e78247311545a1d23ddf7c409c582c4": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "773727e34d47b05faa2e93ceeb576f2334b29ad4fa9bfaf5aa2b736c680439b8": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "927ada752b8c40e090a79da5747a9695a036b8907fd6a6a976dd1848b50af4ce": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cangus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "a5cb9f1d5e6d9163b551f8b0f739306f27bf98a7329bed6bf0e6fe162ef2790a": {
+    "subprimal": "mock tender",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Iowa Premium",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "5f2ceebb692d0e125a72a25228f64e284d54e5eb8a1f5633431c7ad8052b6811": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "e38a12e06affa15f4d475666358d640fe1d4022e0a29c81b416cd4f522ef7502": {
+    "subprimal": "chuck roll",
+    "grade": "Natural/Off",
+    "size": null,
+    "size_uom": null,
+    "brand": "Heartland",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "8f40fcfa050b68a2a2246e212aef6195582ea49e59c2ff286630c465da6b0e15": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "b17fc453776e007acda5afc1053199acbda0648b740f9e7e621c51b7d9ffa18b": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "R_Angus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "be80f52fdc260dfc115f532b9c83d8b5465c428e997958c894035145ca484035": {
+    "subprimal": "chuck roll",
+    "grade": "AA",
+    "size": null,
+    "size_uom": null,
+    "brand": "Excel",
+    "bone_in": true,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "fd5f555520c5524b1229946756ef9e18c14b799c949d85c2ba460f2f733e34a5": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Afg",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "d5fa097a28e40b0709452c411152a5990d5888a43f36657dd6454cd7a8094938": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cangus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "33d22a641a099a783bcd5456a3b9065ecb1b0e8b509e88a6d673cae6b53539f6": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Greateromaha Hereford",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "fdd3888093e7b4d2b5d700634bf06f00aade8c95de9828c236b9ab09fc2fb8ac": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cangus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "cc53ba3903e02fd461a656af6a5a6d4db13f62c95e3458dc7956318f67072b99": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Afg",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "94b7ea028ef1a46178f49b3280571a212f33260bb5dc0954d0c8f66bee17c593": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "13e173e33f1d46a4b24433625809616759013af49058fe30d46cf195eb19a5f9": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "e02f7c8c24cf8f1b9af1c010af1bcb51999a16eb3368ef396ed80427e696e0a4": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "6a170c7f7fa03b652e1b503d81da860957d5c49fa5df1ae14d48790915b5e07e": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Cangus",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "98f414ecbdd7f534906f17d22db3a4d4fb7c5e3c200085d2f7e198f021a8d662": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "6771705853f4015b09a75924810550094fe971cf4f0e97ed5286c88f86f8db33": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Ch_Angus",
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "80366bb2d32a4c8c340af7b3bcbecaef7147898d2cb98fc379cb75e4d82979a9": {
+    "subprimal": "mock tender",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Creekstone",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "a8621b78a61fc9a0c84a4413e9411eebda9a8728f2e80a8b6c61a1afbc4b13db": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "71cb443e3e25c840cb5b09db6c23a4091b2373ad7809b4841794e21d902f55d4": {
+    "subprimal": null,
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": "Nr_Angus",
+    "bone_in": false,
+    "confidence": 0.5,
+    "needs_review": true
+  },
+  "73f1c7796b9d85d0a332804b5cdaad29f935ca5beb1b525029354c0d91f36b98": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "963fa3817a56b4ca093628081f720b65ab97eac84fa178ec1075f9166369b57e": {
+    "subprimal": "chuck roll",
+    "grade": "",
+    "size": "",
+    "size_uom": "",
+    "brand": "Clear River",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "f00fe532844e85a1ff61bc00b8c2fbf5f9aaf1a953e8167a49e5f82244273539": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "657c7d38810e331b0e275cce860bc399f1beba755c820e6a23aa14942e65d6d9": {
+    "subprimal": null,
+    "grade": null,
+    "size": 1.0,
+    "size_uom": "lb",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.6000000000000001,
+    "needs_review": false
+  },
+  "df4d1279f44dd5a2acbaf5db3d1353f859a36cd3cf2ac4fe7e78cae73119a521": {
+    "subprimal": "chuck roll",
+    "grade": "AAA Grade",
+    "size": null,
+    "size_uom": null,
+    "brand": "Blue Ribbon",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "5677129329ce83b1153809a44224d94be59c6080bdfdf7f453e064f3973df7f2": {
+    "subprimal": "chuck roll",
+    "grade": "Prime",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "5445b03324fb9c47a029f877254849a9c1b0f7b57a9c5ab41f24280d36bf1ba8": {
+    "subprimal": "clod",
+    "grade": "Angus",
+    "size": null,
+    "size_uom": null,
+    "brand": "Angus",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "67b061985d9e5943a01bd739dbaea1341ffa164cd429148806c23070c7125ea0": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Aurora",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "6be79d4cd731deb7c2edf65805982df337d49934ae1fd7dbaab5500a0b567e20": {
+    "subprimal": "chuck roll",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Iowa Premium",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "4199ed182e6b0a6251cb3835f5562c7aa8a9d294884ba4d6d27755f013460cc7": {
+    "subprimal": "clod",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "be3b4c239be22d98b464ee8511d3210736268088ebaa5fb1a05801c6ef65d522": {
+    "subprimal": "chuck roll",
+    "grade": "Natural/Off",
+    "size": null,
+    "size_uom": null,
+    "brand": "National",
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  },
+  "66d6be6a7a3e98d61c3370236a195ad034e22c87b539bee5d278dfa7c86a18c9": {
+    "subprimal": "mock tender",
+    "grade": null,
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": false
+  },
+  "2da6bf789ccdd117c1b4164aa976f7dfe0544f99fd2a137b358e809251819701": {
+    "subprimal": "clod",
+    "grade": "Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "Westernreserve",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": false
+  },
+  "50124817c975ae4467b236d34918344277a78043f553b305fe2a701abb08d92e": {
+    "subprimal": "chuck roll",
+    "grade": null,
+    "size": 0.375,
+    "size_uom": "in",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.8500000000000001,
+    "needs_review": true
+  }
+}

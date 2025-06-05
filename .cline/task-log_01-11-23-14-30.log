@@ -1,0 +1,12 @@
+GOAL: Extend the beef chuck extraction pipeline to handle all primal beef cuts from the beef_cuts.xlsx spreadsheet dynamically.
+
+IMPLEMENTATION: 
+- Created ReferenceDataLoader class to dynamically load and parse the beef_cuts.xlsx spreadsheet
+- Implemented DynamicPromptGenerator to generate specialized prompts for each primal cut
+- Developed DynamicBeefExtractor to handle any primal cut with dynamic prompting
+- Updated ExtractionController to support both original chuck extractor and new dynamic extractor
+- Documented architecture decisions and implementation details in instructions.md
+- Designed solution for automatic synchronization with spreadsheet changes at runtime
+- Maintained backward compatibility with existing beef chuck extraction processes
+
+COMPLETED: 01-11-2023 14:30

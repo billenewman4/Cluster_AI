@@ -1,0 +1,10 @@
+#!/bin/bash
+# Helper script to run Firebase with Node.js v20
+# Created 2025-06-05
+
+# Source path with reliable directory detection for symlink resilience  
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+export PATH="$SCRIPT_DIR/.node_bin:$PATH"
+
+# Execute firebase with all arguments passed through
+"$SCRIPT_DIR/.node_bin/node" "$(npm root -g)/firebase-tools/lib/bin/firebase.js" "$@"

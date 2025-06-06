@@ -145,3 +145,5 @@ swiftpm-xcode
 *.iso
 
 
+.env
+.env

@@ -132,6 +132,10 @@ swiftpm-xcode
 .env.local
 .env.*
 
+# Allow .cline directory for task tracking
+!.cline/
+!.cline/*.log
+
 ###############################################################################
 # Images, data dumps, large binaries (adjust to suit)
 ###############################################################################

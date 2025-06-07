@@ -15,7 +15,7 @@ from dataclasses import asdict
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 
-from .beef_chuck_extractor import BeefChuckExtractor
+# Using the more optimized base extractor class only - no need for specific extractor imports
 from .base_extractor import BaseLLMExtractor
 
 logger = logging.getLogger(__name__)
@@ -58,7 +58,10 @@ class BatchProcessor:
     
     def _get_cache_key(self, description: str, category: str) -> str:
         """Generate cache key for description + category."""
-        content = f"{category}:{description}"
+        # Defensive programming - ensure we have valid strings
+        safe_description = str(description) if description is not None else ""
+        safe_category = str(category) if category is not None else ""
+        content = f"{safe_category}:{safe_description}"
         return hashlib.sha256(content.encode()).hexdigest()
     
     def _rate_limit(self):
@@ -74,8 +77,25 @@ class BatchProcessor:
     
     def _process_single_record(self, record: Dict, category: str) -> Dict:
         """Process a single record with caching and error handling."""
-        description = record['product_description']
-        cache_key = self._get_cache_key(description, category)
+        description = record.get('product_description')
+        
+        # Validate description - don't waste API calls on empty/null descriptions
+        if description is None or not str(description).strip():
+            logger.warning(f"Skipping extraction for record with null/empty description")
+            result = record.copy()
+            result.update({
+                'subprimal': None,
+                'grade': None,
+                'size': None,
+                'size_uom': None,
+                'brand': None,
+                'bone_in': False,
+                'confidence': 0.0,
+                'needs_review': True
+            })
+            return result
+            
+        cache_key = self._get_cache_key(str(description), category)
         
         # Check cache first
         with self.cache_lock:

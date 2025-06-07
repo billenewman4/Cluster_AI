@@ -1,0 +1,24 @@
+GOAL: Unify and optimize the extractor architecture to work with all beef categories in beef_cuts.xlsx
+
+IMPLEMENTATION: 
+Created a unified extractor architecture that consolidates two separate and incompatible extraction systems:
+1. Created a single `BaseExtractor` class with optimized O(1) caching and lookups
+2. Implemented a unified `BeefExtractor` supporting all primal cuts dynamically from beef_cuts.xlsx
+3. Refactored the category handling in run_pipeline.py to use the unified extractor
+4. Added intelligent primal cut inference from category names
+5. Removed dependency on legacy BeefChuckExtractor while maintaining compatibility with batch processing
+
+Performance optimizations:
+- O(1) category -> extractor mapping via dictionary
+- O(1) primal cut lookup for all beef categories
+- Efficient caching to avoid redundant LLM API calls
+- Single extractor instance reused across all beef categories
+- Memory-optimized reference data loading
+
+Algorithm complexity: 
+- Time complexity: O(1) for extractor lookup, O(1) for primal cut determination
+- Space complexity: O(n) where n is the number of unique primal cuts in reference data
+
+This implementation follows the Open/Closed principle, making it easy to extend to other meat categories (pork, chicken) without modifying existing code.
+
+COMPLETED: 07-06-2025 19:55

@@ -28,30 +28,28 @@ except ImportError:
         logger = logging.getLogger(__name__)
         logger.error("Could not import ExcelToFirestore module")
 
-# Try to import processing modules, but these are optional if we're just doing DB operations
+# Import required processing modules
 found_processing_modules = False
 try:
     # Try direct imports first
-    from data_ingestion.core.processor import DataProcessor
-    from llm_extraction.beef_chuck_extractor import BeefChuckExtractor
-    from llm_extraction.batch_processor import BatchProcessor
+    from llm_extraction.batch_processor import BatchProcessor  
     from output_generation.file_writer import FileWriter
-    from output_generation.report_generator import ReportGenerator
+    
+    # Set flag for processing modules
     found_processing_modules = True
 except ImportError:
     try:
         # Fall back to qualified imports
-        from src.data_ingestion.core.processor import DataProcessor
-        from src.llm_extraction.beef_chuck_extractor import BeefChuckExtractor
         from src.llm_extraction.batch_processor import BatchProcessor
         from src.output_generation.file_writer import FileWriter
-        from src.output_generation.report_generator import ReportGenerator
+        
+        # Set flag for processing modules
         found_processing_modules = True
     except ImportError:
         # We'll handle this gracefully in the main function
         logger = logging.getLogger(__name__)
-        logger.warning("Some processing modules could not be imported")
-        pass
+        logger.warning("Required processing modules could not be imported")
+        found_processing_modules = False
 
 # Configure logging
 logging.basicConfig(
@@ -79,6 +77,7 @@ def process_product_query(args=None):
     Args:
         args: Command line arguments that may contain test_run flag
     """
+    import pandas as pd
     from data_ingestion import ProductTransformer
     
     try:
@@ -94,13 +93,50 @@ def process_product_query(args=None):
         
         # Read the CSV file
         df = pd.read_csv(query_file)
-        logger.info(f"Read {len(df)} records from {query_file.name}")
+        logger.info(f"Read {len(df)} records from {query_file.name} with columns: {df.columns.tolist()}")
         
-        # Apply test run limit if requested
+        # Validate expected input columns exist
+        expected_cols = ['ProductDescription', 'ProductDescription2', 'ProductCategory']
+        missing_cols = [col for col in expected_cols if not any(c for c in df.columns if c.lower() == col.lower())]
+        if missing_cols:
+            raise ValueError(f"Critical columns missing from product query file: {missing_cols}. Cannot continue processing.")
+            
+        # Analyze full dataset categories before limiting
+        if 'ProductCategory' in df.columns:
+            all_categories = df['ProductCategory'].dropna().unique().tolist()
+            logger.info(f"Full dataset contains {len(all_categories)} unique categories: {all_categories}")
+            category_counts = df['ProductCategory'].value_counts().to_dict()
+            logger.info(f"Top 5 categories by count: {dict(sorted(category_counts.items(), key=lambda x: x[1], reverse=True)[:5])}")
+        
+        # Apply test run limit if requested but ensure requested categories are included
         if args and args.test_run:
             limit = 10  # Test run limit
-            logger.info(f"Test run: Processing only {limit} products")
-            df = df.head(limit)
+            requested_categories = []
+            if args.categories:
+                requested_categories = args.categories.split(',')
+            
+            if requested_categories and 'ProductCategory' in df.columns:
+                # Find records matching requested categories
+                category_mask = df['ProductCategory'].isin(requested_categories)
+                matching_records = df[category_mask]
+                logger.info(f"Found {len(matching_records)} records matching requested categories: {requested_categories}")
+                
+                if len(matching_records) > 0:
+                    # Take up to half the test limit from requested categories
+                    category_sample = matching_records.head(limit // 2)
+                    # Take the rest from other records to fill the limit
+                    other_records = df[~category_mask].head(limit - len(category_sample))
+                    # Combine and shuffle
+                    df = pd.concat([category_sample, other_records]).sample(frac=1).reset_index(drop=True)
+                    logger.info(f"Test run: Processing {len(df)} products with {len(category_sample)} from requested categories")
+                else:
+                    logger.warning(f"No records found for requested categories {requested_categories} in the dataset")
+                    df = df.head(limit)
+                    logger.info(f"Test run: Processing {limit} products from start of file")
+            else:
+                # Standard test run with first N records
+                df = df.head(limit)
+                logger.info(f"Test run: Processing {limit} products from start of file")
         
         # Process with our specific requirements
         processed_df = transformer.process_product_data(
@@ -216,17 +252,12 @@ def main():
     parser.add_argument(
         '--skip-stage1', 
         action='store_true',
-        help='Skip data ingestion stage'
+        help='Skip data ingestion stage (product query processing)'
     )
     parser.add_argument(
         '--test-run',
         action='store_true', 
         help='Process only first 10 records for testing'
-    )
-    parser.add_argument(
-        '--process-product-query',
-        action='store_true',
-        help='Process Product_Query CSV with description merging and column renaming'
     )
     
     # Database upload options
@@ -307,40 +338,97 @@ def main():
         
         # Stage 1: Data Ingestion
         if not args.skip_stage1:
-            logger.info("📥 Stage 1: Data Ingestion")
+            logger.info("📥 Stage 1: Data Ingestion - Product Query Processing")
             
-            # Process product query file if requested
-            if args.process_product_query:
+            # Process product query file - this is now the only ingestion method
+            try:
                 process_product_query(args)
-            
-            ingestion_pipeline = DataProcessor()
-            ingestion_pipeline.run()
+                
+                # Verify the processed file exists before continuing
+                processed_file = Path('data/processed/product_query_processed.parquet')
+                if not processed_file.exists():
+                    logger.error("Product query processing failed - processed file not found")
+                    return 1
+                
+                logger.info(f"✅ Successfully processed product query data")
+            except Exception as e:
+                logger.error(f"Fatal error in product query processing: {e}")
+                logger.error("Pipeline execution stopped due to critical data preparation error")
+                return 1
         else:
             logger.info("⏭️  Skipping Stage 1: Data Ingestion")
         
         # Stage 2: LLM Extraction
         logger.info("🤖 Stage 2: LLM Extraction")
         
-        # Initialize extractors dictionary
+        # Initialize extractors for selected meat categories
+        # This maintains O(1) lookup complexity for category matching
         extractors = {}
-        for category in categories:
-            if category.lower() == 'beef chuck':
-                extractors['beef chuck'] = BeefChuckExtractor()
-            else:
-                logger.warning(f"No extractor available for category: {category}")
         
+        # Process each category from command line arguments
+        for category in categories:
+            category_lower = category.lower()
+            
+            # Handle beef-related categories using our unified optimized extractor
+            if 'beef' in category_lower:
+                try:
+                    # Import from the unified extractor package
+                    from src.extractors.beef_extractor import BeefExtractor
+                    
+                    # Create a single extractor instance with O(1) lookup by category
+                    if 'beef_extractor' not in locals():
+                        beef_extractor = BeefExtractor()
+                        supported_primals = beef_extractor.get_supported_primals()
+                        logger.info(f"Loaded unified beef extractor with {len(supported_primals)} supported primal cuts")
+                    
+                    # Extract the primal cut from the category name
+                    primal = beef_extractor.infer_primal_from_category(category)
+                    
+                    if primal:
+                        # Configure the extractor for this specific primal cut
+                        beef_extractor.set_primal(primal)
+                        
+                        # O(1) assignment with configured instance
+                        extractors[category_lower] = beef_extractor
+                        logger.info(f"Using unified beef extractor for category: {category} (Primal: {primal})")
+                    else:
+                        logger.warning(f"Could not determine primal cut from category: {category}")
+                
+                except ImportError as e:
+                    logger.error(f"Failed to import unified BeefExtractor: {e}")
+                    logger.error(f"Cannot process beef category '{category}' - BeefExtractor is required")
+            else:
+                # Non-beef categories like "Pork Hams" aren't supported yet
+                # TODO: Implement extractors for non-beef categories (pork, chicken, etc.)
+                logger.warning(f"No extractor available for non-beef category: {category}")
+        
+        # Check if we found any extractors
         if not extractors:
             logger.error("No extractors configured. Exiting.")
             return 1
-        
         # Initialize batch processor with optimizations
         batch_processor = BatchProcessor(extractors=extractors)
         
         # Load processed data before processing categories
         import pandas as pd
         try:
-            df = pd.read_parquet('data/processed/inventory_base.parquet')
-            logger.info(f"Loaded {len(df)} records from processed data")
+            # Load exclusively from product query processed data
+            query_data_path = 'data/processed/product_query_processed.parquet'
+            if Path(query_data_path).exists():
+                df = pd.read_parquet(query_data_path)
+                logger.info(f"Loaded {len(df)} records from processed product query data")
+            else:
+                logger.error(f"Required product query data not found at {query_data_path}")
+                logger.error("Please run pipeline with data ingestion enabled")
+                return 1
+                
+            # Validate that we have required columns before proceeding
+            required_cols = ['product_code', 'product_description', 'category_description']
+            missing_cols = [col for col in required_cols if col not in df.columns]
+            if missing_cols:
+                logger.error(f"Required columns missing from data: {missing_cols}")
+                logger.error(f"Available columns: {df.columns.tolist()}")
+                return 1
             
             # Debug: Show available categories and counts
             if 'category_description' in df.columns:

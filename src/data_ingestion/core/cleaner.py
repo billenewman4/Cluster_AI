@@ -17,7 +17,8 @@ class DataCleaner:
     REQUIRED_COLUMNS = ['product_code', 'product_description', 'category_description']
     
     def normalize_column_names(self, df: pd.DataFrame) -> pd.DataFrame:
-        """Normalize column names to match expected format.
+        """
+        Normalize column names to match expected format.
         
         Args:
             df: Input DataFrame with raw column names
@@ -25,9 +26,8 @@ class DataCleaner:
         Returns:
             pd.DataFrame: DataFrame with normalized columns
         """
-        # Pre-compile mapping dictionary for O(1) lookup
+        # Define standardized column mapping
         column_mapping = {
-            'product code': 'product_code',
             'product_code': 'product_code',
             'item_code': 'product_code',
             'code': 'product_code',
@@ -40,22 +40,43 @@ class DataCleaner:
             'category': 'category_description',
             'category_description': 'category_description',
             'product category': 'category_description',
+            'productcategory': 'category_description',
             'department': 'category_description',
             'group': 'category_description'
         }
 
-        # Create the rename mapping - pre-compute all lowercase column names
-        lowercase_columns = {col: str(col).lower().strip() if col is not None else '' for col in df.columns}
-        rename_mapping = {}
+        # Create a more robust column mapping that handles various naming patterns
+        robust_mapping = {}
         
-        # O(n) loop through columns (once) for direct mapping
-        for col, col_lower in lowercase_columns.items():
+        # O(1) transformation of input columns
+        for col in df.columns:
+            if col is None:
+                continue
+                
+            # Try exact match first (most efficient)
+            if col in column_mapping:
+                robust_mapping[col] = column_mapping[col]
+                continue
+                
+            # Try lowercase version (handles capitalized column names)
+            col_lower = str(col).lower().strip()
             if col_lower in column_mapping:
-                rename_mapping[col] = column_mapping[col_lower]
-            
+                robust_mapping[col] = column_mapping[col_lower]
+                continue
+                
+            # Handle special cases with more complex transformations
+            col_no_spaces = col_lower.replace(' ', '')
+            if col_no_spaces in column_mapping:
+                robust_mapping[col] = column_mapping[col_no_spaces]
+                continue
+                
+            # Handle specific case for ProductCategory (CamelCase)
+            if col_lower == 'productcategory' or col == 'ProductCategory':
+                robust_mapping[col] = 'category_description'
+        
         # Apply rename in a single operation instead of iterative changes
-        if rename_mapping:
-            df = df.rename(columns=rename_mapping)
+        if robust_mapping:
+            df = df.rename(columns=robust_mapping)
             
         return df
     

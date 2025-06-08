@@ -110,13 +110,6 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         """Return list of supported primals."""
         return self.primals
     
-    def get_subprimal_mapping(self) -> Dict[str, List[str]]:
-        """Return mapping of standard subprimal names to their variations."""
-        if not self.current_primal:
-            # Default to Chuck if no primal is set
-            return self._get_primal_variations("Chuck")
-        return self._get_primal_variations(self.current_primal)
-    
     def _get_primal_variations(self, primal: str) -> Dict[str, List[str]]:
         """Get subprimal variations for a specific primal."""
         if primal in self.subprimal_mapping:
@@ -149,12 +142,6 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         logger.warning(f"Could not infer primal from category: {category}")
         return None
     
-    def get_category_name(self) -> str:
-        """Return the category name (e.g., 'Beef Chuck', 'Beef Rib')."""
-        if self.current_primal:
-            return f"Beef {self.current_primal}"
-        return "Beef"
-        
     def set_primal(self, primal: str) -> bool:
         """Set the current primal cut for extraction.
         
@@ -433,10 +420,6 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             self.current_primal = primal
         
         for description in descriptions:
-            # Only reset primal between descriptions if no batch-level primal was set
-            if not primal:
-                self.current_primal = original_primal
-                
             result = self.extract(description)
             results.append(result)
             
@@ -444,3 +427,5 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         self.current_primal = original_primal
         
         return results
+    
+

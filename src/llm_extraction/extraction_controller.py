@@ -25,7 +25,7 @@ class ExtractionController:
     """
     
     def __init__(self, processed_dir: str = "data/processed", 
-                 reference_data_path: str = "data/incoming/beef_cuts.xlsx"):
+                reference_data_path: str = "data/incoming/beef_cuts.xlsx"):
         """
         Initialize the extraction controller.
         
@@ -37,11 +37,15 @@ class ExtractionController:
         self.processed_dir = Path(processed_dir)
         self.reference_data_path = reference_data_path
         
-        # Load reference data
-        self.reference_data = ReferenceDataLoader(reference_data_path)
-        
-        # Initialize dynamic beef extractor for all primals (including Chuck)
-        self.dynamic_beef_extractor = DynamicBeefExtractor(reference_data_path, processed_dir)
+        try:
+            # Load reference data
+            self.reference_data = ReferenceDataLoader(reference_data_path)
+            
+            # Initialize dynamic beef extractor for all primals (including Chuck)
+            self.dynamic_beef_extractor = DynamicBeefExtractor(reference_data_path, processed_dir)
+        except Exception as e:
+            logger.error(f"Failed to initialize extraction controller: {e}")
+            raise RuntimeError(f"Cannot initialize extraction controller: {e}")
         
         # Get all supported primal cuts
         supported_primals = self.dynamic_beef_extractor.get_supported_primals()
@@ -49,7 +53,8 @@ class ExtractionController:
         # Category mapping for dispatching - build dynamically from reference data
         self.category_extractors = {
             # Map each beef primal to the dynamic extractor (including Chuck)
-            f'Beef {primal}': self.dynamic_beef_extractor for primal in supported_primals
+            # Use lowercase keys for consistent lookups
+            f'beef {primal}'.lower(): self.dynamic_beef_extractor for primal in supported_primals
         }
         
         logger.info(f"Initialized extraction controller with {len(self.category_extractors)} category extractors")

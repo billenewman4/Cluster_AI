@@ -6,6 +6,7 @@ Handles OpenAI API interactions, rate limiting, and retry mechanisms.
 import time
 import random
 import logging
+import threading
 from typing import Optional, Dict, Any
 
 import openai
@@ -25,26 +26,43 @@ class APIManager:
             model: Model to use for completions
             max_rpm: Maximum requests per minute
         """
+        if not api_key or not isinstance(api_key, str):
+            raise ValueError("API key must be a non-empty string")
+        if not api_key.startswith(('sk-', 'sk-proj-')):
+            logger.warning("API key format may be invalid")
+        
         self.client = OpenAI(api_key=api_key)
         self.model = model
         self.max_rpm = max_rpm
         self.request_times = []
+        # Add thread lock for synchronization
+        self._lock = threading.RLock()
     
     def enforce_rate_limit(self) -> None:
-        """Enforce API rate limits to prevent 429 errors."""
+        """Enforce API rate limits to prevent 429 errors.
+        
+        Thread-safe implementation using lock synchronization.
+        """
         current_time = time.time()
         
-        # Remove requests older than 1 minute
-        self.request_times = [t for t in self.request_times if current_time - t < 60]
-        
-        # If we're at the limit, wait
-        if len(self.request_times) >= self.max_rpm:
-            sleep_time = 60 - (current_time - self.request_times[0]) + random.uniform(0.5, 1.5)
-            logger.info(f"Rate limit reached, sleeping for {sleep_time:.2f} seconds")
-            time.sleep(sleep_time)
-        
-        # Record this request
-        self.request_times.append(current_time)
+        with self._lock:
+            # Remove requests older than 1 minute - O(n) time complexity
+            self.request_times = [t for t in self.request_times if current_time - t < 60]
+            
+            # If we're at the limit, wait
+            if len(self.request_times) >= self.max_rpm:
+                sleep_time = max(0, 60 - (current_time - self.request_times[0])) + random.uniform(0.5, 1.5)
+                logger.info(f"Rate limit reached, sleeping for {sleep_time:.2f} seconds")
+                # Release lock during sleep to prevent blocking other threads
+                self._lock.release()
+                try:
+                    time.sleep(sleep_time)
+                finally:
+                    # Re-acquire lock after sleep
+                    self._lock.acquire()
+            
+            # Record this request
+            self.request_times.append(current_time)
     
     def call_with_retry(
         self, 
@@ -57,15 +75,23 @@ class APIManager:
         """Call OpenAI API with retry and backoff logic.
         
         Args:
-            system_prompt: System prompt for the model
-            user_prompt: User prompt with instructions
+            system_prompt: System message for the chat completion
+            user_prompt: User message for the chat completion
             max_retries: Maximum number of retry attempts
-            temperature: Sampling temperature
+            temperature: Sampling temperature (0.0 to 1.0)
             max_tokens: Maximum tokens in the response
             
         Returns:
-            Optional[str]: Model response or None if all retries failed
+            The LLM response text, or None if all attempts fail
         """
+        # Input validation
+        if not system_prompt or not isinstance(system_prompt, str):
+            raise ValueError("system_prompt must be a non-empty string")
+        if not user_prompt or not isinstance(user_prompt, str):
+            raise ValueError("user_prompt must be a non-empty string")
+        if max_retries < 0 or temperature < 0 or max_tokens <= 0:
+            raise ValueError("Invalid parameter values")
+        
         for attempt in range(max_retries):
             try:
                 # Enforce rate limiting
@@ -84,14 +110,19 @@ class APIManager:
                 
                 return response.choices[0].message.content.strip()
                 
+            except openai.RateLimitError as e:
+                logger.warning(f"Rate limit hit on attempt {attempt + 1}: {str(e)}")
+            except openai.APIError as e:
+                logger.warning(f"API error on attempt {attempt + 1}: {str(e)}")
             except Exception as e:
-                logger.warning(f"API call attempt {attempt + 1} failed: {str(e)}")
-                if attempt < max_retries - 1:
-                    # Exponential backoff with jitter
-                    sleep_time = (2 ** attempt) + random.uniform(0, 1)
-                    time.sleep(sleep_time)
-                else:
-                    logger.error(f"All API attempts failed after {max_retries} retries")
-                    return None
+                logger.warning(f"Unexpected error on attempt {attempt + 1}: {str(e)}")
+            
+            if attempt < max_retries - 1:
+                # Exponential backoff with jitter
+                sleep_time = (2 ** attempt) + random.uniform(0, 1)
+                logger.info(f"Retrying in {sleep_time:.2f} seconds (attempt {attempt+1}/{max_retries})")
+                time.sleep(sleep_time)
+            else:
+                logger.error(f"All API attempts failed after {max_retries} retries")
         
         return None

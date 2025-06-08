@@ -213,19 +213,29 @@ class ReferenceDataLoader:
             primal: Primal cut name (required for subprimal synonyms)
             
         Returns:
-            List of synonyms for the specified term
+            List of synonyms for the specified term with duplicates removed
         """
+        # Defensive check to ensure term_type is not None
+        if term_type is None:
+            logger.warning("term_type is None in get_synonyms call")
+            return []
+            
+        # Get synonyms based on term type
         if term_type.lower() == 'subprimal':
             if not primal:
                 logger.warning("Primal cut name is required for subprimal synonyms")
                 return []
-            return self.get_subprimal_synonyms(primal, term_name)
+            synonyms = self.get_subprimal_synonyms(primal, term_name)
         
         elif term_type.lower() == 'grade':
-            return self.get_grade_synonyms(term_name)
-            
-        logger.warning(f"Unknown term type for get_synonyms: {term_type}")
-        return []
+            synonyms = self.get_grade_synonyms(term_name)
+        
+        else:
+            logger.warning(f"Unknown term type for get_synonyms: {term_type}")
+            return []
+        
+        # Remove duplicates by converting to set and back to list
+        return list(set(synonyms))
         
     def get_subprimal_terms(self, primal: str, subprimal: str) -> List[str]:
         """

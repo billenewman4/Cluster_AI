@@ -139,6 +139,16 @@ config/firebase/service-account.json
 !.cline/
 !.cline/*.log
 
+# LLM cache and processed data files
+data/processed/.llm_cache.json
+data/processed/*.csv
+data/processed/*.parquet
+
+# Generated output files
+outputs/meat_inventory_master_*.xlsx
+outputs/*_extracted.csv
+outputs/*_extracted_flagged.csv
+
 ###############################################################################
 # Images, data dumps, large binaries (adjust to suit)
 ###############################################################################

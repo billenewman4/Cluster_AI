@@ -9,6 +9,10 @@ import os
 import sys
 from pathlib import Path
 from datetime import datetime
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Add project root to path to ensure all modules can be found
 project_root = Path(__file__).parent.parent
@@ -26,7 +30,7 @@ except ImportError:
         found_database_module = True
     except ImportError:
         logger = logging.getLogger(__name__)
-        logger.error("Could not import ExcelToFirestore module")
+        raise ImportError("Could not import ExcelToFirestore module")
 
 # Import required processing modules
 found_processing_modules = False
@@ -38,18 +42,8 @@ try:
     # Set flag for processing modules
     found_processing_modules = True
 except ImportError:
-    try:
-        # Fall back to qualified imports
-        from src.llm_extraction.batch_processor import BatchProcessor
-        from src.output_generation.file_writer import FileWriter
-        
-        # Set flag for processing modules
-        found_processing_modules = True
-    except ImportError:
-        # We'll handle this gracefully in the main function
-        logger = logging.getLogger(__name__)
-        logger.warning("Required processing modules could not be imported")
-        found_processing_modules = False
+    # We'll handle this gracefully in the main function
+    raise ImportError("Required processing modules could not be imported")
 
 # Configure logging
 logging.basicConfig(
@@ -83,8 +77,7 @@ def process_product_query(args=None):
     try:
         query_file = Path('data/incoming/Product_Query_2025_06_06.csv')
         if not query_file.exists():
-            logger.error(f"Product query file not found: {query_file}")
-            return
+            raise FileNotFoundError(f"Product query file not found: {query_file}")
             
         logger.info(f"Processing product query file: {query_file.name}")
         
@@ -372,14 +365,14 @@ def main():
             # Handle beef-related categories using our unified optimized extractor
             if 'beef' in category_lower:
                 try:
-                    # Import from the unified extractor package
-                    from src.extractors.beef_extractor import BeefExtractor
+                    # Import from our LLM extraction package
+                    from src.llm_extraction.extractors.dynamic_beef_extractor import DynamicBeefExtractor
                     
                     # Create a single extractor instance with O(1) lookup by category
                     if 'beef_extractor' not in locals():
-                        beef_extractor = BeefExtractor()
+                        beef_extractor = DynamicBeefExtractor()
                         supported_primals = beef_extractor.get_supported_primals()
-                        logger.info(f"Loaded unified beef extractor with {len(supported_primals)} supported primal cuts")
+                        logger.info(f"Loaded DynamicBeefExtractor with {len(supported_primals)} supported primal cuts")
                     
                     # Extract the primal cut from the category name
                     primal = beef_extractor.infer_primal_from_category(category)
@@ -395,8 +388,8 @@ def main():
                         logger.warning(f"Could not determine primal cut from category: {category}")
                 
                 except ImportError as e:
-                    logger.error(f"Failed to import unified BeefExtractor: {e}")
                     logger.error(f"Cannot process beef category '{category}' - BeefExtractor is required")
+                    raise ImportError(f"Failed to import unified BeefExtractor: {e}")
             else:
                 # Non-beef categories like "Pork Hams" aren't supported yet
                 # TODO: Implement extractors for non-beef categories (pork, chicken, etc.)

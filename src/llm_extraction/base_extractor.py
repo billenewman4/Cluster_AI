@@ -11,8 +11,11 @@ from typing import Dict, Optional, List
 from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
-from openai import OpenAI
 from dotenv import load_dotenv
+
+# Import utils from the same package
+from .utils.api_utils import APIManager
+from .utils.result_parser import ResultParser
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -41,9 +44,11 @@ class BaseLLMExtractor(ABC):
     VALID_SIZE_UNITS = {'oz', 'lb', '#', 'g', 'kg', 'in', 'inch', 'inches'}
     
     def __init__(self):
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        # Use GPT-4o-mini for optimal balance of speed, cost, and accuracy
+        # Use APIManager instead of directly creating client
+        api_key = os.getenv("OPENAI_API_KEY")
         self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
+        self.api_manager = APIManager(api_key=api_key, model=self.model)
+        self.result_parser = ResultParser()
     
     @abstractmethod
     def get_subprimal_mapping(self) -> Dict[str, List[str]]:
@@ -114,17 +119,13 @@ JSON:"""
         try:
             prompt = self.create_prompt(description)
             
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[
-                    {"role": "user", "content": prompt}
-                ],
+            # Use APIManager for API calls - this handles rate limiting and retries
+            return self.api_manager.call_with_retry(
+                system_prompt="",  # System prompt is already included in our prompt
+                user_prompt=prompt,
                 temperature=0.0,  # Deterministic for speed
-                max_tokens=150,   # Reduced for speed
-                timeout=30        # Add timeout for speed
+                max_tokens=150    # Reduced for speed
             )
-            
-            return response.choices[0].message.content.strip()
             
         except Exception as e:
             logger.error(f"LLM call failed: {str(e)}")
@@ -132,21 +133,8 @@ JSON:"""
     
     def parse_response(self, response: str) -> Optional[Dict]:
         """Parse LLM JSON response."""
-        if not response:
-            return None
-            
-        try:
-            # Extract JSON from response
-            json_match = re.search(r'\{.*\}', response, re.DOTALL)
-            if json_match:
-                json_str = json_match.group()
-                return json.loads(json_str)
-            else:
-                return json.loads(response)
-                
-        except json.JSONDecodeError as e:
-            raise ValueError(f"Failed to parse JSON: {response[:100]}...")
-            return None
+        # Use ResultParser for consistent JSON parsing
+        return self.result_parser.parse_json_response(response)
     
     def apply_regex_fallbacks(self, description: str) -> Dict:
         """Apply regex patterns as fallback for extraction."""

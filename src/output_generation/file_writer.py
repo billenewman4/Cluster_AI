@@ -111,9 +111,79 @@ class FileWriter:
         
         return output_files
     
-    def write_all_outputs(self, results: Dict[str, pd.DataFrame]) -> Dict[str, Dict[str, str]]:
-        """Write output files for all categories."""
+    def create_master_excel(self, results: Dict[str, pd.DataFrame]) -> str:
+        """Create a master Excel file with all processed data.
         
+        Args:
+            results: Dictionary of DataFrames by category
+            
+        Returns:
+            str: Path to the created Excel file
+        """
+        try:
+            # Create a timestamp for uniqueness
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            excel_path = self.outputs_dir / f"meat_inventory_master_{timestamp}.xlsx"
+            
+            # Use ExcelWriter for a single file with multiple sheets
+            with pd.ExcelWriter(excel_path, engine='openpyxl') as writer:
+                # First create a consolidated sheet with all data
+                all_data = []
+                
+                # Collect all data with category labels
+                for category, df in results.items():
+                    if df.empty:
+                        continue
+                    
+                    # Add category label if not already present
+                    category_df = df.copy()
+                    if 'category_description' not in category_df.columns:
+                        category_df['category_description'] = category
+                    
+                    all_data.append(category_df)
+                
+                # Create consolidated sheet if we have data
+                if all_data:
+                    # Concatenate all data
+                    consolidated_df = pd.concat(all_data, ignore_index=True)
+                    
+                    # Prepare for Excel export
+                    consolidated_df = self.prepare_dataframe(consolidated_df)
+                    
+                    # Write to Excel sheet
+                    consolidated_df.to_excel(writer, sheet_name='All_Products', index=False)
+                    
+                    # Add category-specific sheets
+                    for category, df in results.items():
+                        if df.empty:
+                            continue
+                            
+                        # Prepare each category sheet
+                        category_df = self.prepare_dataframe(df)
+                        
+                        # Create valid Excel sheet name (31 char limit, no special chars)
+                        sheet_name = category.replace(' ', '_')[:31]
+                        
+                        # Write to category-specific sheet
+                        category_df.to_excel(writer, sheet_name=sheet_name, index=False)
+                
+                logger.info(f"Created master Excel file with {len(consolidated_df)} records at {excel_path}")
+                return str(excel_path)
+                
+        except Exception as e:
+            logger.error(f"Failed to create master Excel file: {str(e)}")
+            return None
+            
+    def write_all_outputs(self, results: Dict[str, pd.DataFrame]) -> Dict[str, str]:
+        """Write output files for all categories.
+        
+        Args:
+            results: Dictionary of DataFrames by category
+            
+        Returns:
+            Dict: Dictionary of output file paths with keys for each output type
+        """
+        # Individual category output files
         all_output_files = {}
         
         for category, df in results.items():
@@ -129,6 +199,12 @@ class FileWriter:
                 logger.error(f"Failed to write outputs for {category}: {str(e)}")
                 continue
         
+        # Create master Excel file for Firebase upload if we have any results
+        if any(not df.empty for df in results.values()):
+            master_excel = self.create_master_excel(results)
+            if master_excel:
+                all_output_files['excel_master'] = master_excel
+                
         return all_output_files
     
     def validate_outputs(self, output_files: Dict[str, Dict[str, str]]) -> bool:

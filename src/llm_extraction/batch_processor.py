@@ -173,6 +173,8 @@ class BatchProcessor:
         
         # Convert to list of dicts for parallel processing
         records = df.to_dict('records')
+        logger.info(f"Converted {len(df)} records to list of dicts")
+        logger.info(f"First record: {records[0]}")
         
         # Process in parallel
         results = []

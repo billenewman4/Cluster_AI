@@ -35,8 +35,13 @@ class ProductTransformer:
         Returns:
             pd.DataFrame: DataFrame with merged descriptions
         """
-        if primary_col not in df.columns:
-            logger.error(f"Primary column '{primary_col}' not found in DataFrame")
+        # Find column regardless of case sensitivity
+        available_cols = {col.lower(): col for col in df.columns}
+        actual_primary_col = available_cols.get(primary_col.lower(), primary_col)
+        actual_secondary_col = available_cols.get(secondary_col.lower(), secondary_col)
+        
+        if actual_primary_col not in df.columns:
+            logger.error(f"Primary column '{primary_col}' not found in DataFrame (case-insensitive)")
             logger.error(f"Available columns: {df.columns.tolist()}")
             return df
             
@@ -44,27 +49,30 @@ class ProductTransformer:
         result_df = df.copy()
         
         # Log details of primary column for debugging
-        null_primary_count = df[primary_col].isna().sum()
-        empty_primary_count = (df[primary_col] == '').sum() if pd.api.types.is_string_dtype(df[primary_col]) else 0
-        logger.info(f"Primary description column '{primary_col}' stats: {len(df)} total rows, "
+        null_primary_count = df[actual_primary_col].isna().sum()
+        empty_primary_count = (df[actual_primary_col] == '').sum() if pd.api.types.is_string_dtype(df[actual_primary_col]) else 0
+        logger.info(f"Primary description column '{actual_primary_col}' stats: {len(df)} total rows, "
                    f"{null_primary_count} null values, {empty_primary_count} empty strings")
         
         # Handle case where secondary column doesn't exist
-        if secondary_col not in df.columns:
+        if actual_secondary_col not in df.columns:
             logger.warning(f"Secondary column '{secondary_col}' not found, using only primary column")
-            result_df[output_col] = df[primary_col].fillna('').astype(str).str.strip()
+            result_df[output_col] = df[actual_primary_col].fillna('').astype(str).str.strip()
+            # Add a sample log to verify content
+            if len(df) > 0:
+                logger.info(f"Sample merged description (primary only): '{result_df[output_col].iloc[0]}'")
             return result_df
         
         # Log details of secondary column for debugging
-        null_secondary_count = df[secondary_col].isna().sum()
-        empty_secondary_count = (df[secondary_col] == '').sum() if pd.api.types.is_string_dtype(df[secondary_col]) else 0
-        logger.info(f"Secondary description column '{secondary_col}' stats: {len(df)} total rows, "
+        null_secondary_count = df[actual_secondary_col].isna().sum()
+        empty_secondary_count = (df[actual_secondary_col] == '').sum() if pd.api.types.is_string_dtype(df[actual_secondary_col]) else 0
+        logger.info(f"Secondary description column '{actual_secondary_col}' stats: {len(df)} total rows, "
                    f"{null_secondary_count} null values, {empty_secondary_count} empty strings")
             
         # Apply merging logic with vectorized operations for better performance
         # First convert any non-string values to empty strings to avoid errors
-        primary_values = df[primary_col].fillna('').astype(str).str.strip()
-        sec_values = df[secondary_col].fillna('').astype(str).str.strip()
+        primary_values = df[actual_primary_col].fillna('').astype(str).str.strip()
+        sec_values = df[actual_secondary_col].fillna('').astype(str).str.strip()
         
         # Create merged column with space between when secondary has content
         has_content = (sec_values != '')
@@ -84,6 +92,14 @@ class ProductTransformer:
         empty_merged_count = (result_df[output_col] == '').sum()
         logger.info(f"Merged description column '{output_col}' stats: {len(result_df)} total rows, "
                   f"{null_merged_count} null values, {empty_merged_count} empty strings")
+        
+        # Log a sample of the merged descriptions for verification
+        if len(result_df) > 0:
+            sample_idx = 0
+            sample_primary = primary_values.iloc[sample_idx]
+            sample_secondary = sec_values.iloc[sample_idx]
+            sample_merged = result_df[output_col].iloc[sample_idx]
+            logger.info(f"Sample merge: '{sample_primary}' + '{sample_secondary}' = '{sample_merged}'")
         
         return result_df
         
@@ -138,19 +154,34 @@ class ProductTransformer:
         }
         renamed_df = self.rename_columns(df, column_map)
         
-        # Check for product description columns before merging
-        has_primary = 'ProductDescription' in renamed_df.columns
-        has_secondary = 'ProductDescription2' in renamed_df.columns
+        # Create case-insensitive column lookup for finding columns regardless of case
+        col_map = {col.lower(): col for col in renamed_df.columns}
         
-        if not has_primary:
-            logger.error(f"Cannot merge descriptions: Primary column 'ProductDescription' not found")
+        # Find primary description column (case-insensitive)
+        primary_col = next((col_map[k] for k in col_map if k == 'productdescription'), None)
+        secondary_col = next((col_map[k] for k in col_map if k == 'productdescription2'), None)
+        
+        if not primary_col:
             logger.error(f"Available columns: {renamed_df.columns.tolist()}")
-            # Create an empty column to prevent downstream errors
-            renamed_df['ProductDescription'] = ''
-            
-        # Merge product descriptions (with comprehensive logging already added)
-        processed_df = self.merge_product_descriptions(renamed_df)
+            raise ValueError(f"Cannot merge descriptions: ProductDescription column not found (case-insensitive)")
         
+        logger.info(f"Found description columns: Primary={primary_col}, Secondary={secondary_col or 'None'}")
+            
+        # Merge product descriptions with explicitly identified columns
+        processed_df = self.merge_product_descriptions(
+            df=renamed_df,
+            primary_col=primary_col,
+            secondary_col=secondary_col if secondary_col else 'ProductDescription2',
+            output_col='product_description'
+        )
+        
+        # Log sample processed data
+        if not processed_df.empty:
+            sample_row = processed_df.iloc[0]
+            logger.info(f"Sample processed row after description merge:")
+            if 'product_description' in processed_df.columns:
+                logger.info(f"  - product_description: '{sample_row.get('product_description')}' (length: {len(str(sample_row.get('product_description', '')))})")
+            
         # Ensure preserved columns remain untouched
         if preserve_columns:
             for col in preserve_columns:
@@ -159,7 +190,7 @@ class ProductTransformer:
         
         # If standardizing columns is requested, map to expected pipeline format
         if standardize_columns:
-            # Create case-insensitive column lookup dictionary for O(1) access
+            # Refresh case-insensitive column lookup dictionary after merge operations
             col_map = {col.lower(): col for col in processed_df.columns}
             
             # Map ProductCategory to category_description using case-insensitive lookup
@@ -174,7 +205,6 @@ class ProductTransformer:
                 'branddescription': 'brand_name',
                 'brandname': 'brand_name',  # Map both variations
                 'productcode': 'product_code',
-                'productdescription': 'product_description',  # Ensure product_description is mapped
             }
             
             # Apply column mappings with case-insensitive matching for O(1) lookups
@@ -190,6 +220,12 @@ class ProductTransformer:
                         processed_df[dest_col] = processed_df[dest_col].astype(str)
                         logger.info(f"Converted {dest_col} to string type for consistency")
             
+            # Ensure the product_description column is consistent between original and standardized names
+            # This is critical to ensure the LLM gets the combined description
+            if 'product_description' not in processed_df.columns and 'ProductDescription' in processed_df.columns:
+                processed_df['product_description'] = processed_df['ProductDescription']
+                logger.info("Created product_description from ProductDescription column")
+            
             # Ensure required columns exist for the pipeline with proper data
             required_cols = ['product_code', 'product_description', 'category_description']
             missing_cols = [col for col in required_cols if col not in processed_df.columns]
@@ -201,6 +237,11 @@ class ProductTransformer:
                     f"Required columns missing: {missing_cols}. "
                     f"Available columns: {processed_df.columns.tolist()}"
                 )
+            
+            # Verify the combined description is available and properly formatted
+            if 'product_description' in processed_df.columns:
+                sample_description = processed_df['product_description'].iloc[0] if not processed_df.empty else None
+                logger.info(f"Verified product_description column with sample: '{sample_description}'")
                 
             # Validate product descriptions - no nulls or empty strings allowed
             empty_descriptions = (processed_df['product_description'].isna() | 

@@ -473,7 +473,7 @@ def main():
             else:
                 logger.error(f"Cannot filter by category: no 'category_description' column")
                 continue
-            
+
             # Test run - limit to first 10 records
             if args.test_run:
                 category_df = category_df.head(10)

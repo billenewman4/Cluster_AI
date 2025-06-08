@@ -203,3 +203,67 @@ Name: product_description, dtype: object
 2025-06-08 10:53:38,744 - __main__ - INFO -    Total records processed: 5
 2025-06-08 10:53:38,745 - __main__ - INFO -    Records needing review: 0 (0.0%)
 2025-06-08 10:53:38,745 - __main__ - INFO -    Average confidence: 0.95
+2025-06-08 12:58:43,305 - __main__ - INFO - 🚀 Starting Meat Inventory Pipeline
+2025-06-08 12:58:43,305 - __main__ - INFO - Categories to process: ['Beef Chuck']
+2025-06-08 12:58:43,305 - __main__ - INFO - 📥 Stage 1: Data Ingestion - Product Query Processing
+2025-06-08 12:58:43,307 - __main__ - INFO - Processing product query file: Product_Query_2025_06_06.csv
+2025-06-08 12:58:43,316 - __main__ - INFO - Read 1000 records from Product_Query_2025_06_06.csv with columns: ['ProductSK', 'SourceProductKey', 'ProductCode', 'ProductWarehouseCode', 'ProductDescription', 'ProductDescription2', 'ProductCategoryCode', 'ProductCategory', 'ProductMainCategoryCode', 'ProductMainCategory', 'WarehouseCode', 'Warehouse', 'WarehouseShort', 'ProcessCode', 'ProcessCodeDescription', 'AlphaName', 'BrandCode', 'BrandDescription', 'BrandRate', 'UnitOfMeasure_Stk', 'UnitOfMeasure_Alt', 'WeightConversion', 'UnitOfMeasure_Case', 'SourceSystems', 'LatestProductKeyVersion', 'IsCurrentRecordFlag']
+2025-06-08 12:58:43,318 - __main__ - INFO - Full dataset contains 60 unique categories: ['Non Product', 'Pork Hams', 'Sausage', 'Poultry Ground', 'Miscellaneous Beef', 'Pork Rib', 'Pork Other', 'Rib', 'Beef Flank', 'Pork Loin', 'Misc. Items', 'Beef Chuck', 'Chicken Misc.', 'Chicken Airline Breast', 'Ground Beef Anmar Production', 'Beef Variety & Misc', 'Beef Other', 'Delete Items', 'Beef Rib', 'Beef Ground', 'Lamb', 'Hot Dogs', 'Beef Round', 'Pork Sausage', 'Beef Loin', 'Goat', 'Wild Game', 'Veal', 'Halal', 'Supplies', 'Pot Sticker', 'Dim Sum', 'Beef,Pork-Sausage,Smok', 'Pork Ham/Leg', 'Rabbit', 'DISCONTINUED ITEMS', 'Pork Butt', 'Chicken Main', 'Pork Variety', 'Ground Beef', 'Poultry Leg', 'Pork Shoulder', 'Pork Belly', 'Veal Strauss', 'Brisket', 'Chicken Variety', 'Plate', 'Game Meat', 'Duck', 'Poultry Breast', 'Poultry Whole', 'Turkey', 'Poultry Drumstick', 'Poultry Thigh', 'Poultry Tender', 'Poultry Wing', 'Poultry Other', 'Misc', 'Chicken Wings', 'Chicken Leg Meat']
+2025-06-08 12:58:43,319 - __main__ - INFO - Top 5 categories by count: {'Beef Rib': 87, 'Pork Loin': 85, 'Pork Other': 81, 'Beef Flank': 80, 'Beef Chuck': 68}
+2025-06-08 12:58:43,321 - __main__ - INFO - Found 68 records matching requested categories: ['Beef Chuck']
+2025-06-08 12:58:43,324 - __main__ - INFO - Test run: Processing 10 products with 5 from requested categories
+2025-06-08 12:58:43,324 - data_ingestion.core.product_transformer - INFO - Processing product data: 10 records with columns ['ProductSK', 'SourceProductKey', 'ProductCode', 'ProductWarehouseCode', 'ProductDescription', 'ProductDescription2', 'ProductCategoryCode', 'ProductCategory', 'ProductMainCategoryCode', 'ProductMainCategory', 'WarehouseCode', 'Warehouse', 'WarehouseShort', 'ProcessCode', 'ProcessCodeDescription', 'AlphaName', 'BrandCode', 'BrandDescription', 'BrandRate', 'UnitOfMeasure_Stk', 'UnitOfMeasure_Alt', 'WeightConversion', 'UnitOfMeasure_Case', 'SourceSystems', 'LatestProductKeyVersion', 'IsCurrentRecordFlag']
+2025-06-08 12:58:43,324 - data_ingestion.core.product_transformer - INFO - Found description columns: Primary=ProductDescription, Secondary=ProductDescription2
+2025-06-08 12:58:43,325 - data_ingestion.core.product_transformer - INFO - Primary description column 'ProductDescription' stats: 10 total rows, 0 null values, 0 empty strings
+2025-06-08 12:58:43,325 - data_ingestion.core.product_transformer - INFO - Secondary description column 'ProductDescription2' stats: 10 total rows, 3 null values, 0 empty strings
+2025-06-08 12:58:43,327 - data_ingestion.core.product_transformer - INFO - Merged description column 'product_description' stats: 10 total rows, 0 null values, 0 empty strings
+2025-06-08 12:58:43,327 - data_ingestion.core.product_transformer - INFO - Sample merge: 'Pork Ham Tavern Superior' + '4/cs' = 'Pork Ham Tavern Superior 4/cs'
+2025-06-08 12:58:43,327 - data_ingestion.core.product_transformer - INFO - Sample processed row after description merge:
+2025-06-08 12:58:43,327 - data_ingestion.core.product_transformer - INFO -   - product_description: 'Pork Ham Tavern Superior 4/cs' (length: 29)
+2025-06-08 12:58:43,327 - data_ingestion.core.product_transformer - INFO - Mapped ProductCategory to category_description with 3 unique categories
+2025-06-08 12:58:43,327 - data_ingestion.core.product_transformer - INFO - Mapped BrandName to brand_name
+2025-06-08 12:58:43,327 - data_ingestion.core.product_transformer - INFO - Mapped ProductCode to product_code
+2025-06-08 12:58:43,328 - data_ingestion.core.product_transformer - INFO - Verified product_description column with sample: 'Pork Ham Tavern Superior 4/cs'
+2025-06-08 12:58:43,328 - data_ingestion.core.product_transformer - INFO - Final validation successful. Processed 10 records with required columns present.
+2025-06-08 12:58:43,328 - data_ingestion.core.product_transformer - INFO - Product description column stats: count                                                    10
+unique                                                    4
+top       BF CHUCK SCOTCH TENDER NR AME 116B-1 USDA NO ROLL
+freq                                                      4
+Name: product_description, dtype: object
+2025-06-08 12:58:43,328 - data_ingestion.core.product_transformer - INFO - Processed 10 product records with transformations
+2025-06-08 12:58:43,381 - __main__ - INFO - Saved processed product data with 10 records to data/processed/product_query_processed.parquet
+2025-06-08 12:58:43,383 - __main__ - INFO - Also saved as CSV to data/processed/product_query_processed.csv
+2025-06-08 12:58:43,383 - __main__ - INFO - ✅ Successfully processed product query data
+2025-06-08 12:58:43,383 - __main__ - INFO - 🤖 Stage 2: LLM Extraction
+2025-06-08 12:58:43,676 - src.data_ingestion.utils.reference_data_loader - INFO - Loaded reference data for 11 primal cuts
+2025-06-08 12:58:43,676 - src.llm_extraction.extractors.dynamic_beef_extractor - INFO - Loaded reference data for 11 beef primals
+2025-06-08 12:58:43,676 - __main__ - INFO - Loaded DynamicBeefExtractor with 11 supported primal cuts
+2025-06-08 12:58:43,676 - src.llm_extraction.extractors.dynamic_beef_extractor - INFO - Set current primal to: Chuck
+2025-06-08 12:58:43,676 - __main__ - INFO - Using unified beef extractor for category: Beef Chuck (Primal: Chuck)
+2025-06-08 12:58:43,739 - __main__ - INFO - Loaded 10 records from processed product query data
+2025-06-08 12:58:43,739 - __main__ - INFO - Available categories in data: ['Pork Hams' 'Non Product' 'Beef Chuck']
+2025-06-08 12:58:43,739 - __main__ - INFO - Category counts: {'Beef Chuck': 5, 'Non Product': 3, 'Pork Hams': 2}
+2025-06-08 12:58:43,739 - __main__ - INFO - Processing category: Beef Chuck
+2025-06-08 12:58:43,740 - __main__ - INFO - Found 5 records for Beef Chuck
+2025-06-08 12:58:43,740 - __main__ - INFO - Test run: Processing only 5 records
+2025-06-08 12:58:43,740 - llm_extraction.batch_processor - INFO - Processing 5 records for Beef Chuck
+2025-06-08 12:58:43,741 - llm_extraction.batch_processor - INFO - Converted 5 records to list of dicts
+2025-06-08 12:58:43,741 - llm_extraction.batch_processor - INFO - First record: {'ProductSK': 252669, 'SourceProductKey': 20, 'ProductCode': '100101', 'ProductWarehouseCode': '100101-1', 'ProductDescription': 'BF CHUCK SCOTCH TENDER NR AME', 'ProductDescription2': '116B-1 USDA NO ROLL', 'ProductCategoryCode': 103, 'ProductCategory': 'Beef Chuck', 'ProductMainCategoryCode': 10, 'ProductMainCategory': 'Beef', 'WarehouseCode': 1, 'Warehouse': 'Fulton Main', 'WarehouseShort': 'Main', 'ProcessCode': 4.0, 'ProcessCodeDescription': 'Other', 'AlphaName': 'BFCHUCKSCO', 'BrandCode': 16.0, 'BrandName': 'AMERICAN', 'BrandRate': 0.0, 'UnitOfMeasure_Stk': 'LB', 'UnitOfMeasure_Alt': 'CS', 'WeightConversion': 1.0, 'UnitOfMeasure_Case': 'CS', 'SourceSystems': 'Anmar', 'LatestProductKeyVersion': 4, 'IsCurrentRecordFlag': 0, 'product_description': 'BF CHUCK SCOTCH TENDER NR AME 116B-1 USDA NO ROLL', 'category_description': 'Beef Chuck', 'brand_name': 'AMERICAN', 'product_code': '100101'}
+2025-06-08 12:58:43,742 - llm_extraction.batch_processor - DEBUG - Cache hit for: BF CHUCK SCOTCH TENDER NR AME 116B-1 USDA NO ROLL...
+2025-06-08 12:58:43,742 - llm_extraction.batch_processor - DEBUG - Cache hit for: BF CHUCK SCOTCH TENDER NR AME 116B-1 USDA NO ROLL...
+2025-06-08 12:58:43,742 - llm_extraction.batch_processor - DEBUG - Cache hit for: BF CHUCK SCOTCH TENDER NR AME 116B-1 USDA NO ROLL...
+2025-06-08 12:58:43,742 - llm_extraction.batch_processor - DEBUG - Cache hit for: BF CHUCK SCOTCH TENDER NR AME 116B-1 USDA NO ROLL...
+2025-06-08 12:58:43,742 - llm_extraction.batch_processor - DEBUG - Cache hit for: BF CHUCK BI ARM/SEC CH *__ 113A USDA CHOICE...
+2025-06-08 12:58:43,744 - llm_extraction.batch_processor - INFO - Batch processing complete. 5 records processed.
+2025-06-08 12:58:43,744 - __main__ - INFO - Successfully processed 5 records for Beef Chuck
+2025-06-08 12:58:43,744 - __main__ - INFO - 📤 Stage 3: Output Generation
+2025-06-08 12:58:43,746 - output_generation.file_writer - INFO - Separated data: 5 clean records, 0 flagged records
+2025-06-08 12:58:43,746 - output_generation.file_writer - INFO - Written 5 clean records to outputs/beef_chuck_extracted.csv
+2025-06-08 12:58:43,753 - output_generation.file_writer - INFO - Created master Excel file with 5 records at outputs/meat_inventory_master_20250608_125843.xlsx
+2025-06-08 12:58:43,760 - __main__ - INFO - Output files created: ['Beef Chuck', 'excel_master']
+2025-06-08 12:58:43,760 - __main__ - INFO - ⏭️ Stage 4: Database Upload (Skipped - use --upload-to-firebase to enable)
+2025-06-08 12:58:43,760 - __main__ - INFO - ✅ Pipeline Complete!
+2025-06-08 12:58:43,760 - __main__ - INFO - 📊 Summary:
+2025-06-08 12:58:43,760 - __main__ - INFO -    Total records processed: 5
+2025-06-08 12:58:43,760 - __main__ - INFO -    Records needing review: 0 (0.0%)
+2025-06-08 12:58:43,760 - __main__ - INFO -    Average confidence: 0.95

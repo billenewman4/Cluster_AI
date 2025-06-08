@@ -92,6 +92,8 @@ class DataCleaner:
 
     3. Why isn't this using our reader.py? or reference_data_loader.py?         # Read the CSV file
         df = pd.read_csv(query_file)
+
+4. - `validate_consistency(df, rules)`: Validates data consistency using custom rules (Is this used anywhere and is it necessary?)
             
 
             

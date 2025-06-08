@@ -9,38 +9,6 @@ from datetime import datetime
 from pathlib import Path
 from typing import Dict, Union, List, Optional
 
-def get_file_metadata(file_path: Union[str, Path]) -> Dict:
-    """Extract metadata from file efficiently.
-    
-    Args:
-        file_path: Path to the file
-        
-    Returns:
-        Dict: File metadata including size, modification time, and hash
-    """
-    file_path = Path(file_path) if isinstance(file_path, str) else file_path
-    
-    if not file_path.exists():
-        raise FileNotFoundError(f"File not found: {file_path}")
-    
-    # Get file stats in a single system call
-    stat_info = file_path.stat()
-    
-    # Calculate MD5 hash with efficient chunk reading
-    md5_hash = hashlib.md5()
-    with open(file_path, "rb") as f:
-        # Read in 64kb chunks for memory efficiency
-        for chunk in iter(lambda: f.read(65536), b""):
-            md5_hash.update(chunk)
-    
-    return {
-        "filename": file_path.name,
-        "extension": file_path.suffix,
-        "size_bytes": stat_info.st_size,
-        "modified_time": datetime.fromtimestamp(stat_info.st_mtime),
-        "created_time": datetime.fromtimestamp(stat_info.st_ctime),
-        "md5_hash": md5_hash.hexdigest()
-    }
 
 def ensure_directory(directory_path: Union[str, Path]) -> Path:
     """Ensure directory exists, creating it if necessary.

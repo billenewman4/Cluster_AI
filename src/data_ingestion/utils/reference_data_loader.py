@@ -12,6 +12,8 @@ from typing import Dict, List, Tuple, Any, Optional, Set
 
 import pandas as pd
 
+from ..core.reader import FileReader
+
 logger = logging.getLogger(__name__)
 
 class ReferenceDataLoader:
@@ -31,6 +33,7 @@ class ReferenceDataLoader:
         self.data_path = Path(data_path)
         self.primal_data: Dict[str, Dict[str, List[str]]] = {}
         self.grade_mappings: Dict[str, List[str]] = {}
+        self.file_reader = FileReader()
         self._load_data()
         
     def _load_data(self) -> None:
@@ -44,23 +47,23 @@ class ReferenceDataLoader:
             raise FileNotFoundError(f"Reference data file not found: {self.data_path}")
             
         try:
-            # Load the Excel file
-            excel_file = pd.ExcelFile(self.data_path)
+            # Use our centralized FileReader to read all sheets
+            # First, define a filter function for beef-related sheets
+            def sheet_filter(sheet_name: str) -> bool:
+                return sheet_name.startswith('Beef') or sheet_name == 'Grades'
             
-            # Extract sheet names, ignoring the Grades sheet
-            primal_sheets = [sheet for sheet in excel_file.sheet_names if sheet != 'Grades']
+            # Load all relevant sheets using the FileReader
+            sheet_data = self.file_reader.read_excel_sheets(self.data_path, sheet_filter=sheet_filter)
+            logger.info(f"Loaded {len(sheet_data)} reference sheets from {self.data_path.name}")
             
-            # Load each primal cut sheet
-            for sheet_name in primal_sheets:
-                # Skip any non-beef sheets or special sheets
-                if not sheet_name.startswith('Beef'):
+            # Process each sheet (except Grades)
+            for sheet_name, df in sheet_data.items():
+                # Skip the Grades sheet for now (processed separately below)
+                if sheet_name == 'Grades':
                     continue
-                    
+                
                 # Extract the primal name from the sheet name
                 primal_name = sheet_name.replace('Beef ', '')
-                
-                # Load the sheet data
-                df = pd.read_excel(excel_file, sheet_name=sheet_name)
                 
                 # Convert to dictionary of subprimal -> synonyms
                 subprimal_dict = {}
@@ -77,17 +80,21 @@ class ReferenceDataLoader:
                 
                 # Add to primal data dictionary
                 self.primal_data[primal_name] = subprimal_dict
+                logger.debug(f"Processed {primal_name} with {len(subprimal_dict)} subprimals")
             
-            # Load grade mappings
-            grades_df = pd.read_excel(excel_file, sheet_name='Grades')
-            for _, row in grades_df.iterrows():
-                official_grade = row['Official / Commercial Grade Name']
-                if pd.notna(row.get('Common Synonyms & Acronyms')):
-                    # Split by comma and strip whitespace
-                    synonyms = [s.strip() for s in str(row['Common Synonyms & Acronyms']).split(',')]
-                    self.grade_mappings[official_grade] = synonyms
-                else:
-                    self.grade_mappings[official_grade] = []
+            # Process grade mappings from the Grades sheet
+            if 'Grades' in sheet_data:
+                grades_df = sheet_data['Grades']
+                for _, row in grades_df.iterrows():
+                    official_grade = row['Official / Commercial Grade Name']
+                    if pd.notna(row.get('Common Synonyms & Acronyms')):
+                        # Split by comma and strip whitespace
+                        synonyms = [s.strip() for s in str(row['Common Synonyms & Acronyms']).split(',')]
+                        self.grade_mappings[official_grade] = synonyms
+                        
+                logger.debug(f"Processed {len(self.grade_mappings)} grade mappings")
+            else:
+                logger.warning("Grades sheet not found in the reference data file")
                     
             logger.info(f"Loaded reference data for {len(self.primal_data)} primal cuts")
             

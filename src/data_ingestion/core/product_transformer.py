@@ -10,14 +10,16 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Union
 
+from .reader import FileReader
+
 logger = logging.getLogger(__name__)
 
 class ProductTransformer:
     """Specialized transformer for product data processing."""
     
     def __init__(self):
-        """Initialize the product transformer."""
-        pass
+        """Initialize the product transformer with dependencies."""
+        self.file_reader = FileReader()
         
     def merge_product_descriptions(self, 
                                   df: pd.DataFrame, 
@@ -273,25 +275,26 @@ class ProductTransformer:
     def read_and_process_product_csv(self, 
                                     file_path: Union[str, Path],
                                     preserve_columns: List[str] = None,
-                                    standardize_columns: bool = True) -> pd.DataFrame:
+                                    standardize_columns: bool = True,
+                                    **kwargs) -> pd.DataFrame:
         """Read a product CSV file and apply all transformations.
         
         Args:
             file_path: Path to the product CSV file
             preserve_columns: List of column names to preserve exactly as-is
             standardize_columns: Whether to standardize column names for pipeline compatibility
+            **kwargs: Additional parameters to pass to the file reader
             
         Returns:
             pd.DataFrame: Processed DataFrame
         """
-        file_path = Path(file_path) if isinstance(file_path, str) else file_path
-        
         try:
-            df = pd.read_csv(file_path)
-            logger.info(f"Read {len(df)} records from {file_path.name}")
+            # Use the centralized file reader for consistent handling and optimal performance
+            df = self.file_reader.read_csv(file_path, **kwargs)
+            logger.info(f"Read {len(df)} records from {Path(file_path).name}")
             
             return self.process_product_data(df, preserve_columns, standardize_columns)
             
         except Exception as e:
-            logger.error(f"Error processing {file_path.name}: {str(e)}")
+            logger.error(f"Error processing {Path(file_path).name}: {str(e)}")
             return pd.DataFrame()

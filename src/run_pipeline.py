@@ -38,6 +38,7 @@ try:
     # Try direct imports first
     from llm_extraction.batch_processor import BatchProcessor  
     from output_generation.file_writer import FileWriter
+    from data_ingestion.core.processor import DataProcessor
     
     # Set flag for processing modules
     found_processing_modules = True
@@ -71,7 +72,6 @@ def process_product_query(args=None):
     Args:
         args: Command line arguments that may contain test_run flag
     """
-    import pandas as pd
     from data_ingestion import ProductTransformer
     
     try:
@@ -81,11 +81,14 @@ def process_product_query(args=None):
             
         logger.info(f"Processing product query file: {query_file.name}")
         
+        # Initialize centralized file reader for optimal performance
+        file_reader = FileReader()
+        
         # Initialize transformer
         transformer = ProductTransformer()
         
-        # Read the CSV file
-        df = pd.read_csv(query_file)
+        # Read the CSV file using our centralized FileReader
+        df = file_reader.read_csv(query_file)
         logger.info(f"Read {len(df)} records from {query_file.name} with columns: {df.columns.tolist()}")
         
         # Validate expected input columns exist
@@ -408,7 +411,9 @@ def main():
             # Load exclusively from product query processed data
             query_data_path = 'data/processed/product_query_processed.parquet'
             if Path(query_data_path).exists():
-                df = pd.read_parquet(query_data_path)
+                # Use centralized file reader for consistent handling and performance
+                file_reader = FileReader()
+                df = file_reader.read_parquet(query_data_path)
                 logger.info(f"Loaded {len(df)} records from processed product query data")
             else:
                 logger.error(f"Required product query data not found at {query_data_path}")

@@ -53,12 +53,6 @@ def validate_dataframe_schema(
     
     return len(errors) == 0, errors
 
-def detect_anomalies(
-    df: pd.DataFrame,
-    numeric_columns: Optional[List[str]] = None,
-    categorical_columns: Optional[List[str]] = None,
-    threshold: float = 3.0
-) -> Dict[str, List]:
     """Detect anomalies in DataFrame columns using statistical methods.
     
     Args:

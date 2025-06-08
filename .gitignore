@@ -75,6 +75,12 @@ env/
 venv/
 pip-wheel-metadata/
 
+# Specific Python compiled files
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
 ###############################################################################
 # Java / Kotlin
 ###############################################################################
@@ -143,11 +149,22 @@ config/firebase/service-account.json
 data/processed/.llm_cache.json
 data/processed/*.csv
 data/processed/*.parquet
+data/processed/**/*.csv
+data/processed/**/*.parquet
 
 # Generated output files
 outputs/meat_inventory_master_*.xlsx
 outputs/*_extracted.csv
 outputs/*_extracted_flagged.csv
+outputs/**/*.csv
+outputs/**/*.parquet
+outputs/**/*.xlsx
+
+# Test files that aren't part of the core test suite
+test_*.py
+
+# Windsurf temporary files
+.windsurf/
 
 ###############################################################################
 # Images, data dumps, large binaries (adjust to suit)

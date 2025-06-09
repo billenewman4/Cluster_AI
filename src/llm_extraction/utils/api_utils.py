@@ -69,8 +69,8 @@ class APIManager:
         system_prompt: str, 
         user_prompt: str, 
         max_retries: int = 3,
-        temperature: float = 0.1,
-        max_tokens: int = 500
+        temperature: float = 0.6,
+        max_tokens: int = 1000
     ) -> Optional[str]:
         """Call OpenAI API with retry and backoff logic.
         

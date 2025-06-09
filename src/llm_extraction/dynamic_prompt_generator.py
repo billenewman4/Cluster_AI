@@ -70,8 +70,8 @@ Return valid JSON only."""
         examples = []
         
         # First example
-        examples.append(f"""Input: "Beef {primal} {example_subprimals[0]} 15# Choice Certified Angus"
-Output: {{"species": "Beef", "primal": "{primal}", "subprimal": "{example_subprimals[0]}", "grade": "Choice", "size": 15, "size_uom": "#", "brand": "Certified Angus"}}""")
+        examples.append(f"""Input: "Beef {primal} {example_subprimals[0]} 15# (CH) Certified Angus"
+Output: {{"species": "Beef", "primal": "{primal}", "subprimal": "{example_subprimals[0]}", "grade": "Angus", "size": 15, "size_uom": "#", "brand": null}}""")
         
         # Second example with different size unit
         if len(example_subprimals) > 1:
@@ -80,7 +80,7 @@ Output: {{"species": "Beef", "primal": "{primal}", "subprimal": "{example_subpri
         
         # Third example with a different grade
         if len(example_subprimals) > 2:
-            examples.append(f"""Input: "Beef {primal} {example_subprimals[2]} Wagyu 12lb"
+            examples.append(f"""Input: "Beef {primal} {example_subprimals[2]} Wagyu 12#"
 Output: {{"species": "Beef", "primal": "{primal}", "subprimal": "{example_subprimals[2]}", "grade": "Wagyu", "size": 12, "size_uom": "lb", "brand": null}}""")
         
         # Build the user prompt
@@ -94,8 +94,28 @@ Return a JSON object with exactly these keys:
 - subprimal (e.g. {', '.join(example_subprimals)})
 - grade (one of: No Grade, Prime, Choice, Select, NR, Utility, Wagyu, Angus, Creekstone Angus)
 - size (numeric value only, null if not found)
-- size_uom (oz | lb | # | g | kg, null if not found)
+- size_uom (oz | lb | g | kg, null if not found)
 - brand (free text or null)
+
+- note the following abbreviations are used in the descriptions:
+    - (CH) Choice
+    - (PR) Prime
+    - (SEL) Select
+    - (UT) Utility
+    - (WAG) Wagyu
+    - (ANG) Angus
+    - (CAB) Creekstone Angus
+    - USDA Choice = Choice
+    - USDA Prime = Prime
+    - USDA Select = Select
+    - USDA Utility = Utility
+    - USDA Wagyu = Wagyu
+    - USDA Angus = Angus
+    - USDA Creekstone Angus = Creekstone Angus
+    - Choice Angus = Choice
+    - AAA or Canadian AAA = Choice
+    - AA or Canadian AA = Select
+    - A or Canadian A = Standard
 
 If any value cannot be determined, use null.
 

@@ -26,59 +26,11 @@ class DataCleaner:
         Returns:
             pd.DataFrame: DataFrame with normalized columns
         """
-        # Define standardized column mapping
-        column_mapping = {
-            'product_code': 'product_code',
-            'item_code': 'product_code',
-            'code': 'product_code',
-            'sku': 'product_code',
-            'product description 1': 'product_description',
-            'product_description': 'product_description',
-            'description': 'product_description',
-            'product_name': 'product_description',
-            'item_name': 'product_description',
-            'category': 'category_description',
-            'category_description': 'category_description',
-            'product category': 'category_description',
-            'productcategory': 'category_description',
-            'department': 'category_description',
-            'group': 'category_description'
-        }
-
-        # Create a more robust column mapping that handles various naming patterns
-        robust_mapping = {}
         
-        # O(1) transformation of input columns
-        for col in df.columns:
-            if col is None:
-                continue
-                
-            # Try exact match first (most efficient)
-            if col in column_mapping:
-                robust_mapping[col] = column_mapping[col]
-                continue
-                
-            # Try lowercase version (handles capitalized column names)
-            col_lower = str(col).lower().strip()
-            if col_lower in column_mapping:
-                robust_mapping[col] = column_mapping[col_lower]
-                continue
-                
-            # Handle special cases with more complex transformations
-            col_no_spaces = col_lower.replace(' ', '')
-            if col_no_spaces in column_mapping:
-                robust_mapping[col] = column_mapping[col_no_spaces]
-                continue
-                
-            # Handle specific case for ProductCategory (CamelCase)
-            if col_lower == 'productcategory' or col == 'ProductCategory':
-                robust_mapping[col] = 'category_description'
+        #Nromalize column names to be all lower case and replace spaces with underscores
+        df.columns = [col.lower().replace(' ', '_') for col in df.columns]
         
-        # Apply rename in a single operation instead of iterative changes
-        if robust_mapping:
-            df = df.rename(columns=robust_mapping)
-            
-        return df
+        return df    
     
     def clean_string_data(self, df: pd.DataFrame) -> pd.DataFrame:
         """Clean string data in DataFrame.
@@ -192,7 +144,7 @@ class DataCleaner:
         # Apply cleaning operations in sequence
         df = self.normalize_column_names(df)
         df = self.clean_string_data(df)
-        df = self.validate_required_columns(df)
-        df = self.categorize_descriptions(df)
+        #df = self.validate_required_columns(df)
+        #df = self.categorize_descriptions(df)
         
         return df

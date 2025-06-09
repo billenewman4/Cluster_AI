@@ -20,7 +20,7 @@ class FileWriter:
         
         # Final schema columns in order
         self.final_schema = [
-            'source_filename', 'row_number', 'product_code', 'product_description',
+            'product_code', 'product_family' , 'product_description',
             'category_description', 'subprimal', 'grade', 'size', 'size_uom', 
             'brand', 'bone_in', 'confidence'
         ]
@@ -31,10 +31,8 @@ class FileWriter:
         # Ensure all required columns exist
         for col in self.final_schema:
             if col not in df.columns:
-                if col == 'bone_in':
-                    df[col] = False
-                else:
-                    df[col] = None
+                print(f"Column {col} not found in output dataframe")
+                df[col] = None
         
         # Select and order columns (remove needs_review for final output)
         output_df = df[self.final_schema].copy()
@@ -174,38 +172,119 @@ class FileWriter:
             logger.error(f"Failed to create master Excel file: {str(e)}")
             return None
             
-    def write_all_outputs(self, results: Dict[str, pd.DataFrame]) -> Dict[str, str]:
-        """Write output files for all categories.
+    def write_all_outputs(self, original_df: pd.DataFrame, extraction_df: pd.DataFrame) -> Dict[str, str]:
+        """Write output files for already processed data.
         
         Args:
-            results: Dictionary of DataFrames by category
+            original_df: Original processed data from DataProcessor
+            extraction_df: Results from LLM extraction
             
         Returns:
-            Dict: Dictionary of output file paths with keys for each output type
+            Dict: Dictionary of output file paths
         """
-        # Individual category output files
+        logger.info("Starting output file generation")
+        
+        if original_df.empty or extraction_df.empty:
+            logger.error("No data provided for output generation")
+            return {}
+        
+        # Combine original data + extracted data into final schema
+        logger.info("Combining original data with extraction results")
+        combined_df = self._combine_data_with_extractions(original_df, extraction_df)
+        
+        if combined_df.empty:
+            logger.error("No combined data generated")
+            return {}
+        
+        # Group by category and write outputs using existing functions
+        logger.info("Grouping data by category and writing output files")
+        results_by_category = {}
+        
+        for category in combined_df['category_description'].unique():
+            category_df = combined_df[combined_df['category_description'] == category]
+            results_by_category[category] = category_df
+        
+        # Use existing output writing functions
         all_output_files = {}
         
-        for category, df in results.items():
+        for category, df in results_by_category.items():
             if df.empty:
-                logger.warning(f"Skipping empty results for category: {category}")
                 continue
             
             try:
                 category_files = self.write_category_outputs(df, category)
                 all_output_files[category] = category_files
-                
             except Exception as e:
                 logger.error(f"Failed to write outputs for {category}: {str(e)}")
                 continue
         
-        # Create master Excel file for Firebase upload if we have any results
-        if any(not df.empty for df in results.values()):
-            master_excel = self.create_master_excel(results)
+        # Create master Excel file
+        if results_by_category:
+            master_excel = self.create_master_excel(results_by_category)
             if master_excel:
                 all_output_files['excel_master'] = master_excel
-                
+        
+        logger.info(f"Output generation completed. Generated {len(all_output_files)} output files")
         return all_output_files
+    
+    def _combine_data_with_extractions(self, original_df: pd.DataFrame, extraction_df: pd.DataFrame) -> pd.DataFrame:
+        """Combine original data with extraction results into final schema format.
+        
+        Args:
+            original_df: Original processed data
+            extraction_df: Results from LLM extraction
+            
+        Returns:
+            pd.DataFrame: Combined data in final schema format
+        """
+        combined_records = []
+        
+        # Process each extraction result
+        for idx, extraction_row in extraction_df.iterrows():
+            # Get the extracted data dictionary
+            extracted = extraction_row['Extracted']
+            
+            # Find the corresponding original record by description
+            original_record = original_df[
+                original_df['product_description'] == extraction_row['Description']
+            ].iloc[0] if len(original_df[
+                original_df['product_description'] == extraction_row['Description']
+            ]) > 0 else None
+            
+            if original_record is None:
+                logger.warning(f"Could not find original record for: {extraction_row['Description']}")
+                continue
+            
+            # Create combined record with final schema
+            combined_record = {
+                'product_code': str(original_record.get('product_code', '') or ''),
+                'product_family': str(original_record.get('category_description', '') or '') + ' ' + str(extracted.get('subprimal', '') or '') + ' ' + str(extracted.get('grade', '') or ''),
+                'product_description': str(original_record.get('product_description', '') or ''),
+                'category_description': str(original_record.get('category_description', '') or ''),
+                'subprimal': str(extracted.get('subprimal', '') or ''),
+                'grade': str(extracted.get('grade', '') or ''),
+                'size': extracted.get('size', '') or '',
+                'size_uom': str(extracted.get('size_uom', '') or ''),
+                'brand': str(extracted.get('brand', '') or '') or str(original_record.get('brand_name', '') or ''),
+                'bone_in': extracted.get('bone_in', False),
+                'confidence': extracted.get('confidence', 0.0)
+            }
+            
+            combined_records.append(combined_record)
+        
+        # Create DataFrame with final schema
+        combined_df = pd.DataFrame(combined_records)
+        
+        # Ensure all final schema columns exist
+        for col in self.final_schema:
+            if col not in combined_df.columns:
+                combined_df[col] = ''
+        
+        # Order columns according to final schema
+        combined_df = combined_df[self.final_schema]
+        
+        logger.info(f"Combined {len(combined_df)} records into final schema format")
+        return combined_df
     
     def validate_outputs(self, output_files: Dict[str, Dict[str, str]]) -> bool:
         """Validate that output files were created successfully."""

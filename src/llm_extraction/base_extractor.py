@@ -41,7 +41,7 @@ class BaseLLMExtractor(ABC):
         'creekstone angus', 'no grade'
     }
     
-    VALID_SIZE_UNITS = {'oz', 'lb', '#', 'g', 'kg', 'in', 'inch', 'inches'}
+    VALID_SIZE_UNITS = {'oz', 'lb', 'g', 'kg', 'in', 'inch', 'inches'}
     
     def __init__(self):
         # Use APIManager instead of directly creating client
@@ -60,7 +60,7 @@ class BaseLLMExtractor(ABC):
         """Return the category name (e.g., 'Beef Chuck', 'Beef Rib')."""
         pass
     
-    def create_prompt(self, description: str) -> str:
+    def create_prompt(self, description: str) -> str: #Likely to be removed as this operation should be in dynamic prompt generation
         """Create specialized prompt for extraction."""
         
         # Get subprimal mapping for this category
@@ -114,17 +114,15 @@ JSON:"""
         
         return system_prompt
     
-    def call_llm(self, description: str) -> Optional[str]:
+    def call_llm(self, description: str, user_prompt: str = None, system_prompt: str = None) -> Optional[str]:
         """Call LLM with the specialized prompt."""
         try:
-            prompt = self.create_prompt(description)
             
             # Use APIManager for API calls - this handles rate limiting and retries
             return self.api_manager.call_with_retry(
-                system_prompt="",  # System prompt is already included in our prompt
-                user_prompt=prompt,
-                temperature=0.0,  # Deterministic for speed
-                max_tokens=150    # Reduced for speed
+                system_prompt=system_prompt,  
+                user_prompt=user_prompt,
+                temperature=0.6
             )
             
         except Exception as e:
@@ -166,16 +164,6 @@ JSON:"""
         # Bone-in detection
         result['bone_in'] = bool(re.search(r'\bbone.?in\b', description_lower))
         
-        # Brand detection (simple approach)
-        brand_keywords = ['certified', 'angus', 'creekstone', 'wagyu']
-        for keyword in brand_keywords:
-            if keyword in description_lower:
-                # Extract surrounding context as potential brand
-                brand_match = re.search(rf'\b\w*{keyword}\w*(?:\s+\w+)*', description, re.IGNORECASE)
-                if brand_match:
-                    result['brand'] = brand_match.group().strip()
-                break
-        
         return result
     
     def validate_and_score(self, raw_result: Dict, description: str) -> ExtractionResult:
@@ -198,10 +186,14 @@ JSON:"""
         if result.subprimal:
             # Check if subprimal matches any key (case-insensitive)
             subprimal_lower = result.subprimal.lower()
-            if subprimal_lower in subprimal_mapping:
+            
+            # Create a case-insensitive mapping lookup
+            mapping_lower = {k.lower(): k for k in subprimal_mapping.keys()}
+            
+            if subprimal_lower in mapping_lower:
                 confidence_score += 0.3
-                # Normalize to the standard lowercase key
-                result.subprimal = subprimal_lower
+                # Normalize to the standard case from mapping
+                result.subprimal = mapping_lower[subprimal_lower]
             else:
                 result.needs_review = True
                 logger.warning(f"Unknown subprimal for {self.get_category_name()}: {result.subprimal}")
@@ -255,14 +247,13 @@ JSON:"""
         
         # First try LLM
         llm_response = self.call_llm(description)
-        parsed_result = self.parse_response(llm_response) if llm_response else None
+        parsed_result = self.parse_response(llm_response) if llm_response else print("LLM response is None")
         
         if not parsed_result:
             # Fall back to regex
-            logger.debug("LLM extraction failed, using regex fallback")
-            parsed_result = self.apply_regex_fallbacks(description)
+            raise Exception("LLM extraction failed")
         
         # Validate and score
-        result = self.validate_and_score(parsed_result, description)
+        result = self.validate_and_score(parsed_result, description) #potentially remove this as it is not used
         
         return result 

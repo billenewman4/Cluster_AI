@@ -19,32 +19,16 @@ project_root = Path(__file__).parent.parent
 sys.path.append(str(project_root))
 sys.path.append(str(Path(__file__).parent))
 
-# Import Firebase functionality - only this is required for database operations
-found_database_module = False
-try:
-    from src.database.excel_to_firestore import ExcelToFirestore
-    found_database_module = True
-except ImportError:
-    try:
-        from database.excel_to_firestore import ExcelToFirestore
-        found_database_module = True
-    except ImportError:
-        logger = logging.getLogger(__name__)
-        raise ImportError("Could not import ExcelToFirestore module")
+from llm_extraction.extraction_controller import ExtractionController
+from output_generation.file_writer import FileWriter
+from data_ingestion.processor import DataProcessor
 
-# Import required processing modules
-found_processing_modules = False
+# Optional Firebase functionality
 try:
-    # Try direct imports first
-    from llm_extraction.batch_processor import BatchProcessor  
-    from output_generation.file_writer import FileWriter
-    from data_ingestion.core.processor import DataProcessor
-    
-    # Set flag for processing modules
-    found_processing_modules = True
+    from database.excel_to_firestore import ExcelToFirestore
+    firebase_available = True
 except ImportError:
-    # We'll handle this gracefully in the main function
-    raise ImportError("Required processing modules could not be imported")
+    firebase_available = False
 
 # Configure logging
 logging.basicConfig(
@@ -57,182 +41,10 @@ logging.basicConfig(
 )
 
 # Set OpenAI and LLM extraction modules to DEBUG level for more API call details
-logging.getLogger('openai').setLevel(logging.DEBUG)
-logging.getLogger('llm_extraction').setLevel(logging.DEBUG)
+#logging.getLogger('openai').setLevel(logging.DEBUG)
+#logging.getLogger('llm_extraction').setLevel(logging.DEBUG)
 logger = logging.getLogger(__name__)
 
-
-def process_product_query(args=None):
-    """Process Product_Query_2025_06_06.csv with specialized transformations.
-    
-    1. Merges ProductDescription + ProductDescription2
-    2. Renames BrandDescription → BrandName
-    3. Maps columns to expected pipeline format
-    
-    Args:
-        args: Command line arguments that may contain test_run flag
-    """
-    from data_ingestion import ProductTransformer
-    
-    try:
-        query_file = Path('data/incoming/Product_Query_2025_06_06.csv')
-        if not query_file.exists():
-            raise FileNotFoundError(f"Product query file not found: {query_file}")
-            
-        logger.info(f"Processing product query file: {query_file.name}")
-        
-        # Initialize centralized file reader for optimal performance
-        file_reader = FileReader()
-        
-        # Initialize transformer
-        transformer = ProductTransformer()
-        
-        # Read the CSV file using our centralized FileReader
-        df = file_reader.read_csv(query_file)
-        logger.info(f"Read {len(df)} records from {query_file.name} with columns: {df.columns.tolist()}")
-        
-        # Validate expected input columns exist
-        expected_cols = ['ProductDescription', 'ProductDescription2', 'ProductCategory']
-        missing_cols = [col for col in expected_cols if not any(c for c in df.columns if c.lower() == col.lower())]
-        if missing_cols:
-            raise ValueError(f"Critical columns missing from product query file: {missing_cols}. Cannot continue processing.")
-            
-        # Analyze full dataset categories before limiting
-        if 'ProductCategory' in df.columns:
-            all_categories = df['ProductCategory'].dropna().unique().tolist()
-            logger.info(f"Full dataset contains {len(all_categories)} unique categories: {all_categories}")
-            category_counts = df['ProductCategory'].value_counts().to_dict()
-            logger.info(f"Top 5 categories by count: {dict(sorted(category_counts.items(), key=lambda x: x[1], reverse=True)[:5])}")
-        
-        # Apply test run limit if requested but ensure requested categories are included
-        if args and args.test_run:
-            limit = 10  # Test run limit
-            requested_categories = []
-            if args.categories:
-                requested_categories = args.categories.split(',')
-            
-            if requested_categories and 'ProductCategory' in df.columns:
-                # Find records matching requested categories
-                category_mask = df['ProductCategory'].isin(requested_categories)
-                matching_records = df[category_mask]
-                logger.info(f"Found {len(matching_records)} records matching requested categories: {requested_categories}")
-                
-                if len(matching_records) > 0:
-                    # Take up to half the test limit from requested categories
-                    category_sample = matching_records.head(limit // 2)
-                    # Take the rest from other records to fill the limit
-                    other_records = df[~category_mask].head(limit - len(category_sample))
-                    # Combine and shuffle
-                    df = pd.concat([category_sample, other_records]).sample(frac=1).reset_index(drop=True)
-                    logger.info(f"Test run: Processing {len(df)} products with {len(category_sample)} from requested categories")
-                else:
-                    logger.warning(f"No records found for requested categories {requested_categories} in the dataset")
-                    df = df.head(limit)
-                    logger.info(f"Test run: Processing {limit} products from start of file")
-            else:
-                # Standard test run with first N records
-                df = df.head(limit)
-                logger.info(f"Test run: Processing {limit} products from start of file")
-        
-        # Process with our specific requirements
-        processed_df = transformer.process_product_data(
-            df=df,
-            standardize_columns=True  # This will map to required column names
-        )
-        
-        if processed_df.empty:
-            logger.error("Failed to process product query file")
-            return
-            
-        # Save processed data to parquet for efficiency
-        output_dir = Path('data/processed')
-        output_dir.mkdir(exist_ok=True, parents=True)
-        output_path = output_dir / 'product_query_processed.parquet'
-        
-        processed_df.to_parquet(output_path, index=False)
-        logger.info(f"Saved processed product data with {len(processed_df)} records to {output_path}")
-        
-        # Also save as CSV for easy inspection
-        csv_path = output_dir / 'product_query_processed.csv'
-        processed_df.to_csv(csv_path, index=False)
-        logger.info(f"Also saved as CSV to {csv_path}")
-        
-    except Exception as e:
-        logger.error(f"Error processing product query file: {str(e)}")
-
-
-def firebase_upload(excel_file, args):
-    """
-    Upload Excel data to Firebase Firestore as a standalone function.
-    
-    Args:
-        excel_file: Path to Excel file to upload
-        args: Command-line arguments containing Firebase configuration
-        
-    Returns:
-        dict: Upload statistics
-    """
-    # Create a timestamp for the upload operation
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    
-    try:
-        # Instantiate ExcelToFirestore with production parameters
-        excel_uploader = ExcelToFirestore(
-            project_id=args.firebase_project_id,
-            credentials_path=args.firebase_credentials,
-            base_collection_prefix=args.firebase_collection
-        )
-        
-        # Custom collection ID using timestamp for traceability
-        collection_id = f"{args.firebase_collection}_{timestamp}"
-        
-        # Perform upload with proper error handling
-        logger.info(f"Uploading {excel_file} to Firestore collection '{collection_id}'")
-        
-        # Import Excel file with batch processing and retry logic
-        collection_name, stats = excel_uploader.import_excel(
-            excel_path=excel_file,
-            custom_collection_id=collection_id
-        )
-        
-        # Log success statistics
-        logger.info(f"✅ Firebase upload successful!")
-        logger.info(f"   Collection: {collection_name}")
-        logger.info(f"   Records uploaded: {stats.get('success', 0)}")
-        logger.info(f"   Errors: {stats.get('errors', 0)}")
-        
-        # Write task log with detailed statistics
-        with open(f".cline/firebase-upload_{timestamp}.log", "w") as f:
-            f.write(f"GOAL: Upload Excel data to Firebase Firestore\n")
-            f.write(f"IMPLEMENTATION: Used production-ready ExcelToFirestore uploader")
-            f.write(f" with comprehensive validation and error handling\n")
-            f.write(f"COMPLETED: {datetime.now().strftime('%d-%m-%Y %H:%M')}\n\n")
-            f.write(f"Source file: {excel_file}\n")
-            f.write(f"Target collection: {collection_name}\n")
-            f.write(f"Records processed: {stats.get('total', 0)}\n")
-            f.write(f"Records uploaded: {stats.get('success', 0)}\n")
-            f.write(f"Errors: {stats.get('errors', 0)}\n")
-        
-        return stats
-        
-    except Exception as e:
-        error_msg = str(e)
-        logger.error(f"Firebase upload failed: {error_msg}")
-        
-        # Check for specific API activation error
-        if "SERVICE_DISABLED" in error_msg or "not been used" in error_msg:
-            project_id = args.firebase_project_id or "(default)"
-            activation_url = f"https://console.developers.google.com/apis/api/firestore.googleapis.com/overview?project={project_id}"
-            logger.error(f"Firestore API not enabled. Please visit: {activation_url}")
-        
-        # Log the error details
-        with open(f".cline/firebase-upload-error_{timestamp}.log", "w") as f:
-            f.write(f"GOAL: Upload Excel data to Firebase Firestore\n")
-            f.write(f"IMPLEMENTATION: Attempt failed due to error\n")
-            f.write(f"ERROR: {error_msg}\n")
-            f.write(f"NOT COMPLETED: {datetime.now().strftime('%d-%m-%Y %H:%M')}\n")
-        
-        raise
 
 def main():
     parser = argparse.ArgumentParser(
@@ -246,79 +58,17 @@ def main():
         help='Comma-separated list of categories to process'
     )
     parser.add_argument(
-        '--skip-stage1', 
-        action='store_true',
-        help='Skip data ingestion stage (product query processing)'
-    )
-    parser.add_argument(
         '--test-run',
         action='store_true', 
         help='Process only first 10 records for testing'
     )
-    
-    # Database upload options
-    db_group = parser.add_argument_group('Database Upload Options')
-    db_group.add_argument(
+    parser.add_argument(
         '--upload-to-firebase',
         action='store_true',
-        help='Upload results to Firebase Firestore database'
-    )
-    db_group.add_argument(
-        '--firebase-collection',
-        default='meat_inventory',
-        help='Collection prefix to use in Firebase'
-    )
-    db_group.add_argument(
-        '--firebase-project-id',
-        help='Firebase project ID (defaults to environment config)'
-    )
-    db_group.add_argument(
-        '--firebase-credentials',
-        help='Path to Firebase service account credentials JSON'
-    )
-    db_group.add_argument(
-        '--firebase-excel-file',
-        help='Specific Excel file to upload to Firebase (bypasses pipeline execution)'
+        help='Upload master Excel file to Firebase Firestore'
     )
     
     args = parser.parse_args()
-    
-    # Standalone Firebase upload mode
-    if args.upload_to_firebase and args.firebase_excel_file:
-        if not found_database_module:
-            logger.error("Firebase upload requested but database module could not be imported")
-            return 1
-            
-        logger.info("🚀 Running in Firebase Upload Standalone Mode")
-        logger.info(f"Excel file: {args.firebase_excel_file}")
-        
-        # Create necessary directories
-        os.makedirs('logs', exist_ok=True)
-        os.makedirs('.cline', exist_ok=True)
-        
-        # Skip to Stage 4: Firebase Upload
-        if not Path(args.firebase_excel_file).exists():
-            logger.error(f"Excel file not found: {args.firebase_excel_file}")
-            return 1
-            
-        try:
-            firebase_upload(args.firebase_excel_file, args)
-            return 0
-        except Exception as e:
-            logger.error(f"Firebase upload failed: {e}")
-            return 1
-    
-    # If we're just using Firebase upload without a specific Excel file but processing modules are missing,
-    # give a helpful error about standalone mode
-    if args.upload_to_firebase and not args.firebase_excel_file and not found_processing_modules:
-        logger.error("Cannot run full pipeline: Required processing modules missing")
-        logger.error("For Firebase upload only, use: --upload-to-firebase --firebase-excel-file path/to/excel_file.xlsx")
-        return 1
-        
-    # Full pipeline mode - only required if we're not doing standalone Firebase upload
-    if not args.upload_to_firebase and not found_processing_modules:
-        logger.error("Cannot run full pipeline: Required processing modules missing")
-        return 1
     
     # Parse categories
     categories = [cat.strip() for cat in args.categories.split(',')]
@@ -327,233 +77,110 @@ def main():
         # Create necessary directories
         os.makedirs('logs', exist_ok=True)
         os.makedirs('outputs', exist_ok=True)
-        os.makedirs('.cline', exist_ok=True)
         
         logger.info("🚀 Starting Meat Inventory Pipeline")
         logger.info(f"Categories to process: {categories}")
         
-        # Stage 1: Data Ingestion
-        if not args.skip_stage1:
-            logger.info("📥 Stage 1: Data Ingestion - Product Query Processing")
-            
-            # Process product query file - this is now the only ingestion method
-            try:
-                process_product_query(args)
-                
-                # Verify the processed file exists before continuing
-                processed_file = Path('data/processed/product_query_processed.parquet')
-                if not processed_file.exists():
-                    logger.error("Product query processing failed - processed file not found")
-                    return 1
-                
-                logger.info(f"✅ Successfully processed product query data")
-            except Exception as e:
-                logger.error(f"Fatal error in product query processing: {e}")
-                logger.error("Pipeline execution stopped due to critical data preparation error")
-                return 1
-        else:
-            logger.info("⏭️  Skipping Stage 1: Data Ingestion")
+        # Define paths
+        project_root = Path(__file__).parent.parent
+        reference_data_path = project_root / "data" / "incoming" / "beef_cuts.xlsx"
+        test_data_path = project_root / "data" / "incoming" / "Product_Query_2025_06_06.csv"
         
-        # Stage 2: LLM Extraction
-        logger.info("🤖 Stage 2: LLM Extraction")
-        
-        # Initialize extractors for selected meat categories
-        # This maintains O(1) lookup complexity for category matching
-        extractors = {}
-        
-        # Process each category from command line arguments
-        for category in categories:
-            category_lower = category.lower()
-            
-            # Handle beef-related categories using our unified optimized extractor
-            if 'beef' in category_lower:
-                try:
-                    # Import from our LLM extraction package
-                    from src.llm_extraction.extractors.dynamic_beef_extractor import DynamicBeefExtractor
-                    
-                    # Create a single extractor instance with O(1) lookup by category
-                    if 'beef_extractor' not in locals():
-                        beef_extractor = DynamicBeefExtractor()
-                        supported_primals = beef_extractor.get_supported_primals()
-                        logger.info(f"Loaded DynamicBeefExtractor with {len(supported_primals)} supported primal cuts")
-                    
-                    # Extract the primal cut from the category name
-                    primal = beef_extractor.infer_primal_from_category(category)
-                    
-                    if primal:
-                        # Configure the extractor for this specific primal cut
-                        beef_extractor.set_primal(primal)
-                        
-                        # O(1) assignment with configured instance
-                        extractors[category_lower] = beef_extractor
-                        logger.info(f"Using unified beef extractor for category: {category} (Primal: {primal})")
-                    else:
-                        logger.warning(f"Could not determine primal cut from category: {category}")
-                
-                except ImportError as e:
-                    logger.error(f"Cannot process beef category '{category}' - BeefExtractor is required")
-                    raise ImportError(f"Failed to import unified BeefExtractor: {e}")
-            else:
-                # Non-beef categories like "Pork Hams" aren't supported yet
-                # TODO: Implement extractors for non-beef categories (pork, chicken, etc.)
-                logger.warning(f"No extractor available for non-beef category: {category}")
-        
-        # Check if we found any extractors
-        if not extractors:
-            logger.error("No extractors configured. Exiting.")
-            return 1
-        # Initialize batch processor with optimizations
-        batch_processor = BatchProcessor(extractors=extractors)
-        
-        # Load processed data before processing categories
-        import pandas as pd
-        try:
-            # Load exclusively from product query processed data
-            query_data_path = 'data/processed/product_query_processed.parquet'
-            if Path(query_data_path).exists():
-                # Use centralized file reader for consistent handling and performance
-                file_reader = FileReader()
-                df = file_reader.read_parquet(query_data_path)
-                logger.info(f"Loaded {len(df)} records from processed product query data")
-            else:
-                logger.error(f"Required product query data not found at {query_data_path}")
-                logger.error("Please run pipeline with data ingestion enabled")
-                return 1
-                
-            # Validate that we have required columns before proceeding
-            required_cols = ['product_code', 'product_description', 'category_description']
-            missing_cols = [col for col in required_cols if col not in df.columns]
-            if missing_cols:
-                logger.error(f"Required columns missing from data: {missing_cols}")
-                logger.error(f"Available columns: {df.columns.tolist()}")
-                return 1
-            
-            # Debug: Show available categories and counts
-            if 'category_description' in df.columns:
-                available_categories = df['category_description'].dropna().unique()
-                logger.info(f"Available categories in data: {available_categories}")
-                category_counts = df['category_description'].value_counts().to_dict()
-                logger.info(f"Category counts: {category_counts}")
-            else:
-                logger.error("No 'category_description' column found in data!")
-                logger.info(f"Available columns: {df.columns.tolist()}")
-        except Exception as e:
-            logger.error(f"Error loading processed data: {e}")
+        # Validate paths exist
+        if not reference_data_path.exists():
+            logger.error(f"Reference data file not found: {reference_data_path}")
             return 1
             
-        # Process each category
-        all_results = []
-        for category in categories:
-            logger.info(f"Processing category: {category}")
-            
-            # Skip if no extractor configured
-            if category.lower() not in extractors:
-                logger.warning(f"Skipping {category} - no extractor configured")
-                continue
-            
-            # Filter with case-insensitive matching for flexibility
-            if 'category_description' in df.columns:
-                # Match category using case-insensitive contains
-                category_filter = df['category_description'].str.contains(category, case=False, na=False)
-                category_df = df[category_filter]
-                
-                logger.info(f"Found {len(category_df)} records for {category}")
-                
-                if len(category_df) == 0:
-                    # If no matches found, try more flexible matching
-                    logger.warning(f"No records found for exact '{category}' match, trying word boundaries")
-                    # Try matching with word boundaries
-                    import re
-                    pattern = rf"\b{re.escape(category)}\b"
-                    category_filter = df['category_description'].str.contains(pattern, case=False, na=False, regex=True)
-                    category_df = df[category_filter]
-                    logger.info(f"Found {len(category_df)} records with word boundary matching")
-                    
-                    if len(category_df) == 0:
-                        logger.warning(f"Still no records found for {category}")
-                        # Show sample data for debugging
-                        if not df.empty:
-                            logger.info(f"Sample categories:\n{df['category_description'].head(10).tolist()}")
-                        continue
-            else:
-                logger.error(f"Cannot filter by category: no 'category_description' column")
-                continue
-
-            # Test run - limit to first 10 records
-            if args.test_run:
-                category_df = category_df.head(10)
-                logger.info(f"Test run: Processing only {len(category_df)} records")
-            
-            # Process with new optimized batch processor
-            try:
-                result_df = batch_processor.process_batch(category_df, category)
-                all_results.append(result_df)
-                logger.info(f"Successfully processed {len(result_df)} records for {category}")
-                
-            except Exception as e:
-                logger.error(f"Failed to process {category}: {e}")
-                continue
-        
-        if not all_results:
-            logger.error("No results to process. Exiting.")
+        if not test_data_path.exists():
+            logger.error(f"Test data file not found: {test_data_path}")
             return 1
         
-        # Stage 3: Output Generation
-        logger.info("📤 Stage 3: Output Generation")
+        # Stage 1: Initialize extraction controller with reference data
+        logger.info("📥 Stage 1: Initialize Extraction Controller")
+        extractor = ExtractionController(reference_data_path=str(reference_data_path))
         
-        # Combine all results
-        combined_df = pd.concat(all_results, ignore_index=True)
+        # Stage 2: Process data using DataProcessor
+        logger.info("🔄 Stage 2: Data Processing")
+        processor = DataProcessor()
         
-        # Generate outputs using modular components
-        file_writer = FileWriter()
+        # Determine limit for test runs
+        limit_per_category = 10 if args.test_run else None
         
-        # Organize results by category for file writer
-        results_by_category = {}
-        for category in categories:
-            category_data = combined_df  # For simplicity, using all data
-            results_by_category[category] = category_data
+        df = processor.process_file(
+            str(test_data_path), 
+            category=categories, 
+            limit_per_category=limit_per_category
+        )
         
-        # Write output files
-        output_files = file_writer.write_all_outputs(results_by_category)
+        if df.empty:
+            logger.error("No data processed from input file")
+            return 1
+            
+        logger.info(f"Processed {len(df)} records")
         
-        # Simple summary instead of complex report generator
-        logger.info(f"Output files created: {list(output_files.keys())}")
+        # Stage 3: LLM Extraction
+        logger.info("🤖 Stage 3: LLM Extraction")
+        results_df = extractor.extract_batch(df)
         
-        # Summary statistics
-        total_records = len(combined_df)
-        needs_review = combined_df['needs_review'].sum() if 'needs_review' in combined_df.columns else 0
-        avg_confidence = combined_df['confidence'].mean() if 'confidence' in combined_df.columns else 0.0
+        if results_df.empty:
+            logger.error("No results from extraction")
+            return 1
+            
+        logger.info(f"Extracted data for {len(results_df)} records")
         
-        # Stage 4: Database Upload (Optional)
+        # Stage 4: Output Generation
+        logger.info("📤 Stage 4: Output Generation")
+        writer = FileWriter()
+        output_files = writer.write_all_outputs(df, results_df)
+        
+        if not output_files:
+            logger.error("No output files generated")
+            return 1
+            
+        logger.info(f"Generated output files: {list(output_files.keys())}")
+        
+        # Stage 5: Firebase Upload (Optional)
         if args.upload_to_firebase:
-            logger.info("🔥 Stage 4: Firebase Database Upload")
-            
-            # Get the master Excel output file path
-            master_excel_file = output_files.get('excel_master')
-            if not master_excel_file or not Path(master_excel_file).exists():
-                logger.error("Cannot upload to Firebase: Master Excel file not found")
+            if not firebase_available:
+                logger.error("Firebase upload requested but ExcelToFirestore module not available")
+                logger.error("Please ensure Firebase dependencies are installed")
             else:
-                try:
-                    # Use the shared firebase_upload function for consistency
-                    firebase_upload(master_excel_file, args)
-                except Exception as e:
-                    # Error already logged in firebase_upload function
-                    pass
+                logger.info("🔥 Stage 5: Firebase Upload")
+                
+                # Get the master Excel file path
+                master_excel_file = output_files.get('excel_master')
+                if not master_excel_file or not Path(master_excel_file).exists():
+                    logger.error("Cannot upload to Firebase: Master Excel file not found")
+                else:
+                    try:
+                        # Initialize Firebase uploader
+                        uploader = ExcelToFirestore(base_collection_prefix="meat_inventory")
+                        
+                        # Upload the master Excel file
+                        collection_name, stats = uploader.import_excel(excel_path=master_excel_file)
+                        
+                        # Log success
+                        logger.info(f"✅ Successfully uploaded to Firebase!")
+                        logger.info(f"   Collection: {collection_name}")
+                        logger.info(f"   Records uploaded: {stats.get('success', 0)}")
+                        logger.info(f"   Total processed: {stats.get('total', 0)}")
+                        
+                        if stats.get('errors', 0) > 0:
+                            logger.warning(f"   Errors: {stats.get('errors', 0)}")
+                            
+                    except Exception as e:
+                        logger.error(f"Firebase upload failed: {e}")
         else:
-            logger.info("⏭️ Stage 4: Database Upload (Skipped - use --upload-to-firebase to enable)")
+            logger.info("⏭️ Stage 5: Firebase Upload (Skipped - use --upload-to-firebase to enable)")
         
         logger.info("✅ Pipeline Complete!")
-        logger.info(f"📊 Summary:")
-        logger.info(f"   Total records processed: {total_records}")
-        logger.info(f"   Records needing review: {needs_review} ({needs_review/total_records*100:.1f}%)")
-        logger.info(f"   Average confidence: {avg_confidence:.2f}")
         
-        # Return exit code based on flagged results
-        if needs_review > 0:
-            logger.warning("Some records need review - check flagged output files")
-            return 1
-        else:
-            return 0
+        # Summary statistics
+        if 'confidence' in results_df.columns:
+            avg_confidence = results_df['confidence'].mean() if len(results_df) > 0 else 0.0
+            logger.info(f"📊 Average confidence: {avg_confidence:.2f}")
+        
+        return 0
             
     except Exception as e:
         logger.error(f"Pipeline failed: {e}")

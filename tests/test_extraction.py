@@ -21,7 +21,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, current_dir)
 
 # Import components
-from src.llm_extraction.extractors.dynamic_beef_extractor import DynamicBeefExtractor
+from llm_extraction.dynamic_beef_extractor import DynamicBeefExtractor
 from src.llm_extraction.base_extractor import ExtractionResult
 from src.data_ingestion.utils.reference_data_loader import ReferenceDataLoader
 

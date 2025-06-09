@@ -5,7 +5,7 @@ import sys
 sys.path.append('src')
 
 import pandas as pd
-from output_generation import FileWriter, ReportGenerator
+from src import FileWriter, ReportGenerator
 
 def test_stage3():
     """Test output generation stage."""

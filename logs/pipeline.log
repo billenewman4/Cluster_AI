@@ -24019,3 +24019,660 @@ Name: product_description, dtype: object
 2025-06-09 17:22:59,118 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Clod Shoulder', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': None}
 2025-06-09 17:22:59,119 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Roll N/off, Iowa Premium (NR)...'
 2025-06-09 17:22:59,119 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Roll N/off, Iowa Premium (NR)...'
+2025-06-09 17:23:00,375 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:00,387 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{"species": "Beef", "primal": "Chuck", "subprimal": "Chuck Roll", "grade": "NR", "size": null, "size_uom": null, "brand": "Iowa Premium"}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:00,387 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:00,387 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Chuck Roll', 'grade': 'NR', 'size': None, 'size_uom': None, 'brand': 'Iowa Premium'}
+2025-06-09 17:23:00,387 - llm_extraction.base_extractor - WARNING - Unknown grade: NR
+2025-06-09 17:23:00,387 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Arm Portion Bone In, Black Mountain (Ch)...'
+2025-06-09 17:23:00,394 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Arm Portion Bone In, Black Mountain (Ch)...'
+2025-06-09 17:23:01,905 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:01,910 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Bone-In Arm",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": "black mountain"
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:01,910 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:01,910 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Bone-In Arm', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': 'black mountain'}
+2025-06-09 17:23:01,910 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Clod Shoulder XT, IBP Star Ranch (Ch_Ang...'
+2025-06-09 17:23:01,910 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Clod Shoulder XT, IBP Star Ranch (Ch_Ang...'
+2025-06-09 17:23:03,159 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:03,164 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response {
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Clod Shoulder",
+  "grade": null,
+  "size": null,
+  "size_uom": null,
+  "brand": "ibp star ranch"
+} 
+
+
+
+
+
+
+2025-06-09 17:23:03,164 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:03,164 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Clod Shoulder', 'grade': None, 'size': None, 'size_uom': None, 'brand': 'ibp star ranch'}
+2025-06-09 17:23:03,164 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Roll N/off, Heartland (N/R)...'
+2025-06-09 17:23:03,165 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Roll N/off, Heartland (N/R)...'
+2025-06-09 17:23:04,145 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:04,171 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response {
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Chuck Roll",
+  "grade": "NR",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+} 
+
+
+
+
+
+
+2025-06-09 17:23:04,171 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:04,171 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Chuck Roll', 'grade': 'NR', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:23:04,171 - llm_extraction.base_extractor - WARNING - Unknown grade: NR
+2025-06-09 17:23:04,171 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Roll N/off, Harmony (A)...'
+2025-06-09 17:23:04,171 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Roll N/off, Harmony (A)...'
+2025-06-09 17:23:05,670 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:05,671 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{"species": "Beef", "primal": "Chuck", "subprimal": "Chuck Roll", "grade": null, "size": null, "size_uom": null, "brand": "harmony"}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:05,671 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:05,671 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Chuck Roll', 'grade': None, 'size': None, 'size_uom': None, 'brand': 'harmony'}
+2025-06-09 17:23:05,671 - llm_extraction.extraction_controller - INFO - Processing batch 5/15 (20 records)
+2025-06-09 17:23:05,671 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Tender Scotties, GreaterO(C_Angus)...'
+2025-06-09 17:23:05,672 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Tender Scotties, GreaterO(C_Angus)...'
+2025-06-09 17:23:06,708 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:06,709 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "ScottyTender",
+  "grade": "Angus",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:06,709 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:06,709 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'ScottyTender', 'grade': 'Angus', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:23:06,709 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Roll N/off, GreaterOmaha (Prime)...'
+2025-06-09 17:23:06,710 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Roll N/off, GreaterOmaha (Prime)...'
+2025-06-09 17:23:08,228 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:08,229 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{"species": "Beef", "primal": "Chuck", "subprimal": "Chuck Roll", "grade": "Prime", "size": null, "size_uom": null, "brand": "greateromaha"}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:08,229 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:08,229 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Chuck Roll', 'grade': 'Prime', 'size': None, 'size_uom': None, 'brand': 'greateromaha'}
+2025-06-09 17:23:08,229 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Roll N/off, AFG S. B. (Ch)...'
+2025-06-09 17:23:08,230 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Roll N/off, AFG S. B. (Ch)...'
+2025-06-09 17:23:09,201 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:09,203 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response {
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Chuck Roll",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+} 
+
+
+
+
+
+
+2025-06-09 17:23:09,203 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:09,203 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Chuck Roll', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:23:09,203 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Roll N/off, Mex Praderas Huastecas...'
+2025-06-09 17:23:09,203 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Roll N/off, Mex Praderas Huastecas...'
+2025-06-09 17:23:10,891 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:10,892 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{"species":"Beef","primal":"Chuck","subprimal":"Chuck Roll","grade":null,"size":null,"size_uom":null,"brand":null}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:10,892 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:10,892 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Chuck Roll', 'grade': None, 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:23:10,892 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Roll N/off, GreaterOmaha (Ch_Angu)...'
+2025-06-09 17:23:10,893 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Roll N/off, GreaterOmaha (Ch_Angu)...'
+2025-06-09 17:23:11,758 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:11,763 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{"species":"Beef","primal":"Chuck","subprimal":"Chuck Roll","grade":null,"size":null,"size_uom":null,"brand":"greateromaha"}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:11,763 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:11,763 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Chuck Roll', 'grade': None, 'size': None, 'size_uom': None, 'brand': 'greateromaha'}
+2025-06-09 17:23:11,763 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Clod Shoulder, AFG (Sel)...'
+2025-06-09 17:23:11,764 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Clod Shoulder, AFG (Sel)...'
+2025-06-09 17:23:12,824 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:12,829 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{"species":"Beef","primal":"Chuck","subprimal":"Clod Shoulder","grade":"Select","size":null,"size_uom":null,"brand":null}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:12,829 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:12,829 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Clod Shoulder', 'grade': 'Select', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:23:12,829 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Pectoral Meat, JBS (Ch)...'
+2025-06-09 17:23:12,830 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Pectoral Meat, JBS (Ch)...'
+2025-06-09 17:23:13,860 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:13,861 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Pectoral Meat",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": "jbs"
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:23:13,861 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:13,861 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Pectoral Meat', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': 'jbs'}
+2025-06-09 17:23:13,861 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Pectoral Meat, Aurora (Ch_Angus)...'
+2025-06-09 17:23:13,861 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Pectoral Meat, Aurora (Ch_Angus)...'
+2025-06-09 17:23:15,028 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:23:15,029 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response {
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Pectoral Meat",
+  "grade": "Angus",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+} 
+
+
+
+
+
+
+2025-06-09 17:23:15,029 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:23:15,029 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Pectoral Meat', 'grade': 'Angus', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:23:15,029 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'Chuck Roll N/off, Creekstone (Ch)...'
+2025-06-09 17:23:15,030 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'Chuck Roll N/off, Creekstone (Ch)...'
+2025-06-09 17:27:22,852 - __main__ - INFO - 🚀 Starting Meat Inventory Pipeline
+2025-06-09 17:27:22,852 - __main__ - INFO - Categories to process: ['Beef Chuck']
+2025-06-09 17:27:22,852 - __main__ - INFO - 📥 Stage 1: Initialize Extraction Controller
+2025-06-09 17:27:22,967 - data_ingestion.utils.reference_data_loader - INFO - Loaded 12 reference sheets from beef_cuts.xlsx
+2025-06-09 17:27:22,970 - data_ingestion.utils.reference_data_loader - INFO - Loaded reference data for 11 primal cuts
+2025-06-09 17:27:23,272 - data_ingestion.utils.reference_data_loader - INFO - Loaded 12 reference sheets from beef_cuts.xlsx
+2025-06-09 17:27:23,274 - data_ingestion.utils.reference_data_loader - INFO - Loaded reference data for 11 primal cuts
+2025-06-09 17:27:23,274 - llm_extraction.dynamic_beef_extractor - INFO - Loaded reference data for 11 beef primals
+2025-06-09 17:27:23,274 - llm_extraction.extraction_controller - INFO - Initialized extraction controller with dynamic beef extractor
+2025-06-09 17:27:23,274 - __main__ - INFO - 🔄 Stage 2: Data Processing
+2025-06-09 17:27:23,310 - data_ingestion.processor - INFO - Processing file: Product_Query_2025_06_06.csv (10984449 bytes)
+2025-06-09 17:27:23,310 - data_ingestion.core.reader - INFO - Reading file: Product_Query_2025_06_06.csv
+2025-06-09 17:27:23,471 - data_ingestion.core.reader - INFO - Reading file: Product_Query_2025_06_06.csv
+2025-06-09 17:27:23,840 - data_ingestion.core.product_transformer_Product_Q - INFO - Processing product data: 60596 records with columns ['productsk', 'sourceproductkey', 'productcode', 'productwarehousecode', 'productdescription', 'productdescription2', 'productcategorycode', 'productcategory', 'productmaincategorycode', 'productmaincategory', 'warehousecode', 'warehouse', 'warehouseshort', 'processcode', 'processcodedescription', 'alphaname', 'brandcode', 'branddescription', 'brandrate', 'unitofmeasure_stk', 'unitofmeasure_alt', 'weightconversion', 'unitofmeasure_case', 'sourcesystems', 'latestproductkeyversion', 'iscurrentrecordflag', 'source_filename', 'row_number']
+2025-06-09 17:27:23,844 - data_ingestion.core.product_transformer_Product_Q - INFO - Deduplication: Removed 45081 duplicate ProductCode records. 15515 unique products remaining.
+2025-06-09 17:27:23,846 - data_ingestion.core.product_transformer_Product_Q - INFO - Found description columns: Primary=productdescription, Secondary=productdescription2
+2025-06-09 17:27:23,849 - data_ingestion.core.product_transformer_Product_Q - INFO - Primary description column 'productdescription' stats: 15515 total rows, 2 null values, 0 empty strings
+2025-06-09 17:27:23,849 - data_ingestion.core.product_transformer_Product_Q - INFO - Secondary description column 'productdescription2' stats: 15515 total rows, 6485 null values, 0 empty strings
+2025-06-09 17:27:23,861 - data_ingestion.core.product_transformer_Product_Q - INFO - Merged description column 'product_description' stats: 15515 total rows, 0 null values, 0 empty strings
+2025-06-09 17:27:23,861 - data_ingestion.core.product_transformer_Product_Q - INFO - Sample merge: 'MATRIX PRICING PRODUCT' + '' = 'MATRIX PRICING PRODUCT'
+2025-06-09 17:27:23,861 - data_ingestion.core.product_transformer_Product_Q - INFO - Sample processed row after description merge:
+2025-06-09 17:27:23,861 - data_ingestion.core.product_transformer_Product_Q - INFO -   - product_description: 'MATRIX PRICING PRODUCT' (length: 22)
+2025-06-09 17:27:23,865 - data_ingestion.core.product_transformer_Product_Q - INFO - Mapped productcategory to category_description with 201 unique categories
+2025-06-09 17:27:23,865 - data_ingestion.core.product_transformer_Product_Q - INFO - Mapped productcode to product_code
+2025-06-09 17:27:23,866 - data_ingestion.core.product_transformer_Product_Q - INFO - Verified product_description column with sample: 'MATRIX PRICING PRODUCT'
+2025-06-09 17:27:23,867 - data_ingestion.core.product_transformer_Product_Q - INFO - Final validation successful. Processed 15515 records with required columns present.
+2025-06-09 17:27:23,872 - data_ingestion.core.product_transformer_Product_Q - INFO - Product description column stats: count     15515
+unique    14948
+top         X X
+freq        170
+Name: product_description, dtype: object
+2025-06-09 17:27:23,872 - data_ingestion.core.product_transformer_Product_Q - INFO - Processed 15515 product records with transformations
+2025-06-09 17:27:23,881 - data_ingestion.processor - INFO - Successfully processed Product_Query_2025_06_06.csv with 10 rows
+2025-06-09 17:27:23,881 - __main__ - INFO - Processed 10 records
+2025-06-09 17:27:23,881 - __main__ - INFO - 🤖 Stage 3: LLM Extraction
+2025-06-09 17:27:23,881 - llm_extraction.extraction_controller - INFO - Processing category: Beef Chuck
+2025-06-09 17:27:23,881 - llm_extraction.extraction_controller - INFO - Processing batch 1/1 (10 records)
+2025-06-09 17:27:23,881 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CHUCK SCOTCH TENDER NR AME 116B-1 USDA NO ROLL...'
+2025-06-09 17:27:23,887 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CHUCK SCOTCH TENDER NR AME 116B-1 USDA NO ROLL...'
+2025-06-09 17:27:25,153 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:25,174 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "ScottyTender",
+  "grade": "NR",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:25,174 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:25,174 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'ScottyTender', 'grade': 'NR', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:27:25,174 - llm_extraction.base_extractor - WARNING - Unknown grade: NR
+2025-06-09 17:27:25,174 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CHUCK BI ARM/SEC CH *__ 113A USDA CHOICE...'
+2025-06-09 17:27:25,175 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CHUCK BI ARM/SEC CH *__ 113A USDA CHOICE...'
+2025-06-09 17:27:26,279 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:26,282 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Bone-In Arm",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:26,282 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:26,282 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Bone-In Arm', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:27:26,283 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CHUCK SHL-CLOD-HRT-z CH GRF 114E-3 USDA CHOICE ...'
+2025-06-09 17:27:26,284 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CHUCK SHL-CLOD-HRT-z CH GRF 114E-3 USDA CHOICE ...'
+2025-06-09 17:27:27,505 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:27,508 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Clod Hearts",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:27,508 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:27,508 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Clod Hearts', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:27:27,508 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CHUCK ROLL N/OFF CH GRF 116A-3 USDA CHOICE 100%...'
+2025-06-09 17:27:27,509 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CHUCK ROLL N/OFF CH GRF 116A-3 USDA CHOICE 100%...'
+2025-06-09 17:27:28,689 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:28,692 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Chuck Roll",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:28,693 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:28,693 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Chuck Roll', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:27:28,693 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF STK CLOD-TND/TM CH 06S 4/2.25#VP 1114F USDA CHO...'
+2025-06-09 17:27:28,694 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF STK CLOD-TND/TM CH 06S 4/2.25#VP 1114F USDA CHO...'
+2025-06-09 17:27:30,163 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:30,166 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Teres Major",
+  "grade": "Choice",
+  "size": 2.25,
+  "size_uom": "lb",
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:30,167 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:30,167 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Teres Major', 'grade': 'Choice', 'size': 2.25, 'size_uom': 'lb', 'brand': None}
+2025-06-09 17:27:30,167 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CHUCK SHL-CLOD TENDR/TM CH *__ 114F-5 USDA CHOI...'
+2025-06-09 17:27:30,168 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CHUCK SHL-CLOD TENDR/TM CH *__ 114F-5 USDA CHOI...'
+2025-06-09 17:27:31,213 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:31,215 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Teres Major",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:31,216 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:31,216 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Teres Major', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:27:31,216 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CHUCK SHL-CLOD TENDR/TM SEL OMA 114F-5 USDA SEL...'
+2025-06-09 17:27:31,217 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CHUCK SHL-CLOD TENDR/TM SEL OMA 114F-5 USDA SEL...'
+2025-06-09 17:27:32,319 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:32,322 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Teres Major",
+  "grade": "Select",
+  "size": null,
+  "size_uom": null,
+  "brand": "Omaha"
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:32,322 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:32,322 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Teres Major', 'grade': 'Select', 'size': None, 'size_uom': None, 'brand': 'Omaha'}
+2025-06-09 17:27:32,322 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CHUCK SHL-CLOD TENDR/TM CH CRK-M 114F-5 USDA CH...'
+2025-06-09 17:27:32,323 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CHUCK SHL-CLOD TENDR/TM CH CRK-M 114F-5 USDA CH...'
+2025-06-09 17:27:33,513 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:33,515 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Teres Major",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:33,516 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:33,516 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Teres Major', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:27:33,516 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CLOD TOP BLD-FLAT IRON CH BLM...'
+2025-06-09 17:27:33,517 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CLOD TOP BLD-FLAT IRON CH BLM...'
+2025-06-09 17:27:34,581 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:34,583 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Top Blade",
+  "grade": "Choice",
+  "size": null,
+  "size_uom": null,
+  "brand": null
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:34,584 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:34,584 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Top Blade', 'grade': 'Choice', 'size': None, 'size_uom': None, 'brand': None}
+2025-06-09 17:27:34,584 - llm_extraction.dynamic_beef_extractor - INFO - Extracting data from description: 'BF CHUCK SHL CLOD XT PR-z OMA 114A-3 USDA PRIME...'
+2025-06-09 17:27:34,585 - llm_extraction.dynamic_beef_extractor - INFO - Using specialized prompt for Chuck primal cut, extracting: 'BF CHUCK SHL CLOD XT PR-z OMA 114A-3 USDA PRIME...'
+2025-06-09 17:27:35,736 - httpx - INFO - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+2025-06-09 17:27:35,738 - llm_extraction.dynamic_beef_extractor - INFO -  
+
+
+
+
+
+ API call successful, response ```json
+{
+  "species": "Beef",
+  "primal": "Chuck",
+  "subprimal": "Clod Shoulder",
+  "grade": "Prime",
+  "size": null,
+  "size_uom": null,
+  "brand": "Omaha"
+}
+``` 
+
+
+
+
+
+
+2025-06-09 17:27:35,738 - llm_extraction.dynamic_beef_extractor - INFO - Successfully parsed JSON response
+2025-06-09 17:27:35,738 - llm_extraction.dynamic_beef_extractor - INFO - Extracted data: {'species': 'Beef', 'primal': 'Chuck', 'subprimal': 'Clod Shoulder', 'grade': 'Prime', 'size': None, 'size_uom': None, 'brand': 'Omaha'}
+2025-06-09 17:27:35,740 - __main__ - INFO - Extracted data for 10 records
+2025-06-09 17:27:35,740 - __main__ - INFO - 📤 Stage 4: Output Generation
+2025-06-09 17:27:35,741 - output_generation.file_writer - INFO - Starting output file generation
+2025-06-09 17:27:35,741 - output_generation.file_writer - INFO - Combining original data with extraction results
+2025-06-09 17:27:35,750 - output_generation.file_writer - INFO - Combined 10 records into final schema format
+2025-06-09 17:27:35,750 - output_generation.file_writer - INFO - Grouping data by category and writing output files
+2025-06-09 17:27:35,751 - output_generation.file_writer - INFO - Separated data: 10 clean records, 0 flagged records
+2025-06-09 17:27:35,754 - output_generation.file_writer - INFO - Written 10 clean records to outputs/beef_chuck_extracted.csv
+2025-06-09 17:27:35,768 - output_generation.file_writer - INFO - Created master Excel file with 10 records at outputs/meat_inventory_master_20250609_172735.xlsx
+2025-06-09 17:27:35,780 - output_generation.file_writer - INFO - Output generation completed. Generated 2 output files
+2025-06-09 17:27:35,780 - __main__ - INFO - Generated output files: ['Beef Chuck', 'excel_master']
+2025-06-09 17:27:35,780 - __main__ - INFO - 🔥 Stage 5: Firebase Upload
+2025-06-09 17:27:35,781 - src.database.firebase_client - INFO - Loading Firebase credentials from default path: /Users/billnewman/Desktop/GitHub/Cluster_AI/config/firebase/service-account.json
+2025-06-09 17:27:35,840 - src.database.firebase_client - INFO - Valid credentials loaded for project: cluster-ai-project (service account: unknown)
+2025-06-09 17:27:35,840 - src.database.firebase_client - INFO - Using project ID from credentials: cluster-ai-project
+2025-06-09 17:27:35,841 - src.database.firebase_client - INFO - Successfully connected to Firestore database
+2025-06-09 17:27:35,841 - src.database.firebase_client - INFO - Successfully connected to Firebase Storage
+2025-06-09 17:27:35,841 - database.excel_to_firestore - INFO - Importing outputs/meat_inventory_master_20250609_172735.xlsx to Firestore
+2025-06-09 17:27:35,841 - database.excel_to_firestore - INFO - Using collection: meat_inventory_20250609_172735
+2025-06-09 17:27:35,851 - database.excel_to_firestore - INFO - Loaded 10 records from Excel
+2025-06-09 17:27:36,328 - database.excel_to_firestore - INFO - Successfully stored metadata document
+2025-06-09 17:27:36,478 - database.excel_to_firestore - INFO - Progress: 10/10 records processed (100.0%)
+2025-06-09 17:27:36,552 - database.excel_to_firestore - INFO - Import completed successfully: 10/10 records imported
+2025-06-09 17:27:36,553 - __main__ - INFO - ✅ Successfully uploaded to Firebase!
+2025-06-09 17:27:36,553 - __main__ - INFO -    Collection: meat_inventory_20250609_172735
+2025-06-09 17:27:36,553 - __main__ - INFO -    Records uploaded: 10
+2025-06-09 17:27:36,553 - __main__ - INFO -    Total processed: 10
+2025-06-09 17:27:36,553 - __main__ - INFO - ✅ Pipeline Complete!

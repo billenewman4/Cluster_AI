@@ -22,7 +22,7 @@ class FileWriter:
         self.final_schema = [
             'product_code', 'product_family' , 'product_description',
             'category_description', 'subprimal', 'grade', 'size', 'size_uom', 
-            'brand', 'bone_in', 'confidence'
+            'brand', 'bone_in', 'confidence', 'needs_review', 'miss_categorized'
         ]
     
     def prepare_dataframe(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -267,7 +267,9 @@ class FileWriter:
                 'size_uom': str(extracted.get('size_uom', '') or ''),
                 'brand': str(extracted.get('brand', '') or '') or str(original_record.get('brand_name', '') or ''),
                 'bone_in': extracted.get('bone_in', False),
-                'confidence': extracted.get('confidence', 0.0)
+                'confidence': extracted.get('confidence', 0.0),
+                'needs_review': extracted.get('needs_review', False),
+                'miss_categorized': extracted.get('miss_categorized', False)
             }
             
             combined_records.append(combined_record)

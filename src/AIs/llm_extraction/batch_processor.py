@@ -28,6 +28,7 @@ class BatchProcessor:
         self.cache_file = cache_file or "data/processed/.llm_cache.json"
         self.cache = self._load_cache()
         self.cache_lock = Lock()  # Thread safety for cache
+        self._rate_lock = Lock()  # Thread safety for rate limiting
         
         # Rate limiting - reduce for speed but avoid hitting limits
         self.max_concurrent = 5  # Reduced from 10 to avoid rate limits
@@ -65,15 +66,16 @@ class BatchProcessor:
         return hashlib.sha256(content.encode()).hexdigest()
     
     def _rate_limit(self):
-        """Apply rate limiting with reduced delays for speed."""
-        current_time = time.time()
-        time_since_last = current_time - self.last_request_time
-        
-        if time_since_last < self.request_interval:
-            sleep_time = self.request_interval - time_since_last
-            time.sleep(sleep_time)
-        
-        self.last_request_time = time.time()
+        """Apply rate limiting with reduced delays for speed. Thread-safe."""
+        with self._rate_lock:
+            current_time = time.time()
+            time_since_last = current_time - self.last_request_time
+            
+            if time_since_last < self.request_interval:
+                sleep_time = self.request_interval - time_since_last
+                time.sleep(sleep_time)
+            
+            self.last_request_time = time.time()
     
     def _process_single_record(self, record: Dict, category: str) -> Dict:
         """Process a single record with caching and error handling."""
@@ -239,25 +241,6 @@ class BatchProcessor:
                     
                 except Exception as e:
                     raise ValueError(f"Failed to process record {idx}: {str(e)}")
-                    # Create a fallback record
-                    fallback_result = {
-                        'source_filename': row['source_filename'],
-                        'row_number': row['row_number'],
-                        'product_code': row['product_code'],
-                        'raw_description': row['product_description'],
-                        'category_description': row['category_description'],
-                        'species': 'Beef',
-                        'primal': 'Chuck' if 'chuck' in category.lower() else 'Unknown',
-                        'subprimal': None,
-                        'grade': None,
-                        'size': None,
-                        'size_uom': None,
-                        'brand': None,
-                        'bone_in': False,
-                        'confidence': 0.0,
-                        'needs_review': True
-                    }
-                    results.append(fallback_result)
         
         result_df = pd.DataFrame(results)
         
@@ -295,6 +278,5 @@ class BatchProcessor:
         """Get caching statistics."""
         return {
             'cache_size': len(self.cache),
-            'total_requests_made': len(self.request_times),
             'supported_categories': list(self.extractors.keys())
         } 

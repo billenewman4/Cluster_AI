@@ -11,6 +11,7 @@ from dataclasses import dataclass
 
 from dotenv import load_dotenv
 from src.AIs.utils.api_utils import APIManager
+from src.AIs.utils.result_parser import ResultParser
 
 load_dotenv()
 logger = logging.getLogger(__name__)
@@ -26,9 +27,9 @@ class ClarificationResult:
 class ClarificationProcessor:
     """Generates clarification questions about unclear product descriptions."""
     
-    def __init__(self, provider: str = "openai", model: str = "gpt-4o-mini"):
+    def __init__(self, provider: str = "openai", model: str = "gpt-4o-mini", env_key: str = "OPENAI_API_KEY"):
         """Initialize the clarification processor."""
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = os.getenv(env_key)
         if not api_key:
             raise ValueError("OPENAI_API_KEY environment variable is required")
         
@@ -119,16 +120,20 @@ Return JSON with questions array:"""
                     extraction_results=previous_extraction
                 )
             
-            # Parse response
+            # Parse response with robust JSON parsing
             try:
-                ai_response = json.loads(response)
-                questions = ai_response.get("questions", [])
-                
-                if not isinstance(questions, list):
-                    questions = ["ERROR: Invalid AI response format"]
+                ai_response = ResultParser.parse_json_response(response)
+                if ai_response:
+                    questions = ai_response.get("questions", [])
                     
-            except json.JSONDecodeError as e:
-                logger.error(f"Invalid JSON response for {product_code}: {e}")
+                    if not isinstance(questions, list):
+                        questions = ["ERROR: Invalid AI response format"]
+                else:
+                    logger.error(f"Failed to parse JSON response for {product_code}")
+                    questions = ["ERROR: Could not parse AI response - invalid JSON format"]
+                    
+            except Exception as e:
+                logger.error(f"Error parsing response for {product_code}: {e}")
                 questions = [f"ERROR: Could not parse AI response - {str(e)}"]
             
             result = ClarificationResult(

@@ -262,4 +262,28 @@ class ReferenceDataLoader:
         result.extend(synonyms)
         
         return result
+    
+    def build_subprimal_mapping(self) -> Dict[str, Dict[str, List[str]]]:
+        """
+        Build a complete mapping of all subprimals and their terms for all primals.
+        
+        This is a utility method that creates a nested dictionary structure:
+        {primal: {subprimal: [name + synonyms]}}
+        
+        Useful for extractors that need quick access to all subprimal variations.
+        
+        Returns:
+            Dictionary mapping primal -> {subprimal -> [all terms including synonyms]}
+        """
+        subprimal_mapping = {}
+        
+        for primal in self.get_primals():
+            subprimals = self.get_subprimals(primal)
+            variations = {}
+            for subprimal in subprimals:
+                terms = self.get_subprimal_terms(primal, subprimal)
+                variations[subprimal] = list(terms)
+            subprimal_mapping[primal] = variations
+            
+        return subprimal_mapping
 

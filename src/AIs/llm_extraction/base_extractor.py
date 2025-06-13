@@ -60,6 +60,10 @@ class BaseLLMExtractor(ABC):
         """Return the category name (e.g., 'Beef Chuck', 'Beef Rib')."""
         pass
     
+    def get_valid_grades(self) -> Dict[str, List[str]]:
+        """Get valid grades. Override in subclasses for specific grade mappings."""
+        return {grade: [] for grade in self.VALID_GRADES}
+    
     def call_llm(self, description: str, user_prompt: str = None, system_prompt: str = None) -> Optional[str]:
         """Call LLM with the specialized prompt."""
         try:
@@ -149,13 +153,13 @@ class BaseLLMExtractor(ABC):
                 validation_needs_review = True
                 logger.warning(f"Unknown subprimal for {self.get_category_name()}: {result.subprimal}")
         
-        # Validate grade (use beef-specific grades if available)
+        # Validate grade (use specific grade mappings if available)
         if result.grade:
-            # Get all valid grades (beef-specific or general)
-            if hasattr(self, 'get_beef_grades'):
-                beef_grades = self.get_beef_grades()
+            # Get all valid grades using the overridable method
+            grade_mapping = self.get_valid_grades()
+            if grade_mapping:
                 valid_grades = []
-                for standard_grade, variations in beef_grades.items():
+                for standard_grade, variations in grade_mapping.items():
                     valid_grades.extend([standard_grade] + variations)
             else:
                 valid_grades = [g.lower() for g in self.VALID_GRADES]
@@ -164,9 +168,9 @@ class BaseLLMExtractor(ABC):
             grade_lower = result.grade.lower()
             if grade_lower in [g.lower() for g in valid_grades]:
                 confidence_score += 0.1
-                # Normalize to standard format if found in beef-specific grades
-                if hasattr(self, 'get_beef_grades'):
-                    for standard_grade, variations in beef_grades.items():
+                # Normalize to standard format if found in specific grade mappings
+                if grade_mapping:
+                    for standard_grade, variations in grade_mapping.items():
                         if grade_lower in [v.lower() for v in [standard_grade] + variations]:
                             result.grade = standard_grade
                             break
@@ -218,10 +222,9 @@ class BaseLLMExtractor(ABC):
         parsed_result = self.parse_response(llm_response) if llm_response else print("LLM response is None")
         
         if not parsed_result:
-            # Fall back to regex
             raise Exception("LLM extraction failed")
         
         # Validate and score
-        result = self.validate_and_score(parsed_result, description) #potentially remove this as it is not used
+        result = self.validate_and_score(parsed_result, description)
         
         return result 

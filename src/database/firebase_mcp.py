@@ -26,6 +26,8 @@ from openai import OpenAI
 # Configure logging
 logger = logging.getLogger(__name__)
 
+from src.AIs.utils.result_parser import ResultParser
+
 class FirebaseMCPClient:
     """
     Streamlined client for Firebase MCP operations using OpenAI Agents.
@@ -156,8 +158,13 @@ class FirebaseMCPClient:
         raise RuntimeError(f"Firebase operation failed after {max_retries} retries: {last_error}")
     
     def _parse_agent_response(self, response: str) -> Dict[str, Any]:
-        """Parse and extract structured data from agent responses."""
-        # Try to extract JSON if present in the response
+        """Parse and extract structured data from agent responses with robust JSON handling."""
+        # First try: Use robust JSON parser to handle code fences and formatting
+        parsed_json = ResultParser.parse_json_response(response)
+        if parsed_json:
+            return parsed_json
+            
+        # Fallback: Try manual JSON extraction for edge cases
         try:
             # Look for JSON-like content in the response
             json_start = response.find('{')

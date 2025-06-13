@@ -3,10 +3,6 @@ Dynamic Beef Extractor
 Specialized extractor for beef products using dynamic prompt generation.
 """
 
-"""Dynamic Beef Extractor Module
-
-Provides specialized extraction for beef products using optimized prompts per primal cut.
-"""
 
 import os
 import json
@@ -15,7 +11,6 @@ import logging
 from typing import Dict, List, Optional, Set, Any
 from dataclasses import dataclass
 from pathlib import Path
-
 import pandas as pd
 from dotenv import load_dotenv
 
@@ -57,16 +52,7 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         try:
             self.reference_data = ReferenceDataLoader(reference_data_path)
             self.primals = self.reference_data.get_primals()
-            self.subprimal_mapping = {}
-            
-            # Build mapping of subprimals per primal
-            for primal in self.primals:
-                subprimals = self.reference_data.get_subprimals(primal)
-                variations = {}
-                for subprimal in subprimals:
-                    terms = self.reference_data.get_subprimal_terms(primal, subprimal)
-                    variations[subprimal] = list(terms)
-                self.subprimal_mapping[primal] = variations
+            self.subprimal_mapping = self.reference_data.build_subprimal_mapping()
             
             logger.info(f"Loaded reference data for {len(self.primals)} beef primals")
             
@@ -92,16 +78,7 @@ class DynamicBeefExtractor(BaseLLMExtractor):
                         logger.info(f"Attempting to load reference data from path: {path}")
                         self.reference_data = ReferenceDataLoader(path)
                         self.primals = self.reference_data.get_primals()
-                        
-                        # Build mapping of subprimals per primal
-                        self.subprimal_mapping = {}
-                        for primal in self.primals:
-                            subprimals = self.reference_data.get_subprimals(primal)
-                            variations = {}
-                            for subprimal in subprimals:
-                                terms = self.reference_data.get_subprimal_terms(primal, subprimal)
-                                variations[subprimal] = list(terms)
-                            self.subprimal_mapping[primal] = variations
+                        self.subprimal_mapping = self.reference_data.build_subprimal_mapping()
                         
                         # Initialize dynamic prompt generator
                         self.prompt_generator = DynamicPromptGenerator(self.reference_data)
@@ -189,6 +166,17 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         if self.current_primal:
             return f"Beef {self.current_primal}"
         return "Beef"
+    
+    def get_valid_grades(self) -> Dict[str, List[str]]:
+        """Get valid beef grades with synonyms from reference data."""
+        grade_mapping = {}
+        
+        # Get all official grades from reference data
+        for grade in self.reference_data.get_grades():
+            synonyms = self.reference_data.get_grade_synonyms(grade)
+            grade_mapping[grade] = synonyms
+            
+        return grade_mapping
     
     def extract(self, description: str) -> ExtractionResult:
         """Extract structured data from beef product description.
@@ -281,7 +269,7 @@ class DynamicBeefExtractor(BaseLLMExtractor):
                 return result
             
             # Update result with extracted data
-            result.species = extraction_data.get("species", "Beef")
+            # Note: species/primal mapping is handled by calling code, not stored in ExtractionResult
             
             # First, populate an ExtractionResult from the JSON data
             raw_result = {
@@ -350,7 +338,7 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         result = text.lower()
         
         # Log original text for debugging
-        logging.debug(f"Expanding abbreviations in: {text}")
+        logger.debug(f"Expanding abbreviations in: {text}")
         
         # Get abbreviation mapping
         abbrev_map = self.get_abbreviation_map()
@@ -416,7 +404,7 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         
         # Log the result for debugging
         if result != text.lower():
-            logging.debug(f"Expanded to: {result}")
+            logger.debug(f"Expanded to: {result}")
         
         return result
 

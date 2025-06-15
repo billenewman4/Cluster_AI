@@ -1,0 +1,30 @@
+# Evaluation Framework Configuration
+# ---------------------------------
+# Modify values as needed for your local setup.
+
+# Path to the ground-truth dataset
+# Supported formats: .parquet, .csv
+
+# Path to the processed directory
+processed_dir: src/Evals/data/processed
+
+# Path to the reference data
+reference_data_path: src/Evals/data/input_data/beef_cuts.xlsx
+
+# Default bundle lives in the repo so CI can load it without external storage.
+ground_truth_path: src/Evals/data/ground_truth/ground_truth.parquet
+
+# Column names inside the ground-truth table
+columns:
+  primal: primal
+  description: product_description
+  subprimal: sub_primal_gt
+  grade: grade_gt
+
+# Where to write evaluation artefacts (metrics.json, report.md, confusion.png)
+results_dir: src/Evals/data/results
+
+
+
+# Random seed for deterministic shuffling or sampling
+random_seed: 42 

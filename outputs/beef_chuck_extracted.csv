@@ -1,9 +1,10 @@
 product_code,product_family,product_description,category_description,subprimal,grade,size,size_uom,brand,bone_in,confidence,needs_review,miss_categorized
-10019891,Beef Chuck Bone-In Arm Choice,BF CHUCK BI ARM/SEC CH *__ 113A USDA CHOICE,Beef Chuck,Bone-In Arm,Choice,,,USDA,True,1.0,False,False
-10038189,Beef Chuck Clod Hearts Choice,BF CHUCK SHL-CLOD-HRT-z CH GRF 114E-3 USDA CHOICE 100% GRASS-FED,Beef Chuck,Clod Hearts,Choice,,,GRASS RUN FARMS,False,0.9,False,False
-1003830,Beef Chuck Chuck Roll Choice,BF CHUCK ROLL N/OFF CH GRF 116A-3 USDA CHOICE 100% GRASS FED,Beef Chuck,Chuck Roll,Choice,,,GRASS RUN FARMS,False,1.0,False,False
-10073306,Beef Chuck Teres Major Choice,BF STK CLOD-TND/TM CH 06S 4/2.25#VP 1114F USDA CHOICE - TERES MAJOR,Beef Chuck,Teres Major,Choice,2.25,lb,FULTON MARKET,False,0.9,False,False
-10074086,Beef Chuck Teres Major Select,BF CHUCK SHL-CLOD TENDR/TM SEL OMA 114F-5 USDA SELECT - TERES MAJOR,Beef Chuck,Teres Major,Select,,,GREATER OMAHA,False,0.9,False,False
-100741,Beef Chuck Teres Major Choice,BF CHUCK SHL-CLOD TENDR/TM CH CRK-M 114F-5 USDA CHOICE - TERES MAJOR,Beef Chuck,Teres Major,Choice,,,CREEKSTONE,False,0.9,False,False
-1007545,Beef Chuck Flat Iron Choice,BF CLOD TOP BLD-FLAT IRON CH BLM,Beef Chuck,Flat Iron,Choice,,,BLACK MOUNTAIN,False,1.0,False,False
-10081223,Beef Chuck Clod Prime,BF CHUCK SHL CLOD XT PR-z OMA 114A-3 USDA PRIME,Beef Chuck,Clod,Prime,,,GREATER OMAHA,False,0.9,False,False
+10019891,Beef Chuck Bone-In Arm USDA Choice,BF CHUCK BI ARM/SEC CH *__ 113A USDA CHOICE,Beef Chuck,Bone-In Arm,USDA Choice,,,USDA,True,1.0,False,False
+10038189,Beef Chuck Clod Hearts USDA Choice,BF CHUCK SHL-CLOD-HRT-z CH GRF 114E-3 USDA CHOICE 100% GRASS-FED,Beef Chuck,Clod Hearts,USDA Choice,,,GRASS RUN FARMS,False,0.9,False,False
+1003830,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH GRF 116A-3 USDA CHOICE 100% GRASS FED,Beef Chuck,Chuck Roll,USDA Choice,,,GRASS RUN FARMS,False,1.0,False,False
+10073306,Beef Chuck Teres Major USDA Choice,BF STK CLOD-TND/TM CH 06S 4/2.25#VP 1114F USDA CHOICE - TERES MAJOR,Beef Chuck,Teres Major,USDA Choice,2.25,lb,FULTON MARKET,False,0.9,False,False
+10074080,Beef Chuck Teres Major USDA Choice,BF CHUCK SHL-CLOD TENDR/TM CH *__ 114F-5 USDA CHOICE - TERES MAJOR,Beef Chuck,Teres Major,USDA Choice,,,USDA,False,0.9,False,False
+10074086,Beef Chuck Teres Major USDA Select,BF CHUCK SHL-CLOD TENDR/TM SEL OMA 114F-5 USDA SELECT - TERES MAJOR,Beef Chuck,Teres Major,USDA Select,,,GREATER OMAHA,False,0.9,False,False
+100741,Beef Chuck Teres Major USDA Choice,BF CHUCK SHL-CLOD TENDR/TM CH CRK-M 114F-5 USDA CHOICE - TERES MAJOR,Beef Chuck,Teres Major,USDA Choice,,,CREEKSTONE,False,0.9,False,False
+1007545,Beef Chuck Flat Iron USDA Choice,BF CLOD TOP BLD-FLAT IRON CH BLM,Beef Chuck,Flat Iron,USDA Choice,,,BLACK MOUNTAIN,False,0.9,False,False
+10081223,Beef Chuck Clod USDA Prime,BF CHUCK SHL CLOD XT PR-z OMA 114A-3 USDA PRIME,Beef Chuck,Clod,USDA Prime,,,GREATER OMAHA,False,0.9,False,False

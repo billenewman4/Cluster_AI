@@ -300,7 +300,7 @@ Please review this extraction carefully:
 4. Is the brand correctly identified?
 5. Is bone-in status correctly determined?
 
-Provide the corrected/complete extraction as JSON."""
+Provide the corrected/complete extraction as JSON. Please only make changes if you are confident in the modification. If you are not confident, please leave the information null."""
 
     def analyze_product(self, description: str, previous_extraction: Dict[str, Any], product_code: str = None, category: str = '') -> ReviewResults:
         """Analyze a single product and review the previous extraction."""

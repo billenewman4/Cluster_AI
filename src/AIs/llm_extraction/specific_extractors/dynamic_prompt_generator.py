@@ -53,11 +53,11 @@ class DynamicPromptGenerator:
 Use the Meat Buyer's Guide as ground truth for cut names and hierarchy.
 
 Extract structured data from product descriptions with high accuracy.
-Focus on identifying: species, primal, subprimal, grade, size, size unit, and bone-in for extraction.
+Focus on identifying: subprimal, grade, size, size unit, and bone-in for extraction.
 
 Also list your confidence in the extraction and if you think the extraction needs to be reviewed by a human or if it is accurate.
 
-IMPORTANT: Always use the CANONICAL subprimal names, not synonyms. When you encounter synonyms, map them to their canonical form.
+IMPORTANT: Always use the CANONICAL subprimal names, not synonyms. When you encounter synonyms, map them to their canonical form. If you do not see a clear mapping, YOU MUST leave the information null. It will be common for mappings to be unclear.
 
 For beef {primal.lower()}, the canonical subprimals and their synonyms are:
 {canonical_text}
@@ -77,6 +77,20 @@ Return valid JSON only."""
         Returns:
             User prompt string
         """
+        subprimals = self.reference_data.get_subprimals(primal)
+
+        # Build canonical to synonym mappings for clear instruction
+        canonical_mappings = []
+        for subprimal in subprimals:
+            synonyms = self.reference_data.get_subprimal_synonyms(primal, subprimal)
+            if synonyms:
+                synonym_list = ', '.join(synonyms)
+                canonical_mappings.append(f"• {subprimal} (synonyms: {synonym_list})")
+            else:
+                canonical_mappings.append(f"• {subprimal}")
+        
+        canonical_text = '\n'.join(canonical_mappings)
+
         # Get example subprimals for this primal (up to 3)
         subprimals = self.reference_data.get_subprimals(primal)[:3]
         example_subprimals = subprimals if subprimals else ["Unknown"]
@@ -85,18 +99,18 @@ Return valid JSON only."""
         examples = []
         
         # First example
-        examples.append(f"""Input: "Beef {primal} {example_subprimals[0]} 15# (CH) Certified Angus"
-Output: {{"species": "Beef", "subprimal": "{example_subprimals[0]}", "grade": "Angus", "size": 15, "size_uom": "#", "brand": null}}""")
+        examples.append(f"""Input: "Beef {primal} {example_subprimals[0]} 15# (CH) CAB"
+Output: {{"species": "Beef", "subprimal": "{example_subprimals[0]}", "grade": "Creekstone Angus", "size": 15, "size_uom": "#"}}""")
         
         # Second example with different size unit
         if len(example_subprimals) > 1:
-            examples.append(f"""Input: "{primal} {example_subprimals[1]} Prime 8oz"  
-Output: {{"species": "Beef", "subprimal": "{example_subprimals[1]}", "grade": "Prime", "size": 8, "size_uom": "oz", "brand": null}}""")
+            examples.append(f"""Input: "{primal} {example_subprimals[1]} Pri 8oz"  
+Output: {{"species": "Beef", "subprimal": "{example_subprimals[1]}", "grade": "Prime", "size": 8, "size_uom": "oz"}}""")
         
         # Third example with a different grade
         if len(example_subprimals) > 2:
             examples.append(f"""Input: "Beef {primal} {example_subprimals[2]} Wagyu 12#"
-Output: {{"species": "Beef", "subprimal": "{example_subprimals[2]}", "grade": "Wagyu", "size": 12, "size_uom": "lb", "brand": null}}""")
+Output: {{"species": "Beef", "subprimal": "{example_subprimals[2]}", "grade": "Wagyu", "size": 12, "size_uom": "lb"}}""")
         
         # Build the user prompt
         user_prompt = f"""Extract structured data from this product description:
@@ -105,7 +119,7 @@ Description: "{description}"
 
 Return a JSON object with exactly these keys:
 - species (Beef, Pork, etc.)
-- subprimal (e.g. {', '.join(example_subprimals)})
+- subprimal (e.g. {canonical_text})
 - grade (one of: No Grade, Prime, Choice, Select, NR, Utility, Wagyu, Angus, Creekstone Angus)
 - size (numeric value only, null if not found)
 - size_uom (oz | lb | g | kg, null if not found)
@@ -135,7 +149,7 @@ NOTE: Do NOT include 'primal' in the output - primal is determined from the prod
     - AA or Canadian AA = Select
     - A or Canadian A = Standard
 
-If any value cannot be determined, use null.
+If any value including the subprimal cannot be determined, use null. Please only used the listed values for mapping DO NOT USE ANYTHING ELSE!
 
 Examples:
 

@@ -73,17 +73,31 @@ class DataProcessor:
                 return pd.DataFrame()
             
             # Clean the data
-            df = self.file_reader.read_file(file_path)
             df = self.data_cleaner.clean_dataframe(df, file_path.name)
             df = self.product_transformer.process_product_data(df)
 
             if category:
                 df_list = []
                 for cat in category:
+                    cat_df = df[df['category_description'] == cat]
+                    if cat_df.empty:
+                        logger.warning(f"No data found for category: '{cat}'. Available categories: {df['category_description'].unique()[:10]}")
+                        continue
+                    
                     if limit_per_category:
-                        df_list.append(df[df['category_description'] == cat].head(limit_per_category))
+                        # Only sample if we have enough rows
+                        if len(cat_df) >= limit_per_category:
+                            df_list.append(cat_df.sample(n=limit_per_category))
+                        else:
+                            logger.info(f"Category '{cat}' has only {len(cat_df)} rows, using all available (requested {limit_per_category})")
+                            df_list.append(cat_df)
                     else:
-                        df_list.append(df[df['category_description'] == cat])
+                        df_list.append(cat_df)
+                
+                if not df_list:
+                    logger.error(f"No data found for any of the requested categories: {category}")
+                    return pd.DataFrame()
+                    
                 df = pd.concat(df_list, ignore_index=True)
             
             logger.info(f"Successfully processed {file_path.name} with {len(df)} rows")

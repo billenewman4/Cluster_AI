@@ -64,8 +64,7 @@ class BeefProcessingWorkflow:
         
         # Add nodes
         workflow.add_node("extract", self._extraction_node)
-        workflow.add_node("clarify", self._clarification_node)  
-        workflow.add_node("review", self._review_node)
+        workflow.add_node("clarify", self._clarification_node)
         workflow.add_node("complete_without_review", self._complete_without_review_node)
         
         # Define the flow with conditional logic
@@ -82,10 +81,7 @@ class BeefProcessingWorkflow:
         )
         
         # If clarification runs, always go to review
-        workflow.add_edge("clarify", "review")
-        
-        # Both review and complete_without_review end the workflow
-        workflow.add_edge("review", END)
+        workflow.add_edge("clarify", "complete_without_review")
         workflow.add_edge("complete_without_review", END)
         
         return workflow.compile()

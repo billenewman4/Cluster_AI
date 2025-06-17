@@ -47,7 +47,11 @@ class BaseLLMExtractor(ABC):
         # Use APIManager instead of directly creating client
         api_key = os.getenv("OPENAI_API_KEY")
         self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-        self.api_manager = APIManager(api_key=api_key, model=self.model)
+        
+        # o3 and 4o-mini models use temperature=1.0, other models use 0.8
+        temperature = 1.0 if self.model in ["o3", "gpt-4o-mini"] else 0.8
+        
+        self.api_manager = APIManager(api_key=api_key, model=self.model, temperature=temperature)
         self.result_parser = ResultParser()
     
     @abstractmethod
@@ -67,12 +71,15 @@ class BaseLLMExtractor(ABC):
     def call_llm(self, description: str, user_prompt: str = None, system_prompt: str = None) -> Optional[str]:
         """Call LLM with the specialized prompt."""
         try:
+            # o3 and 4o-mini models use temperature=1.0, other models use 0.6
+            temperature = 1.0 if self.model in ["o3", "gpt-4o-mini"] else 0.6
             
             # Use APIManager for API calls - this handles rate limiting and retries
             return self.api_manager.call_with_retry(
                 system_prompt=system_prompt,  
                 user_prompt=user_prompt,
-                temperature=0.6
+                temperature=temperature,
+                debug=True
             )
             
         except Exception as e:
@@ -84,37 +91,6 @@ class BaseLLMExtractor(ABC):
         # Use ResultParser for consistent JSON parsing
         return self.result_parser.parse_json_response(response)
     
-    def apply_regex_fallbacks(self, description: str) -> Dict:
-        """Apply regex patterns as fallback for extraction."""
-        result = {}
-        description_lower = description.lower()
-        
-        # Subprimal detection with regex
-        subprimal_mapping = self.get_subprimal_mapping()
-        for standard_name, variations in subprimal_mapping.items():
-            for variation in variations:
-                if re.search(r'\b' + re.escape(variation.lower()) + r'\b', description_lower):
-                    result['subprimal'] = standard_name
-                    break
-            if result.get('subprimal'):
-                break
-        
-        # Grade detection
-        for grade in self.VALID_GRADES:
-            if re.search(r'\b' + re.escape(grade.lower()) + r'\b', description_lower):
-                result['grade'] = grade.title()
-                break
-        
-        # Size detection
-        size_match = re.search(r'(\d+(?:\.\d+)?)\s*(oz|lb|#|g|kg)\b', description, re.IGNORECASE)
-        if size_match:
-            result['size'] = float(size_match.group(1))
-            result['size_uom'] = size_match.group(2).lower()
-        
-        # Bone-in detection
-        result['bone_in'] = bool(re.search(r'\bbone.?in\b', description_lower))
-        
-        return result
     
     def validate_and_score(self, raw_result: Dict, description: str) -> ExtractionResult:
         """Validate results and assign confidence score."""

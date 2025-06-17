@@ -55,14 +55,15 @@ STRICT RULES:
 5. Do NOT ask general questions - be laser-focused
 
 GOOD EXAMPLES:
-- "What does 'CAB' stand for?" (unclear abbreviation)
 - "What does '*__' indicate in this product code?" (undefined symbol)
-- "What is 'NR' grade?" (unknown grade not in system)
+- What does '120A-3' signify in the product description?
 
 BAD EXAMPLES:
 - "What is the significance of Choice grade?" (AI extracted this correctly)
 - "What does 12oz refer to?" (obvious weight measurement)
 - "What is a ribeye?" (common cut name)
+- "What does 'bf' stand for?" (common abbreviation for beef)
+- "What does bnl stand for?" (common abbreviation for boneless)
 
 MOST PRODUCTS SHOULD GET 0 QUESTIONS. Only ask when there are genuinely confusing elements that prevented proper extraction.
 

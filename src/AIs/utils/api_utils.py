@@ -168,7 +168,8 @@ class APIManager:
         user_prompt: str, 
         max_retries: int = 3,
         temperature: Optional[float] = None,
-        max_tokens: Optional[int] = None
+        max_tokens: Optional[int] = None,
+        debug: bool = False
     ) -> Optional[str]:
         """Call LLM API with retry and backoff logic.
         
@@ -178,7 +179,7 @@ class APIManager:
             max_retries: Maximum number of retry attempts
             temperature: Sampling temperature (overrides default if provided)
             max_tokens: Maximum tokens in response (overrides default if provided)
-            
+            debug: Whether to print debug information
         Returns:
             The LLM response text, or None if all attempts fail
         """
@@ -190,7 +191,7 @@ class APIManager:
         if max_retries < 0:
             raise ValueError("max_retries must be non-negative")
         
-        return self._call_with_langchain(system_prompt, user_prompt, max_retries, temperature, max_tokens)
+        return self._call_with_langchain(system_prompt, user_prompt, max_retries, temperature, max_tokens, debug)
     
     def _call_with_langchain(
         self, 
@@ -198,7 +199,8 @@ class APIManager:
         user_prompt: str, 
         max_retries: int,
         temperature: Optional[float],
-        max_tokens: Optional[int]
+        max_tokens: Optional[int],
+        debug: bool
     ) -> Optional[str]:
         """Call using LangChain."""
         messages = [
@@ -219,7 +221,9 @@ class APIManager:
                         custom_params["temperature"] = temperature
                     if max_tokens is not None and self.provider in ["openai", "anthropic"]:
                         custom_params["max_tokens"] = max_tokens
-                    
+                    if debug:
+                        custom_params["debug"] = True
+                        
                     # Create temporary model with custom parameters
                     provider_class = self.provider_config["class"]
                     if self.provider == "openai":

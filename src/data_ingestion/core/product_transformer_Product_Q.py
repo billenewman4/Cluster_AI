@@ -9,6 +9,7 @@ import numpy as np
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Union
+import re
 
 from .reader import FileReader
 
@@ -25,6 +26,7 @@ class ProductTransformer:
                                   df: pd.DataFrame, 
                                   primary_col: str = 'ProductDescription', 
                                   secondary_col: str = 'ProductDescription2', 
+                                  tertiary_col: str = 'AlphaName',
                                   output_col: str = 'product_description') -> pd.DataFrame:
         """Merge product description columns with specific rules.
         
@@ -41,6 +43,7 @@ class ProductTransformer:
         available_cols = {col.lower(): col for col in df.columns}
         actual_primary_col = available_cols.get(primary_col.lower(), primary_col)
         actual_secondary_col = available_cols.get(secondary_col.lower(), secondary_col)
+        actual_tertiary_col = available_cols.get(tertiary_col.lower(), tertiary_col)
         
         if actual_primary_col not in df.columns:
             logger.error(f"Primary column '{primary_col}' not found in DataFrame (case-insensitive)")
@@ -65,26 +68,45 @@ class ProductTransformer:
                 logger.info(f"Sample merged description (primary only): '{result_df[output_col].iloc[0]}'")
             return result_df
         
-        # Log details of secondary column for debugging
+        # Handle case where tertiary column doesn't exist
+        if actual_tertiary_col not in df.columns:
+            logger.warning(f"Tertiary column '{tertiary_col}' not found, using only primary and secondary columns")
+            result_df[output_col] = df[actual_primary_col].fillna('').astype(str).str.strip()
+            # Add a sample log to verify content
+            if len(df) > 0:
+                logger.info(f"Sample merged description (primary and secondary only): '{result_df[output_col].iloc[0]}'")
+            return result_df
+
+        # Log details of secondary and tertiary columns for debugging
         null_secondary_count = df[actual_secondary_col].isna().sum()
+        null_tertiary_count = df[actual_tertiary_col].isna().sum()
         empty_secondary_count = (df[actual_secondary_col] == '').sum() if pd.api.types.is_string_dtype(df[actual_secondary_col]) else 0
+        empty_tertiary_count = (df[actual_tertiary_col] == '').sum() if pd.api.types.is_string_dtype(df[actual_tertiary_col]) else 0
         logger.info(f"Secondary description column '{actual_secondary_col}' stats: {len(df)} total rows, "
                    f"{null_secondary_count} null values, {empty_secondary_count} empty strings")
+        logger.info(f"Tertiary description column '{actual_tertiary_col}' stats: {len(df)} total rows, "
+                   f"{null_tertiary_count} null values, {empty_tertiary_count} empty strings")
             
         # Apply merging logic with vectorized operations for better performance
         # First convert any non-string values to empty strings to avoid errors
         primary_values = df[actual_primary_col].fillna('').astype(str).str.strip()
         sec_values = df[actual_secondary_col].fillna('').astype(str).str.strip()
+        ter_values = df[actual_tertiary_col].fillna('').astype(str).str.strip()
         
-        # Create merged column with space between when secondary has content
-        has_content = (sec_values != '')
+        # Create merged column with proper space handling
+        # Only add spaces between non-empty values
+        def merge_with_spaces(primary, secondary, tertiary):
+            """Merge three values with spaces only between non-empty values."""
+            parts = [part for part in [primary, secondary, tertiary] if part]
+            merged = ' '.join(parts)
+            # Clean up multiple spaces (from original data) to single spaces
+            return re.sub(r'\s+', ' ', merged).strip()
         
-        # Use numpy.where for vectorized conditional operation
-        result_df[output_col] = np.where(
-            has_content,
-            primary_values + ' ' + sec_values,
-            primary_values
-        )
+        # Apply the merging function element-wise
+        result_df[output_col] = [
+            merge_with_spaces(p, s, t) 
+            for p, s, t in zip(primary_values, sec_values, ter_values)
+        ]
         
         # Apply strip to clean up whitespace
         result_df[output_col] = result_df[output_col].str.strip()
@@ -100,9 +122,10 @@ class ProductTransformer:
             sample_idx = 0
             sample_primary = primary_values.iloc[sample_idx]
             sample_secondary = sec_values.iloc[sample_idx]
+            sample_tertiary = ter_values.iloc[sample_idx]
             sample_merged = result_df[output_col].iloc[sample_idx]
-            logger.info(f"Sample merge: '{sample_primary}' + '{sample_secondary}' = '{sample_merged}'")
-        
+            logger.info(f"Sample merge: '{sample_primary}' + '{sample_secondary}' + '{sample_tertiary}' = '{sample_merged}'")
+
         return result_df
         
     def rename_columns(self, 
@@ -147,7 +170,89 @@ class ProductTransformer:
             logger.warning("ProductCode column not found. Skipping deduplication.")
             return df
         
-    
+    def map_category_description(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Map ProductCategory to standardized category descriptions for beef cuts.
+        
+        Args:
+            df: DataFrame to process
+            
+        Returns:
+            pd.DataFrame: DataFrame with normalized category descriptions
+        """
+        if 'category_description' not in df.columns:
+            logger.warning("category_description column not found, skipping category mapping")
+            return df
+            
+        # Category mapping for beef cuts to standardized primal names
+        CATEGORY_MAPPING = {
+            # Chuck variations
+            "Beef Chuck": "Beef Chuck",
+            "Chuck": "Beef Chuck",
+            
+            # Rib variations  
+            "Beef Rib": "Beef Rib",
+            "Rib": "Beef Rib",
+            
+            # Loin variations (including specific cuts that belong to loin primal)
+            "Beef Loin": "Beef Loin", 
+            "TENDERLOIN / FILET": "Beef Loin",
+            "STRIP": "Beef Loin",
+            "PORTERHOUSE": "Beef Loin", 
+            "SHORT LOIN": "Beef Loin",
+            "Sirloin": "Beef Loin",
+            "BALL TIP": "Beef Loin",
+            
+            # Round variations
+            "Beef Round": "Beef Round",
+            "Round": "Beef Round",
+            
+            # Brisket variations
+            "Beef Brisket": "Beef Brisket",
+            "Brisket": "Beef Brisket",
+            
+            # Plate variations
+            "Beef Plate": "Beef Plate",
+            "Plate": "Beef Plate",
+            
+            # Flank variations
+            "Beef Flank": "Beef Flank",
+            "Flank": "Beef Flank",
+            
+            # Ground beef categories
+            "Ground Beef": "Beef Ground",
+            "Beef Ground": "Beef Ground", 
+            "Ground Beef Armiar Production": "Beef Ground",
+            "Ground Beef Anmar Production": "Beef Ground",
+            "Stock Ground Beef": "Beef Ground",
+
+            #Beef Trim Category
+            "Beef Ground & Trim": "Beef Trim",
+            
+            # Variety/Miscellaneous categories
+            "Beef Variety & Misc": "Beef Variety",
+            "Miscellaneous Beef": "Beef Variety",
+            "Beef Variety": "Beef Variety",
+            "Beef Main": "Beef Variety",
+            "Bagged Dry": "Beef Variety",
+        }
+        
+        df = df.copy()
+        
+        # Count original categories for logging
+        original_categories = df['category_description'].value_counts()
+        logger.info(f"Original categories found: {original_categories.to_dict()}")
+        
+        # Apply exact mapping first
+        df['category_description'] = df['category_description'].map(
+            lambda x: CATEGORY_MAPPING.get(x, x) if pd.notna(x) else x
+        )
+        
+        # Count categories after normalization
+        normalized_categories = df['category_description'].value_counts()
+        logger.info(f"Categories after normalization: {normalized_categories.to_dict()}")
+        
+        return df
+
     def process_product_data(self, 
                             df: pd.DataFrame,
                             preserve_columns: List[str] = None,
@@ -172,31 +277,33 @@ class ProductTransformer:
         # Remove duplicate product codes
         df = self.unique_product_codes(df)
         
-        # Apply standard column renaming for product data
+        # Apply comprehensive column renaming for product data
+        # Note: Column names should already be normalized to lowercase by DataCleaner
         column_map = {
             'branddescription': 'brand_name',
-            # Add other standard renamings here if needed
+            'brandname': 'brand_name',  # Map both variations
+            'productcode': 'product_code',
+            'productcategory': 'category_description',
         }
         renamed_df = self.rename_columns(df, column_map)
         
-        # Create case-insensitive column lookup for finding columns regardless of case
-        col_map = {col.lower(): col for col in renamed_df.columns}
-        
-        # Find primary description column (case-insensitive)
-        primary_col = next((col_map[k] for k in col_map if k == 'productdescription'), None)
-        secondary_col = next((col_map[k] for k in col_map if k == 'productdescription2'), None)
+        # Find description columns (should be lowercase after DataCleaner normalization)
+        primary_col = 'productdescription' if 'productdescription' in renamed_df.columns else None
+        secondary_col = 'productdescription2' if 'productdescription2' in renamed_df.columns else None
+        tertiary_col = 'alphaname' if 'alphaname' in renamed_df.columns else None
         
         if not primary_col:
             logger.error(f"Available columns: {renamed_df.columns.tolist()}")
-            raise ValueError(f"Cannot merge descriptions: ProductDescription column not found (case-insensitive)")
+            raise ValueError(f"Cannot merge descriptions: productdescription column not found (expected after DataCleaner normalization)")
         
-        logger.info(f"Found description columns: Primary={primary_col}, Secondary={secondary_col or 'None'}")
+        logger.info(f"Found description columns: Primary={primary_col}, Secondary={secondary_col or 'None'}, Tertiary={tertiary_col or 'None'}")
             
         # Merge product descriptions with explicitly identified columns
         processed_df = self.merge_product_descriptions(
             df=renamed_df,
             primary_col=primary_col,
             secondary_col=secondary_col if secondary_col else 'ProductDescription2',
+            tertiary_col=tertiary_col if tertiary_col else 'AlphaName',
             output_col='product_description'
         )
         
@@ -215,35 +322,22 @@ class ProductTransformer:
         
         # If standardizing columns is requested, map to expected pipeline format
         if standardize_columns:
-            # Refresh case-insensitive column lookup dictionary after merge operations
-            col_map = {col.lower(): col for col in processed_df.columns}
+            # Verify that renamed columns exist (they should from the early rename step)
+            if 'category_description' not in processed_df.columns:
+                # Map productcategory to category_description (should be lowercase after DataCleaner)
+                if 'productcategory' in processed_df.columns:
+                    processed_df['category_description'] = processed_df['productcategory']
+                    logger.info(f"Mapped productcategory to category_description with {processed_df['category_description'].nunique()} unique categories")
+                else:
+                    logger.warning("No productcategory column found for mapping to category_description")
             
-            # Map ProductCategory to category_description using case-insensitive lookup
-            category_col_key = next((k for k in col_map.keys() if k == 'productcategory'), None)
-            if category_col_key:
-                actual_col = col_map[category_col_key]
-                processed_df['category_description'] = processed_df[actual_col]
-                logger.info(f"Mapped {actual_col} to category_description with {processed_df['category_description'].nunique()} unique categories")
+            # Apply category description normalization after column mapping
+            processed_df = self.map_category_description(processed_df)
             
-            # Map other standard columns as needed using case-insensitive lookup
-            standard_mapping = {
-                'branddescription': 'brand_name',
-                'brandname': 'brand_name',  # Map both variations
-                'productcode': 'product_code',
-            }
-            
-            # Apply column mappings with case-insensitive matching for O(1) lookups
-            for src_key, dest_col in standard_mapping.items():
-                matching_key = next((k for k in col_map.keys() if k == src_key.lower()), None)
-                if matching_key:
-                    actual_src_col = col_map[matching_key]
-                    processed_df[dest_col] = processed_df[actual_src_col]
-                    logger.info(f"Mapped {actual_src_col} to {dest_col}")
-                    
-                    # If this mapped the product_code, ensure it's a string type for consistent merging
-                    if dest_col == 'product_code' and not pd.api.types.is_string_dtype(processed_df[dest_col]):
-                        processed_df[dest_col] = processed_df[dest_col].astype(str)
-                        logger.info(f"Converted {dest_col} to string type for consistency")
+            # Ensure product_code is string type for consistent merging
+            if 'product_code' in processed_df.columns and not pd.api.types.is_string_dtype(processed_df['product_code']):
+                processed_df['product_code'] = processed_df['product_code'].astype(str)
+                logger.info(f"Converted product_code to string type for consistency")
             
             # Ensure the product_description column is consistent between original and standardized names
             # This is critical to ensure the LLM gets the combined description

@@ -257,6 +257,74 @@ class ProductTransformer:
         
         return df
 
+    def remove_cached_products(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Remove products that are already cached as accepted.
+        
+        This prevents re-processing of products that have already been
+        reviewed and accepted, improving performance.
+        
+        Args:
+            df: DataFrame containing product data
+            
+        Returns:
+            DataFrame with cached products removed
+        """
+        from src.Caching.cache_manager import load_existing_cache, generate_cache_key
+        
+        # Ensure we have a product code column
+        if 'product_code' not in df.columns:
+            logger.warning("No product_code column found, cannot filter cached products")
+            return df
+        
+        initial_count = len(df)
+        
+        try:
+            # Load the cache
+            cache_file_path = "data/processed/.accepted_items_cache.json"
+            cache_data = load_existing_cache(cache_file_path)
+            cached_items = cache_data.get("cached_items", {})
+            
+            if not cached_items:
+                logger.info("No cached items found, skipping filter step")
+                return df
+                
+            # Filter the DataFrame to keep only products not in cache
+            filtered_df = df.copy()
+            to_drop = []
+            
+            for idx, row in df.iterrows():
+                product_code = row['product_code']
+                if not product_code:
+                    continue
+                    
+                try:
+                    # Generate the cache key and check if product is cached
+                    cache_key = generate_cache_key(product_code)
+                    if cache_key in cached_items:
+                        to_drop.append(idx)
+                except ValueError:
+                    # Invalid product code, keep the row
+                    pass
+            
+            # Drop cached products
+            if to_drop:
+                filtered_df = df.drop(to_drop)
+            
+            # Log results
+            filtered_count = len(filtered_df)
+            cached_count = initial_count - filtered_count
+            
+            if cached_count > 0:
+                logger.info(f"Removed {cached_count} already cached products ({cached_count/initial_count:.1%})")
+            else:
+                logger.info("No cached products found in the dataset")
+            
+            return filtered_df
+            
+        except Exception as e:
+            logger.warning(f"Error filtering cached products: {e}. Continuing with all products.")
+            return df
+    
     def process_product_data(self, 
                             df: pd.DataFrame,
                             preserve_columns: List[str] = None,
@@ -273,6 +341,12 @@ class ProductTransformer:
         """
         if df.empty:
             logger.warning("Empty DataFrame provided")
+            return df
+            
+        # Remove products that are already cached as accepted
+        df = self.remove_cached_products(df)
+        if len(df) == 0:
+            logger.warning("All products were already cached, nothing to process")
             return df
             
         # Debug input data
@@ -391,6 +465,7 @@ class ProductTransformer:
             logger.info(f"Product description column stats: {processed_df['product_description'].describe()}")
         
         logger.info(f"Processed {len(processed_df)} product records with transformations")
+
         return processed_df
 
     def read_and_process_product_csv(self, 

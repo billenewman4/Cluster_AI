@@ -13,6 +13,9 @@ import shutil
 from typing import Dict, Any, Optional, List
 from datetime import datetime
 
+# Import ProductData for standardized data management
+from src.models.product_model import ProductData
+
 # Configure logging
 logger = logging.getLogger(__name__)
 
@@ -313,3 +316,69 @@ def _get_cache_file_size(cache_data: Dict[str, Any]) -> int:
         return round(size_bytes / 1024)  # Convert to KB
     except Exception:
         return 0
+
+
+def get_all_approved_products_as_product_data(cache_file_path: str = DEFAULT_CACHE_PATH) -> List[ProductData]:
+    """
+    Retrieve all approved products from cache as ProductData objects.
+    
+    This function loads the cached approved products and converts them to ProductData objects
+    which can be added to the pipeline output for consistent processing.
+    
+    Args:
+        cache_file_path: Path to the cache file
+        
+    Returns:
+        List of ProductData objects representing approved cached products
+    """
+    logger.info("Loading approved products from cache as ProductData objects")
+    
+    # Load the cache
+    cache_data = load_existing_cache(cache_file_path)
+    cached_items = cache_data.get("cached_items", {})
+    
+    # Initialize result list
+    product_data_list = []
+    
+    # Process each cached item
+    for cache_key, cache_entry in cached_items.items():
+        try:
+            # Get the item data from cache
+            item_data = cache_entry.get("item_data", {})
+            
+            if not item_data:
+                logger.warning(f"Cached item {cache_key} has no item_data, skipping")
+                continue
+                
+            # Create ProductData object with required fields
+            product = ProductData(
+                product_description=item_data.get('product_description', ''),
+                product_code=item_data.get('product_code', ''),
+                category=item_data.get('category', '')
+            )
+            
+            # Add additional fields from cached item
+            # First try standard fields that would be in a ProductData object
+            for field in ProductData.get_standard_field_names():
+                if field in item_data and field not in ['product_description', 'product_code', 'category']:
+                    setattr(product, field, item_data.get(field))
+            
+            # Then add any additional fields that might be present
+            for field, value in item_data.items():
+                if hasattr(product, field) and field not in ProductData.get_standard_field_names():
+                    setattr(product, field, value)
+            
+            # Add cache metadata fields
+            product.approved = True
+            product.from_cache = True
+            product.cached_timestamp = cache_entry.get("cached_timestamp")
+            
+            # Add to result list
+            product_data_list.append(product)
+            
+        except Exception as e:
+            logger.error(f"Error converting cached item {cache_key} to ProductData: {e}")
+            continue
+    
+    logger.info(f"Successfully loaded {len(product_data_list)} approved products from cache")
+    return product_data_list

@@ -17,6 +17,7 @@ from threading import Lock
 
 # Using the more optimized base extractor class only - no need for specific extractor imports
 from .base_extractor import BaseLLMExtractor
+from src.models.product_model import ProductData
 
 logger = logging.getLogger(__name__)
 
@@ -75,25 +76,30 @@ class BatchProcessor:
         
         self.last_request_time = time.time()
     
-    def _process_single_record(self, record: Dict, category: str) -> Dict:
-        """Process a single record with caching and error handling."""
-        description = record.get('product_description')
+    def _process_single_record(self, product: ProductData, category: str) -> ProductData:
+        """Process a single ProductData object with caching and error handling.
+        
+        Args:
+            product: ProductData object to enrich with extracted fields
+            category: Category name for selecting appropriate extractor
+            
+        Returns:
+            The same ProductData object with extracted fields populated
+        """
+        description = product.productdescription
         
         # Validate description - don't waste API calls on empty/null descriptions
         if description is None or not str(description).strip():
             logger.warning(f"Skipping extraction for record with null/empty description")
-            result = record.copy()
-            result.update({
-                'subprimal': None,
-                'grade': None,
-                'size': None,
-                'size_uom': None,
-                'brand': None,
-                'bone_in': False,
-                'confidence': 0.0,
-                'needs_review': True
-            })
-            return result
+            product.subprimal = None
+            product.grade = None
+            product.size = None
+            product.size_uom = None
+            product.brand = None
+            product.bone_in = False
+            product.confidence = 0.0
+            product.needs_review = True
+            return product
             
         cache_key = self._get_cache_key(str(description), category)
         
@@ -102,27 +108,25 @@ class BatchProcessor:
             if cache_key in self.cache:
                 logger.debug(f"Cache hit for: {description[:50]}...")
                 cached_result = self.cache[cache_key]
-                # Add original record data
-                result = record.copy()
-                result.update(cached_result)
-                return result
+                # Update ProductData with cached values
+                for field, value in cached_result.items():
+                    if hasattr(product, field):
+                        setattr(product, field, value)
+                return product
         
         # Get extractor
         extractor = self.extractors.get(category.lower())
         if not extractor:
             logger.error(f"No extractor found for category: {category}")
-            result = record.copy()
-            result.update({
-                'subprimal': None,
-                'grade': None,
-                'size': None,
-                'size_uom': None,
-                'brand': None,
-                'bone_in': False,
-                'confidence': 0.0,
-                'needs_review': True
-            })
-            return result
+            product.subprimal = None
+            product.grade = None
+            product.size = None
+            product.size_uom = None
+            product.brand = None
+            product.bone_in = False
+            product.confidence = 0.0
+            product.needs_review = True
+            return product
         
         # Apply rate limiting
         self._rate_limit()
@@ -131,19 +135,23 @@ class BatchProcessor:
         max_retries = 2  # Reduced for speed
         for attempt in range(max_retries + 1):
             try:
-                extraction_result = extractor.extract(description)
+                # Pass the ProductData object to extractor to be updated in place
+                updated_product = extractor.extract(product)
                 
                 # Cache the result
-                cache_data = asdict(extraction_result)
+                cacheable_fields = [
+                    'subprimal', 'grade', 'size', 'size_uom', 'brand', 'bone_in', 
+                    'confidence', 'needs_review', 'primal', 'species'
+                ]
+                cache_data = {field: getattr(updated_product, field, None) 
+                             for field in cacheable_fields 
+                             if hasattr(updated_product, field)}
+                             
                 with self.cache_lock:
                     self.cache[cache_key] = cache_data
                 
-                # Combine with original record
-                result = record.copy()
-                result.update(cache_data)
-                
-                logger.debug(f"Processed: {description[:50]}... -> {extraction_result.subprimal}")
-                return result
+                logger.debug(f"Processed: {description[:50]}... -> {updated_product.subprimal}")
+                return updated_product
                 
             except Exception as e:
                 if attempt < max_retries:
@@ -153,143 +161,167 @@ class BatchProcessor:
                 else:
                     logger.error(f"All attempts failed for {description[:50]}...: {e}")
                     
-                    # Return failed result
-                    result = record.copy()
-                    result.update({
-                        'subprimal': None,
-                        'grade': None,
-                        'size': None,
-                        'size_uom': None,
-                        'brand': None,
-                        'bone_in': False,
-                        'confidence': 0.0,
-                        'needs_review': True
-                    })
-                    return result
+                    # Mark product as failed
+                    product.subprimal = None
+                    product.grade = None
+                    product.size = None
+                    product.size_uom = None
+                    product.brand = None
+                    product.bone_in = False
+                    product.confidence = 0.0
+                    product.needs_review = True
+                    return product
     
-    def process_batch(self, df: pd.DataFrame, category: str) -> pd.DataFrame:
-        """Process a batch of records with parallel execution."""
-        logger.info(f"Processing {len(df)} records for {category}")
+    def process_batch(self, products: List[ProductData], category: str) -> List[ProductData]:
+        """Process a batch of ProductData objects with parallel execution.
         
-        # Convert to list of dicts for parallel processing
-        records = df.to_dict('records')
-        logger.info(f"Converted {len(df)} records to list of dicts")
-        logger.info(f"First record: {records[0]}")
+        Args:
+            products: List of ProductData objects to enrich
+            category: Category name for selecting appropriate extractor
+            
+        Returns:
+            List of enriched ProductData objects
+        """
+        logger.info(f"Processing {len(products)} products for {category}")
+        logger.info(f"First product description: {products[0].productdescription[:50] if products else None}...")
         
         # Process in parallel
-        results = []
+        processed_products = []
         with ThreadPoolExecutor(max_workers=self.max_concurrent) as executor:
             # Submit all tasks
-            future_to_record = {
-                executor.submit(self._process_single_record, record, category): record
-                for record in records
+            future_to_product = {
+                executor.submit(self._process_single_record, product, category): product
+                for product in products
             }
             
             # Collect results as they complete
-            for future in as_completed(future_to_record):
+            for future in as_completed(future_to_product):
                 try:
-                    result = future.result()
-                    results.append(result)
+                    processed_product = future.result()
+                    processed_products.append(processed_product)
                 except Exception as e:
-                    record = future_to_record[future]
-                    logger.error(f"Failed to process record: {e}")
-                    # Add failed result
-                    failed_result = record.copy()
-                    failed_result.update({
-                        'subprimal': None,
-                        'grade': None,
-                        'size': None,
-                        'size_uom': None,
-                        'brand': None,
-                        'bone_in': False,
-                        'confidence': 0.0,
-                        'needs_review': True
-                    })
-                    results.append(failed_result)
-        
+                    product = future_to_product[future]
+                    logger.error(f"Failed to process product: {e}")
+                    # Mark failed product
+                    product.subprimal = None
+                    product.grade = None
+                    product.size = None
+                    product.size_uom = None
+                    product.brand = None
+                    product.bone_in = False
+                    product.confidence = 0.0
+                    product.needs_review = True
+                    processed_products.append(product)
+            
         # Save cache after batch
         self._save_cache()
         
-        # Convert back to DataFrame
-        result_df = pd.DataFrame(results)
-        
-        logger.info(f"Batch processing complete. {len(result_df)} records processed.")
-        return result_df
+        logger.info(f"Completed processing {len(processed_products)} products for {category}")
+        return processed_products
     
-    def process_category_batch(self, df: pd.DataFrame, category: str) -> pd.DataFrame:
-        """Process a batch of records for a specific category."""
-        logger.info(f"Processing {len(df)} {category} records")
+    def process_category_batch(self, products: List[ProductData], category: str) -> List[ProductData]:
+        """Process a batch of ProductData objects for a specific category.
         
-        results = []
-        
-        # Process in chunks for better progress reporting
-        chunk_size = 20
-        total_chunks = (len(df) + chunk_size - 1) // chunk_size
-        
-        for i in range(0, len(df), chunk_size):
-            chunk = df.iloc[i:i+chunk_size]
-            chunk_num = i // chunk_size + 1
+        Args:
+            products: List of ProductData objects to process
+            category: Category name for selecting appropriate extractor
             
-            logger.info(f"Processing chunk {chunk_num}/{total_chunks} ({len(chunk)} records)")
+        Returns:
+            List of processed ProductData objects
+        """
+        # Get category-appropriate extractor
+        extractor = self.extractors.get(category.lower())
+        if not extractor:
+            logger.error(f"No extractor found for category: {category}")
+            # Return original data - no processing
+            return products
+        
+        # Log information about this category batch
+        logger.info(f"Category batch: {category}, {len(products)} products")
+        
+        # Process records with extractor
+        processed_products = []
+        
+        for idx, product in enumerate(products):
+            logger.debug(f"Processing {category} product {idx}/{len(products)}")
             
-            for idx, row in chunk.iterrows():
-                try:
-                    result = self.process_batch(pd.DataFrame([row]), category).iloc[0]
-                    results.append(result)
+            try:
+                # Process with caching and error handling
+                processed = self._process_single_record(product, category)
+                processed_products.append(processed)
                     
-                except Exception as e:
-                    raise ValueError(f"Failed to process record {idx}: {str(e)}")
-                    # Create a fallback record
-                    fallback_result = {
-                        'source_filename': row['source_filename'],
-                        'row_number': row['row_number'],
-                        'product_code': row['product_code'],
-                        'raw_description': row['product_description'],
-                        'category_description': row['category_description'],
-                        'species': 'Beef',
-                        'primal': 'Chuck' if 'chuck' in category.lower() else 'Unknown',
-                        'subprimal': None,
-                        'grade': None,
-                        'size': None,
-                        'size_uom': None,
-                        'brand': None,
-                        'bone_in': False,
-                        'confidence': 0.0,
-                        'needs_review': True
-                    }
-                    results.append(fallback_result)
-        
-        result_df = pd.DataFrame(results)
+            except Exception as e:
+                logger.error(f"Failed to process product {idx}: {str(e)}")
+                # Mark as failed product
+                product.species = 'Beef' if 'beef' in category.lower() else None
+                product.primal = 'Chuck' if 'chuck' in category.lower() else 'Unknown'
+                product.subprimal = None
+                product.grade = None
+                product.size = None
+                product.size_uom = None
+                product.brand = None
+                product.bone_in = False
+                product.confidence = 0.0
+                product.needs_review = True
+                processed_products.append(product)
         
         # Log summary statistics
-        if len(result_df) > 0:
-            avg_confidence = result_df['confidence'].mean()
-            needs_review_count = result_df['needs_review'].sum()
+        if processed_products:
+            # Calculate statistics from ProductData objects
+            confidences = [p.confidence for p in processed_products if hasattr(p, 'confidence') and p.confidence is not None]
+            needs_review_count = sum(1 for p in processed_products if hasattr(p, 'needs_review') and p.needs_review)
+            avg_confidence = sum(confidences) / len(confidences) if confidences else 0.0
+            
+            # Cache statistics
             unique_requests = len([k for k in self.cache.keys() if k.startswith(category.lower())])
-            cache_hit_rate = (len(df) - unique_requests) / len(df) if len(df) > 0 else 0
+            cache_hit_rate = (len(products) - unique_requests) / len(products) if products else 0
             
             logger.info(f"Batch processing complete for {category}:")
-            logger.info(f"  Records processed: {len(result_df)}")
+            logger.info(f"  Products processed: {len(processed_products)}")
             logger.info(f"  Average confidence: {avg_confidence:.3f}")
-            logger.info(f"  Records needing review: {needs_review_count}")
+            logger.info(f"  Products needing review: {needs_review_count}")
             logger.info(f"  Cache hit rate: {cache_hit_rate:.1%}")
         
-        return result_df
+        return processed_products
     
-    def process_category(self, category: str) -> pd.DataFrame:
-        """Process all records for a given category. Kept for backward compatibility.""" 
-        # Load data
-        df = pd.read_parquet('data/processed/inventory_base.parquet')
+    def process_category(self, category: str) -> List[ProductData]:
+        """Process all records for a given category.
         
-        # Filter for category
-        filtered_df = df[df['category_description'].str.lower() == category.lower()]
+        Args:
+            category: Category name to process
+            
+        Returns:
+            List of processed ProductData objects
+        """
+        # Load category data
+        from ..utils.data_loaders import load_category_data
+        from ..models.product_model import ProductData
         
-        if len(filtered_df) == 0:
-            logger.warning(f"No records found for category: {category}")
-            return pd.DataFrame()
+        logger.info(f"Loading data for category: {category}")
+        category_df = load_category_data(category)
         
-        # Use the new batch processing method
-        return self.process_batch(filtered_df, category)
+        if category_df is None or len(category_df) == 0:
+            logger.error(f"No data found for category: {category}")
+            return []
+            
+        logger.info(f"Loaded {len(category_df)} records for {category}")
+        
+        # Convert DataFrame to ProductData objects
+        products = []
+        for _, row in category_df.iterrows():
+            product = ProductData(
+                productdescription=row.get('productdescription', ''),
+                category=category,
+                productcode=row.get('productcode'),
+                source_filename=row.get('source_filename'),
+                row_number=row.get('row_number')
+            )
+            products.append(product)
+        
+        # Process batch
+        processed_products = self.process_category_batch(products, category)
+        
+        return processed_products
     
     def get_cache_stats(self) -> Dict:
         """Get caching statistics."""

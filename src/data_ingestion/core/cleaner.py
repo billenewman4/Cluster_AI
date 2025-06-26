@@ -77,6 +77,9 @@ class DataCleaner:
         # Apply rename in a single operation instead of iterative changes
         if robust_mapping:
             df = df.rename(columns=robust_mapping)
+        
+        # Lowercase all column names for consistency across the pipeline
+        df.columns = [col.lower() for col in df.columns]
             
         return df
     

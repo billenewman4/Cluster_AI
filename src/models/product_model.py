@@ -17,9 +17,9 @@ class ProductData:
     are filled in later by the LLM extraction process.
     """
     # Required fields (populated during data ingestion)
-    product_code: str
-    product_description: str
-    category_description: str
+    productcode: str
+    productdescription: str
+    category_description: str  # Keep this as-is since cleaner already normalizes it to this form
     
     # Optional fields (populated during LLM extraction)
     subprimal: Optional[str] = None
@@ -44,8 +44,8 @@ class ProductData:
     
     # Class variable for required fields
     REQUIRED_FIELDS: ClassVar[List[str]] = [
-        'product_code',
-        'product_description',
+        'productcode',
+        'productdescription',
         'category_description'
     ]
     
@@ -128,8 +128,8 @@ class ProductData:
         """
         # Extract required and known optional fields
         required_fields = {
-            'product_code': data.get('product_code', ''),
-            'product_description': data.get('product_description', ''),
+            'productcode': data.get('productcode', ''),
+            'productdescription': data.get('productdescription', ''),
             'category_description': data.get('category_description', '')
         }
         
@@ -200,18 +200,62 @@ class ProductData:
         mapping = {}
         standard_fields_lower = {field.lower(): field for field in cls.STANDARD_FIELDS}
         
-        # Common variations in column naming
+        # Comprehensive mapping of column name variations from all pipeline components
+        # Combined from ProductTransformer, DataCleaner, and domain knowledge
         variations = {
-            'product_code': ['productcode', 'product code', 'item_code', 'itemcode', 'sku'],
-            'product_description': ['productdescription', 'product description', 'description', 'item_description'],
-            'category_description': ['productcategory', 'category', 'product category', 'category_name'],
-            'subprimal': ['sub_primal', 'sub primal', 'subprimalcut', 'sub-primal'],
-            'brand': ['branddescription', 'brand_description', 'brandname', 'brand_name']
+            'product_code': [
+                'productcode'
+            ],
+            'product_description1': [
+                'productdescription', 'product description', 'description', 
+                'item_description', 'product description 1', 'product_name', 
+                'item_name', 'title', 'item_title', 'productdescription',
+                'productdescription1', 'productdescription'
+            ],
+            'product_description2': [
+                'productdescription2', 'product_descriptoin2'
+            ],
+            'category_description': [
+                'productcategory'
+            ],
+            'subprimal': [
+                'sub_primal', 'sub primal', 'subprimalcut', 'sub-primal',
+                'cut_type', 'cut', 'primal_cut', 'subprimal_cut'
+            ],
+            'brand': [
+                'branddescription', 'brand_description', 'brandname', 'brand_name',
+                'manufacturer', 'vendor', 'supplier_name', 'producer'
+            ],
+            'grade': [
+                'product_grade', 'meat_grade', 'quality_grade', 'usda_grade', 
+                'grading', 'quality_level'
+            ],
+            'size': [
+                'product_size', 'item_size', 'weight', 'net_weight', 
+                'package_weight', 'portion_size'
+            ],
+            'size_uom': [
+                'uom', 'unit_of_measure', 'measure_unit', 'weight_unit',
+                'size_unit', 'unit', 'measurement'
+            ],
+            'species': [
+                'animal', 'meat_type', 'origin', 'product_type', 'protein_type'
+            ],
+            'family': [
+                'product_family', 'item_family', 'product_group', 'meat_family'
+            ],
+            'bone_in': [
+                'has_bone', 'bone', 'bone_type', 'boneless'
+            ]
         }
         
         # Try to match each source column to a standard field
         for source_col in source_columns:
-            source_col_lower = source_col.lower()
+            # Handle None columns gracefully
+            if source_col is None:
+                continue
+                
+            source_col_lower = str(source_col).lower().strip()
             
             # Direct match
             if source_col_lower in standard_fields_lower:
@@ -224,6 +268,24 @@ class ProductData:
                     mapping[source_col] = standard_field
                     break
             
-            # Could add more advanced fuzzy matching here if needed
+            # Handle special cases with more complex transformations
+            col_no_spaces = source_col_lower.replace(' ', '')
+            if col_no_spaces in standard_fields_lower:
+                mapping[source_col] = standard_fields_lower[col_no_spaces]
+                continue
+                
+            for standard_field, aliases in variations.items():
+                if col_no_spaces in aliases:
+                    mapping[source_col] = standard_field
+                    break
+                    
+            # Check for partial matches (contains)
+            if not source_col in mapping:
+                if 'product' in source_col_lower and 'code' in source_col_lower:
+                    mapping[source_col] = 'product_code'
+                elif 'product' in source_col_lower and 'descr' in source_col_lower:
+                    mapping[source_col] = 'product_description'
+                elif 'category' in source_col_lower or 'categ' in source_col_lower:
+                    mapping[source_col] = 'category_description'
                 
         return mapping

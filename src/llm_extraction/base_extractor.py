@@ -8,7 +8,6 @@ import json
 import re
 import logging
 from typing import Dict, Optional, List
-from dataclasses import dataclass
 from abc import ABC, abstractmethod
 
 from dotenv import load_dotenv
@@ -16,21 +15,11 @@ from dotenv import load_dotenv
 # Import utils from the same package
 from .utils.api_utils import APIManager
 from .utils.result_parser import ResultParser
+# Import ProductData model
+from src.models.product_model import ProductData
 
 load_dotenv()
 logger = logging.getLogger(__name__)
-
-@dataclass
-class ExtractionResult:
-    """Base result structure for LLM extraction."""
-    subprimal: Optional[str] = None
-    grade: Optional[str] = None
-    size: Optional[float] = None
-    size_uom: Optional[str] = None
-    brand: Optional[str] = None
-    bone_in: bool = False
-    confidence: float = 0.0
-    needs_review: bool = False
 
 class BaseLLMExtractor(ABC):
     """Base class for LLM-based meat attribute extraction."""
@@ -178,36 +167,34 @@ JSON:"""
         
         return result
     
-    def validate_and_score(self, raw_result: Dict, description: str) -> ExtractionResult:
+    def validate_and_score(self, raw_result: Dict, product: ProductData) -> ProductData:
         """Validate results and assign confidence score."""
-        result = ExtractionResult()
-        
-        # Extract fields
-        result.subprimal = raw_result.get('subprimal')
-        result.grade = raw_result.get('grade') 
-        result.size = raw_result.get('size')
-        result.size_uom = raw_result.get('size_uom')
-        result.brand = raw_result.get('brand')
-        result.bone_in = raw_result.get('bone_in', False)
+        # Extract fields and update the passed ProductData object
+        product.subprimal = raw_result.get('subprimal')
+        product.grade = raw_result.get('grade') 
+        product.size = raw_result.get('size')
+        product.size_uom = raw_result.get('size_uom')
+        product.brand = raw_result.get('brand')
+        product.bone_in = raw_result.get('bone_in', False)
         
         # Validation and confidence scoring
         confidence_score = 0.5  # Base confidence
         
         # Validate subprimal (case-insensitive)
         subprimal_mapping = self.get_subprimal_mapping()
-        if result.subprimal:
+        if product.subprimal:
             # Check if subprimal matches any key (case-insensitive)
-            subprimal_lower = result.subprimal.lower()
+            subprimal_lower = product.subprimal.lower()
             if subprimal_lower in subprimal_mapping:
                 confidence_score += 0.3
                 # Normalize to the standard lowercase key
-                result.subprimal = subprimal_lower
+                product.subprimal = subprimal_lower
             else:
-                result.needs_review = True
-                logger.warning(f"Unknown subprimal for {self.get_category_name()}: {result.subprimal}")
+                product.needs_review = True
+                logger.warning(f"Unknown subprimal for {self.get_category_name()}: {product.subprimal}")
         
         # Validate grade (use beef-specific grades if available)
-        if result.grade:
+        if product.grade:
             # Get all valid grades (beef-specific or general)
             if hasattr(self, 'get_beef_grades'):
                 beef_grades = self.get_beef_grades()
@@ -218,40 +205,57 @@ JSON:"""
                 valid_grades = [g.lower() for g in self.VALID_GRADES]
             
             # Check if grade matches any valid grade (case-insensitive)
-            grade_lower = result.grade.lower()
+            grade_lower = product.grade.lower()
             if grade_lower in [g.lower() for g in valid_grades]:
                 confidence_score += 0.1
                 # Normalize to standard format if found in beef-specific grades
                 if hasattr(self, 'get_beef_grades'):
                     for standard_grade, variations in beef_grades.items():
                         if grade_lower in [v.lower() for v in [standard_grade] + variations]:
-                            result.grade = standard_grade
+                            product.grade = standard_grade
                             break
             else:
-                result.needs_review = True
-                logger.warning(f"Unknown grade: {result.grade}")
+                product.needs_review = True
+                logger.warning(f"Unknown grade: {product.grade}")
         
         # Validate size unit
-        if result.size_uom and result.size_uom in self.VALID_SIZE_UNITS:
+        if product.size_uom and product.size_uom in self.VALID_SIZE_UNITS:
             confidence_score += 0.05
-        elif result.size_uom:
-            result.needs_review = True
-            logger.warning(f"Unknown size unit: {result.size_uom}")
+        elif product.size_uom:
+            product.needs_review = True
+            logger.warning(f"Unknown size unit: {product.size_uom}")
         
         # Check if we found any specific information
-        if result.subprimal or result.grade or result.size:
+        if product.subprimal or product.grade or product.size:
             confidence_score += 0.05
         
-        result.confidence = min(confidence_score, 1.0)
+        product.confidence = min(confidence_score, 1.0)
         
         # Flag for review if confidence is low
-        if result.confidence < 0.6:
-            result.needs_review = True
+        if product.confidence < 0.6:
+            product.needs_review = True
         
-        return result
+        # Set species based on category name
+        if not product.species:
+            category = self.get_category_name()
+            if category.lower().startswith('beef'):
+                product.species = 'Beef'
+            elif category.lower().startswith('pork'):
+                product.species = 'Pork'
+            
+        return product
     
-    def extract(self, description: str) -> ExtractionResult:
-        """Extract meat information from description."""
+    def extract(self, product: ProductData) -> ProductData:
+        """Extract meat information from product description and update the ProductData object.
+        
+        Args:
+            product: A ProductData object with at least product_description populated
+            
+        Returns:
+            The same ProductData object with extracted attributes populated
+        """
+        # Use the product's description for extraction
+        description = product.productdescription
         
         # First try LLM
         llm_response = self.call_llm(description)
@@ -262,7 +266,7 @@ JSON:"""
             logger.debug("LLM extraction failed, using regex fallback")
             parsed_result = self.apply_regex_fallbacks(description)
         
-        # Validate and score
-        result = self.validate_and_score(parsed_result, description)
+        # Validate and score - updates the passed product object
+        updated_product = self.validate_and_score(parsed_result, product)
         
-        return result 
+        return updated_product

@@ -20,9 +20,10 @@ import pandas as pd
 from dotenv import load_dotenv
 
 # Import the base extractor class
-from ..base_extractor import BaseLLMExtractor, ExtractionResult
+from ..base_extractor import BaseLLMExtractor
 from ..dynamic_prompt_generator import DynamicPromptGenerator
 from ...data_ingestion.utils.reference_data_loader import ReferenceDataLoader
+from ...models.product_model import ProductData
 
 # Ensure environment variables are loaded
 load_dotenv()
@@ -195,34 +196,28 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             return f"Beef {self.current_primal}"
         return "Beef"
     
-    def extract(self, description: str) -> ExtractionResult:
-        """Extract structured data from beef product description.
+    def extract(self, product: ProductData) -> ProductData:
+        """Extract structured data from beef product description and update the ProductData object.
         
         Uses specialized dynamic prompting based on the current primal cut.
         
         Args:
-            description: The product description to extract data from
+            product: ProductData object with at least product_description populated
             
         Returns:
-            ExtractionResult: Structured data extracted from the description
+            ProductData: The same ProductData object with extracted attributes populated
         
         Raises:
             ValueError: If extraction fails
         """
-        # Input validation 
-        logger.info(f"Extracting data from description: '{description[:50]}...'")
+        # Input validation
+        description = product.productdescription
+        logger.info(f"Extracting data from description: '{description[:50] if description else ''}...'")
         if not description or not str(description).strip():
             logger.warning(f"Empty description provided for extraction")
-            return ExtractionResult(
-                subprimal=None,
-                grade=None,
-                size=None,
-                size_uom=None,
-                brand=None,
-                bone_in=False,
-                confidence=0.0,
-                needs_review=True
-            )
+            product.needs_review = True
+            product.confidence = 0.0
+            return product
         
         # If no current primal is set, try to infer from description
         if not self.current_primal:
@@ -232,17 +227,12 @@ class DynamicBeefExtractor(BaseLLMExtractor):
                 None
             )
         
-        # Initialize result with default values
-        result = ExtractionResult(
-            subprimal=None,
-            grade=None,
-            size=None,
-            size_uom=None,
-            brand=None,
-            bone_in=False,
-            confidence=0.0,
-            needs_review=True
-        )
+        # Initialize product with default values if not already set
+        product.confidence = product.confidence or 0.0
+        product.needs_review = product.needs_review or True
+        
+        # Set product species to Beef
+        product.species = product.species or 'Beef'
         
         try:
             # Use dynamic prompt generator if primal is known
@@ -250,8 +240,8 @@ class DynamicBeefExtractor(BaseLLMExtractor):
                 logger.warning(f"No primal cut identified for description: {description[:50]}")
                 
                 # Set for review as we can't create a specialized prompt
-                result.needs_review = True
-                return result
+                product.needs_review = True
+                return product
                 
             # Generate specialized prompts based on the primal cut
             system_prompt = self.prompt_generator.generate_system_prompt(self.current_primal)
@@ -269,8 +259,8 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             if not response:
                 logger.error(f"API call returned None or empty response")
                 
-                result.needs_review = True
-                return result
+                product.needs_review = True
+                return product
                 
             logger.info(f" \n\n\n\n\n\n API call successful, response {response} \n\n\n\n\n\n")
             
@@ -294,21 +284,21 @@ class DynamicBeefExtractor(BaseLLMExtractor):
                         logger.info(f"Successfully parsed JSON from text response")
                     else:
                         logger.error("No JSON-like content found in response")
-                        result.needs_review = True
-                        return result
+                        product.needs_review = True
+                        return product
                 except Exception as e:
                     logger.error(f"Failed to extract valid JSON from text: {e}")
-                    result.needs_review = True
-                    return result
+                    product.needs_review = True
+                    return product
                 
             # Log the extracted data
             logger.info(f"Extracted data: {extraction_data}")
                 
-            # Update result with extracted data
-            result.species = extraction_data.get("species", "Beef")
+            # Update product with extracted data
+            product.species = extraction_data.get("species", "Beef")
             
             # Use the base class methods to validate and score the extraction
-            # First, populate an ExtractionResult from the JSON data
+            # Create a raw result dictionary from the JSON data
             raw_result = {
                 'subprimal': extraction_data.get('subprimal'),
                 'grade': extraction_data.get('grade'),
@@ -319,68 +309,79 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             }
             
             # Use the base class's validation and scoring logic
-            validated_result = self.validate_and_score(raw_result, description)
+            # This updates the passed product object in place
+            validated_product = self.validate_and_score(raw_result, product)
             
-            # Note: We can't add beef-specific fields to ExtractionResult as it doesn't have species/primal fields
-            # The calling code in run_pipeline.py handles species/primal mapping from category
+            # Add beef-specific data to the ProductData object
+            if self.current_primal:
+                product.primal = self.current_primal
             
-            # Return the validated result
-            return validated_result
+            # Return the validated product
+            return validated_product
             
         except Exception as e:
             logger.error(f"Extraction failed with error: {str(e)}")
+            import traceback
+            logger.debug(f"Traceback: {traceback.format_exc()}")
             
-            # If anything goes wrong, return a result flagged for review
-            result.needs_review = True
-            return result
-    
-    def validate_and_score(self, raw_result: Dict, description: str) -> ExtractionResult:
-        """Override the base validation method to use beef-specific reference data properly."""
-        result = ExtractionResult()
+            # Ensure product is flagged for human review
+            product.confidence = 0.0
+            product.needs_review = True
+            return product
+        
+    def validate_and_score(self, raw_result: Dict, product: ProductData) -> ProductData:
+        """Override the base validation method to use beef-specific reference data properly.
+        
+        Args:
+            raw_result: Dictionary containing the extracted fields
+            product: ProductData object to update with validated fields
             
-        # Extract fields
-        result.subprimal = raw_result.get('subprimal')
-        result.grade = raw_result.get('grade') 
-        result.size = raw_result.get('size')
-        result.size_uom = raw_result.get('size_uom')
-        result.brand = raw_result.get('brand')
-        result.bone_in = raw_result.get('bone_in', False)
+        Returns:
+            The same ProductData object with validated fields and confidence score
+        """
+        # Extract fields and update the ProductData object
+        product.subprimal = raw_result.get('subprimal')
+        product.grade = raw_result.get('grade') 
+        product.size = raw_result.get('size')
+        product.size_uom = raw_result.get('size_uom')
+        product.brand = raw_result.get('brand')
+        product.bone_in = raw_result.get('bone_in', False)
         
         # Validation and confidence scoring
         confidence_score = 0.5  # Base confidence
         
         # Validate subprimal using our available reference data methods
-        if result.subprimal and self.current_primal:
+        if product.subprimal and self.current_primal:
             subprimal_mapping = self.get_subprimal_mapping()
                 
             # Direct match in the mapping keys
             found_match = False
             for standard_subprimal, synonyms in subprimal_mapping.items():
                 # Check exact match
-                if result.subprimal.lower() == standard_subprimal.lower():
-                    result.subprimal = standard_subprimal  # Normalize capitalization
+                if product.subprimal.lower() == standard_subprimal.lower():
+                    product.subprimal = standard_subprimal  # Normalize capitalization
                     confidence_score += 0.3
                     found_match = True
                     break
                 # Check synonyms
-                if result.subprimal.lower() in [syn.lower() for syn in synonyms]:
-                    result.subprimal = standard_subprimal  # Map to standard name
+                if product.subprimal.lower() in [syn.lower() for syn in synonyms]:
+                    product.subprimal = standard_subprimal  # Map to standard name
                     confidence_score += 0.2
                     found_match = True
                     break
                 # Partial match (if input is contained in standard or vice versa)
-                if result.subprimal.lower() in standard_subprimal.lower() or standard_subprimal.lower() in result.subprimal.lower():
-                    result.subprimal = standard_subprimal
+                if product.subprimal.lower() in standard_subprimal.lower() or standard_subprimal.lower() in product.subprimal.lower():
+                    product.subprimal = standard_subprimal
                     confidence_score += 0.1
                     found_match = True
                     break
                         
             if not found_match:
-                logger.warning(f"Unknown subprimal '{result.subprimal}' for {self.current_primal}")
-                result.needs_review = True
+                logger.warning(f"Unknown subprimal '{product.subprimal}' for {self.current_primal}")
+                product.needs_review = True
         
         # Validate grade using our available reference data methods
-        if result.grade:
+        if product.grade:
             # Get all grade terms (official names and synonyms)
             grade_terms = self.reference_data.get_all_grade_terms()
                 
@@ -388,59 +389,66 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             found_match = False
             for standard_grade, synonyms in self.reference_data.grade_mappings.items():
                 # Check direct match with standard grade
-                if result.grade.lower() == standard_grade.lower():
-                    result.grade = standard_grade  # Normalize capitalization
+                if product.grade.lower() == standard_grade.lower():
+                    product.grade = standard_grade  # Normalize capitalization
                     confidence_score += 0.2
                     found_match = True
                     break
                 # Check matches with synonyms
-                if result.grade.lower() in [syn.lower() for syn in synonyms]:
-                    result.grade = standard_grade  # Map to standard name
+                if product.grade.lower() in [syn.lower() for syn in synonyms]:
+                    product.grade = standard_grade  # Map to standard name
                     confidence_score += 0.1
                     found_match = True
                     break
                         
             if not found_match:
-                logger.warning(f"Unknown grade: {result.grade}")
-                result.needs_review = True
+                logger.warning(f"Unknown grade: {product.grade}")
+                product.needs_review = True
                 
         # Validate size unit
-        if result.size_uom and result.size_uom.lower() in [unit.lower() for unit in self.VALID_SIZE_UNITS]:
+        if product.size_uom and product.size_uom.lower() in [unit.lower() for unit in self.VALID_SIZE_UNITS]:
             confidence_score += 0.05
-        elif result.size_uom:
-            result.needs_review = True
-            logger.warning(f"Unknown size unit: {result.size_uom}")
+        elif product.size_uom:
+            product.needs_review = True
+            logger.warning(f"Unknown size unit: {product.size_uom}")
             
         # Check if we found any specific information
-        if result.subprimal or result.grade or result.size:
+        if product.subprimal or product.grade or product.size:
             confidence_score += 0.05
             
-        result.confidence = min(confidence_score, 1.0)
+        product.confidence = min(confidence_score, 1.0)
             
         # Flag for review if confidence is low
-        if result.confidence < 0.6:
-            result.needs_review = True
+        if product.confidence < 0.6:
+            product.needs_review = True
                 
-        return result
+        return product
         
-    def extract_batch(self, descriptions: List[str], primal: Optional[str] = None) -> List[ExtractionResult]:
-        """Extract data from a batch of descriptions."""
-        results = []
+    def extract_batch(self, products: List[ProductData], primal: Optional[str] = None) -> List[ProductData]:
+        """Extract data from a batch of ProductData objects.
         
+        Args:
+            products: List of ProductData objects to process
+            primal: Optional primal cut to use for all extractions in the batch
+            
+        Returns:
+            The same list of ProductData objects with extracted fields populated
+        """
         # Set primal once for all extractions in batch if provided
         original_primal = self.current_primal
         if primal:
             self.current_primal = primal
         
-        for description in descriptions:
+        processed_products = []
+        for product in products:
             # Only reset primal between descriptions if no batch-level primal was set
             if not primal:
                 self.current_primal = original_primal
                 
-            result = self.extract(description)
-            results.append(result)
+            updated_product = self.extract(product)
+            processed_products.append(updated_product)
             
         # Reset primal to original value after batch processing
         self.current_primal = original_primal
         
-        return results
+        return processed_products

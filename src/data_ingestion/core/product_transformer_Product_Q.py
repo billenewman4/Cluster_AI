@@ -348,33 +348,17 @@ class ProductTransformer:
                 if len(processed_df) == 0:
                     raise ValueError(f"All {empty_count} records had empty product descriptions. Pipeline cannot continue.")
 
-        # Convert DataFrame to list of ProductData objects - only include fields that ProductData expects
-        product_data_list = []
-        for _, row in processed_df.iterrows():
-            # Get required fields from row
-            product_data = {
-                'productcode': row.get('productcode', ''),
-                'productdescription': row.get('productdescription', ''),
-                'category_description': row.get('category_description', '')
-            }
-            
-            # Add any optional fields that may be present
-            for field in ['subprimal', 'grade', 'size', 'size_uom', 'brand', 'bone_in', 'family',
-                        'approved', 'comments', 'species', 'confidence', 'needs_review']:
-                if field in row:
-                    product_data[field] = row[field]
-            
-            # Create ProductData object and add to list
-            product_data_list.append(ProductData(**product_data))
+        # We'll keep the data in DataFrame format instead of converting to ProductData objects
+        # This allows the processor to continue working with DataFrame operations
         
         # Log final statistics
         logger.info(f"Final validation successful. Processed {len(processed_df)} records with required columns present.")
         
-        return product_data_list
+        return processed_df
         
     def read_and_process_product_csv(self, 
                                 file_path: Union[str, Path],
-                                **kwargs) -> List[ProductData]:
+                                **kwargs) -> pd.DataFrame:
         """
         Read a product CSV file and process its contents.
         
@@ -383,7 +367,7 @@ class ProductTransformer:
             **kwargs: Additional parameters to pass to the file reader
             
         Returns:
-            List[ProductData]: List of processed product data objects
+            pd.DataFrame: Processed DataFrame
         """
         # Convert string to Path if needed - do this only once
         path_obj = Path(file_path) if isinstance(file_path, str) else file_path

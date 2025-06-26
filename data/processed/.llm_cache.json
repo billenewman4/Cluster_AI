@@ -18,5 +18,65 @@
     "bone_in": false,
     "confidence": 0.9500000000000001,
     "needs_review": false
+  },
+  "23620555fd294af7e564032c8899fac40ba90bff6fc84021bfd0779ed8f3468f": {
+    "subprimal": "Chuck Roll",
+    "grade": "USDA Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "100% GRASS FED",
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true,
+    "primal": "Chuck",
+    "species": "Beef"
+  },
+  "612be4692a558c22c9a56ed3cf47fa4344a9b6f7baa73fdfc6c4a5e0d26d5565": {
+    "subprimal": "Teres Major",
+    "grade": "USDA Choice",
+    "size": 4.5,
+    "size_uom": "lb",
+    "brand": null,
+    "bone_in": false,
+    "confidence": 1.0,
+    "needs_review": true,
+    "primal": "Chuck",
+    "species": "Beef"
+  },
+  "f8ad10fcb26bb3339ea636d7cff09b731911772ae9ad8f8196415ada9f30988c": {
+    "subprimal": "Bone-In Arm",
+    "grade": "USDA Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true,
+    "primal": "Chuck",
+    "species": "Beef"
+  },
+  "72f9f50c045b8e41e1ed0d206f2545ac88de1c4ac05082a6e7cc80e3527448ef": {
+    "subprimal": "ScottyTender",
+    "grade": "No-Roll (Ungraded)",
+    "size": null,
+    "size_uom": null,
+    "brand": null,
+    "bone_in": false,
+    "confidence": 0.9500000000000001,
+    "needs_review": true,
+    "primal": "Chuck",
+    "species": "Beef"
+  },
+  "89fd4f27f2ff590e683c7b290f90c5925d835b7edcd8eb029eb2904ca74a491b": {
+    "subprimal": "Clod",
+    "grade": "USDA Choice",
+    "size": null,
+    "size_uom": null,
+    "brand": "100% GRASS-FED",
+    "bone_in": false,
+    "confidence": 0.75,
+    "needs_review": true,
+    "primal": "Chuck",
+    "species": "Beef"
   }
 }

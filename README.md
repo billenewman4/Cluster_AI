@@ -1,35 +1,60 @@
-# Meat Inventory Pipeline
+# Cluster AI - Meat Inventory Processing Pipeline
 
-An intelligent data processing pipeline that extracts structured information from meat supplier inventory files using Large Language Models (LLMs). The pipeline ingests Excel/CSV files containing product descriptions and automatically extracts standardized meat attributes like species, primal cuts, grades, sizes, and brands.
+An intelligent data processing pipeline that extracts structured information from meat supplier inventory files using Large Language Models (LLMs) and advanced workflow orchestration. The pipeline ingests Excel/CSV files containing product descriptions and automatically extracts standardized meat attributes like species, primal cuts, grades, sizes, and brands using LangGraph workflows.
 
-## 🎯 Features
+## 🎯 Key Features
 
-- **Multi-format Support**: Processes Excel (.xlsx, .xls), CSV, and TSV files
-- **Intelligent Column Mapping**: Automatically detects and maps various column naming conventions
-- **LLM-Powered Extraction**: Uses OpenAI GPT models to extract structured meat attributes
-- **Quality Control**: Flags records that need manual review based on confidence scores
-- **Robust Error Handling**: Includes rate limiting, retries, and comprehensive logging
-- **Caching**: Prevents duplicate API calls for identical descriptions
-- **Comprehensive Testing**: Unit tests with >80% coverage
+- **🔄 LangGraph Workflow Engine**: Advanced workflow orchestration with conditional processing paths
+- **🔥 Firebase Integration**: Real-time data storage and retrieval with Firestore
+- **💾 Intelligent Caching**: Prevents duplicate API calls and improves performance
+- **📊 Comprehensive Evaluation**: LangSmith-powered evaluation framework with ground truth datasets
+- **🚀 Batch Processing**: Optimized for large-scale data processing with checkpointing
+- **🔍 Quality Control**: Multi-stage review process with confidence scoring and flagging
+- **📈 Real-time Monitoring**: Comprehensive logging and performance tracking
+- **🎯 Multi-Provider Support**: OpenAI, Anthropic, and other LLM providers
 
-## 📁 Project Structure
+## 📁 Project Architecture
 
 ```
-meat-inventory-pipeline/
+Cluster_AI/
+├── config/
+│   └── firebase/              # Firebase configuration files
 ├── data/
-│   ├── incoming/          # Raw supplier files (Excel/CSV)
-│   └── processed/         # Processed parquet files
-├── docs/                  # Reference documentation
+│   ├── incoming/              # Raw supplier files (Excel/CSV)
+│   └── processed/             # Processed data files
 ├── src/
-│   ├── stage1_ingest.py   # Data ingestion and preprocessing
-│   ├── stage2_llm.py      # LLM-based attribute extraction
-│   ├── stage3_output.py   # Output generation and quality control
-│   └── run_pipeline.py    # Main orchestration script
-├── outputs/               # Final CSV and parquet outputs
-├── logs/                  # Pipeline execution logs
-├── tests/                 # Unit tests
-├── requirements.txt       # Python dependencies
-└── README.md             # This file
+│   ├── AIs/                   # AI Processing Components
+│   │   ├── graph.py           # LangGraph workflow orchestration
+│   │   ├── llm_extraction/    # LLM-based extraction modules
+│   │   ├── Clarifications/    # Clarification processing system
+│   │   └── review/            # Review and quality control AI
+│   ├── data_ingestion/        # Data processing pipeline
+│   │   ├── core/              # Core data processing modules
+│   │   ├── processor.py       # Main data processing orchestrator
+│   │   └── utils/             # Data processing utilities
+│   ├── database/              # Firebase and database operations
+│   │   ├── firebase_client.py # Firebase client interface
+│   │   ├── excel_to_firestore.py # Excel to Firestore integration
+│   │   └── run_scripts/       # Database operation scripts
+│   ├── Caching/               # Intelligent caching system
+│   │   ├── cache_orchestrator.py # Cache management orchestration
+│   │   ├── cache_manager.py   # Core cache operations
+│   │   └── cache_query.py     # Cache querying and validation
+│   ├── Evals/                 # Evaluation framework
+│   │   ├── eval_process.py    # LangSmith evaluation process
+│   │   ├── model_caller/      # Model testing interface
+│   │   └── data/              # Ground truth and test datasets
+│   ├── output_generation/     # Output and reporting
+│   │   ├── file_writer.py     # File output generation
+│   │   └── report_generator.py # Summary report generation
+│   └── run_pipeline.py        # Main pipeline orchestrator
+├── outputs/                   # Generated output files
+├── logs/                      # Pipeline execution logs
+├── tests/                     # Unit and integration tests
+├── run_fast_batch.py          # Optimized batch processing script
+├── requirements.txt           # Python dependencies
+├── firebase.json              # Firebase project configuration
+└── README.md                  # This file
 ```
 
 ## 🚀 Quick Start
@@ -37,28 +62,32 @@ meat-inventory-pipeline/
 ### Prerequisites
 
 - Python 3.10 or higher
-- OpenAI API key
-- Supplier inventory files in Excel or CSV format
+- OpenAI API key (or other LLM provider)
+- Firebase project (optional, for data persistence)
+- LangSmith API key (optional, for evaluation)
 
 ### Installation
 
 1. **Clone and setup the project**:
 ```bash
 git clone <repository-url>
-cd meat-inventory-pipeline
+cd Cluster_AI
 pip install -r requirements.txt
 ```
 
 2. **Configure environment variables**:
 ```bash
-# Copy the example and edit with your API key
-cp env_example.txt .env
+# Create .env file with your API keys
+touch .env
 
-# Edit .env file with your OpenAI API key
-OPENAI_API_KEY=your_openai_api_key_here
-OPENAI_MODEL=gpt-4
-MAX_REQUESTS_PER_MINUTE=100
+# Add your configuration
+cat >> .env << EOF
+OPENAI_API_KEY=your_openai_api_key
+LANGCHAIN_API_KEY=your_langsmith_api_key
+LANGCHAIN_TRACING_V2=true
+FIREBASE_PROJECT_ID=your_firebase_project_id
 LOG_LEVEL=INFO
+EOF
 ```
 
 3. **Place your data files**:
@@ -69,220 +98,369 @@ cp /path/to/your/files/*.xlsx data/incoming/
 
 ### Basic Usage
 
-Run the complete pipeline for Beef Chuck category:
+#### Standard Pipeline Processing
+
+Run the complete LangGraph pipeline for Beef Chuck category:
 
 ```bash
 python src/run_pipeline.py --categories "Beef Chuck"
 ```
 
-Run with verbose logging:
+Run with test mode (first 10 records only):
 
 ```bash
-python src/run_pipeline.py --categories "Beef Chuck" --verbose
+python src/run_pipeline.py --categories "Beef Chuck" --test-run
 ```
 
 Process multiple categories:
 
 ```bash
-python src/run_pipeline.py --categories "Beef Chuck,Beef Loin"
+python src/run_pipeline.py --categories "Beef Chuck,Beef Loin,Beef Rib"
 ```
 
-Force re-processing of all data:
+Upload results to Firebase:
 
 ```bash
-python src/run_pipeline.py --categories "Beef Chuck" --force-stage1
+python src/run_pipeline.py --categories "Beef Chuck" --upload-to-firebase
 ```
+
+#### Optimized Batch Processing
+
+For large-scale processing with checkpointing:
+
+```bash
+python run_fast_batch.py --test-run
+python run_fast_batch.py --upload-firebase
+```
+
+## 🔄 Pipeline Architecture
+
+### LangGraph Workflow System
+
+The pipeline uses a sophisticated LangGraph workflow with conditional processing:
+
+```mermaid
+graph TD
+    A[Data Ingestion] --> B[LangGraph Workflow]
+    B --> C{Initial Extraction}
+    C -->|High Confidence| D[Conditional Path]
+    C -->|Low Confidence| E[Full Review Path]
+    D --> F[Quick Validation]
+    E --> G[Clarification Questions]
+    E --> H[Review AI Processing]
+    F --> I[Final Output]
+    G --> H
+    H --> I
+    I --> J[Firebase Upload]
+    I --> K[Output Generation]
+```
+
+### Processing Stages
+
+#### Stage 1: Data Ingestion (`DataProcessor`)
+- **Input**: Excel/CSV files in `data/incoming/`
+- **Process**:
+  - Multi-format file reading with automatic detection
+  - Column mapping and normalization
+  - Data cleaning and validation
+  - Duplicate detection and removal
+- **Output**: Processed DataFrame ready for AI processing
+
+#### Stage 2: LangGraph Workflow (`BeefProcessingWorkflow`)
+- **Input**: Processed data from Stage 1
+- **Process**:
+  - Dynamic beef extraction with confidence scoring
+  - Conditional processing based on extraction confidence
+  - Clarification question generation for ambiguous cases
+  - Review AI for quality control and validation
+  - Multi-provider LLM support (OpenAI, Anthropic)
+- **Output**: Structured extraction results with metadata
+
+#### Stage 3: Output Generation (`FileWriter`)
+- **Input**: Extraction results from Stage 2
+- **Process**:
+  - Quality validation and flagging
+  - Excel and CSV output generation
+  - Performance metrics and reporting
+  - Firebase integration (optional)
+- **Output**: 
+  - `outputs/{category}_extracted.csv` - Clean records
+  - `outputs/{category}_extracted_flagged.csv` - Records needing review
+  - `outputs/master_beef_extraction_{timestamp}.xlsx` - Master Excel file
+  - `outputs/clarification_questions_{timestamp}.xlsx` - Clarification questions
 
 ## 📊 Expected Data Format
 
-Your incoming files should contain at minimum these columns (various naming conventions supported):
+Your incoming files should contain these columns (flexible naming supported):
 
 | Required Field | Accepted Column Names |
 |----------------|-----------------------|
 | Product Code   | `product_code`, `item_code`, `code`, `sku` |
 | Description    | `product_description`, `description`, `product_name`, `item_name` |
 | Category       | `category_description`, `category`, `dept`, `department` |
+| Brand (optional) | `brand_name`, `brand`, `manufacturer` |
 
 ### Example Input Data
 
 ```csv
-Item Code,Product Description,Department
-A123,Beef Chuck Shoulder Clod 15# Choice Certified Angus,Beef Chuck
-B456,Prime Beef Chuck Flat Iron Steak 8oz,Beef Chuck
-C789,Wagyu Beef Chuck Roll 12lb,Beef Chuck
+Item Code,Product Description,Department,Brand Name
+A123,Beef Chuck Shoulder Clod 15# Choice Certified Angus,Beef Chuck,Certified Angus Beef
+B456,Prime Beef Chuck Flat Iron Steak 8oz,Beef Chuck,Premier Beef
+C789,Wagyu Beef Chuck Roll 12lb,Beef Chuck,Snake River Farms
 ```
-
-## 🔄 Pipeline Stages
-
-### Stage 1: Data Ingestion (`stage1_ingest.py`)
-
-- **Input**: Excel/CSV files in `data/incoming/`
-- **Process**:
-  - Reads all supported files with automatic format detection
-  - Normalizes column names to standard format
-  - Cleans and standardizes text data
-  - Creates audit trail with source filename and row numbers
-  - Removes duplicate records
-- **Output**: `data/processed/inventory_base.parquet`
-
-### Stage 2: LLM Extraction (`stage2_llm.py`)
-
-- **Input**: Processed parquet file
-- **Process**:
-  - Filters records by category (e.g., "Beef Chuck")
-  - Uses specialized agent profiles for different meat categories
-  - Calls OpenAI API with structured prompts
-  - Applies post-processing rules and validation
-  - Implements rate limiting and caching
-- **Output**: Structured DataFrames with extracted attributes
-
-### Stage 3: Output Generation (`stage3_output.py`)
-
-- **Input**: Extraction results from Stage 2
-- **Process**:
-  - Validates data quality and completeness
-  - Separates clean records from those needing review
-  - Generates summary statistics and reports
-  - Estimates API costs
-- **Output**: 
-  - `outputs/{category}_extracted.csv` - Clean records
-  - `outputs/{category}_extracted_flagged.csv` - Records needing review
-  - `outputs/{category}_extracted.parquet` - Analytics-ready format
-  - `logs/pipeline_run_{timestamp}.json` - Execution summary
 
 ## 📋 Extracted Attributes
 
-For each product description, the pipeline extracts:
+The LangGraph workflow extracts comprehensive meat attributes:
 
 | Attribute | Description | Example Values |
 |-----------|-------------|----------------|
 | `species` | Type of meat | Beef, Pork, Lamb |
-| `primal` | Primary cut section | Chuck, Loin, Rib |
-| `subprimal` | Specific cut within primal | Shoulder Clod, Flat Iron |
+| `primal` | Primary cut section | Chuck, Loin, Rib, Round |
+| `subprimal` | Specific cut within primal | Shoulder Clod, Flat Iron, Strip Loin |
 | `grade` | USDA grade or quality level | Prime, Choice, Select, Wagyu |
-| `size` | Numeric size value | 15, 8.5 |
+| `size` | Numeric size value | 15, 8.5, 2.5 |
 | `size_uom` | Unit of measurement | lb, oz, #, kg |
-| `brand` | Brand or certification | Certified Angus, Creekstone |
-| `llm_confidence` | Extraction confidence score | 0.0 to 1.0 |
+| `brand` | Brand or certification | Certified Angus, Creekstone Farms |
+| `bone_in` | Whether product contains bone | true, false |
+| `confidence` | Extraction confidence score | 0.0 to 1.0 |
+| `needs_review` | Flagged for manual review | true, false |
+| `miss_categorized` | Potentially miscategorized | true, false |
 
-## 🔧 Configuration
+## 🔥 Firebase Integration
 
-### Agent Profiles
+### Setup Firebase
 
-Currently supports **Beef Chuck** category with specialized prompts and validation rules. Additional categories can be added by extending the agent profiles in `stage2_llm.py`.
+1. **Initialize Firebase project**:
+```bash
+# Configure Firebase project
+firebase login
+firebase use your-project-id
+```
 
-### Quality Control Thresholds
+2. **Deploy Firestore rules**:
+```bash
+firebase deploy --only firestore:rules
+```
 
-Records are flagged for review if:
-- LLM confidence score < 0.5
-- Invalid grades detected
-- Cuts not found in reference hierarchy
-- Invalid size units
+### Automatic Upload
 
-### Rate Limiting
+Results are automatically uploaded to Firebase when using the `--upload-to-firebase` flag:
 
-- Default: 100 requests/minute
-- Implements exponential backoff with jitter
-- Configurable via environment variables
+```bash
+python src/run_pipeline.py --categories "Beef Chuck" --upload-to-firebase
+```
+
+### Manual Database Operations
+
+```python
+from src.database.excel_to_firestore import ExcelToFirestore
+
+# Initialize uploader
+uploader = ExcelToFirestore(base_collection_prefix="meat_inventory")
+
+# Upload Excel file
+collection_name, stats = uploader.import_excel("outputs/master_file.xlsx")
+```
+
+## 📊 Evaluation Framework
+
+### LangSmith Integration
+
+The project includes a comprehensive evaluation framework using LangSmith:
+
+```bash
+# Run evaluation on specific datasets
+python src/Evals/eval_process.py
+
+# Evaluate specific primal cuts
+python -c "from src.Evals.eval_process import eval_process; eval_process('test_chuck')"
+```
+
+### Available Test Datasets
+
+- **test_chuck** - Chuck primal cuts (9 examples)
+- **test_loin** - Loin primal cuts (5 examples)  
+- **test_rib** - Rib primal cuts (8 examples)
+- **test_round** - Round primal cuts (6 examples)
+- **test_flank** - Flank primal cuts (4 examples)
+- **test_variety** - Variety cuts (5 examples)
+- **test_ground** - Ground beef products (6 examples)
+- **test_other** - Other beef products (4 examples)
+
+## 💾 Caching System
+
+### Intelligent Caching
+
+The pipeline includes a sophisticated caching system to prevent duplicate API calls:
+
+```python
+from src.Caching.cache_orchestrator import refresh_cache
+
+# Refresh cache from Firebase
+result = refresh_cache(
+    collection_name="meat_inventory_latest",
+    cache_file_path="data/processed/.accepted_items_cache.json"
+)
+```
+
+### Cache Benefits
+
+- **Cost Reduction**: Prevents duplicate LLM API calls
+- **Performance**: Faster processing for repeated descriptions
+- **Consistency**: Ensures consistent results for identical inputs
 
 ## 🧪 Testing
 
-Run the test suite:
+### Unit Tests
 
 ```bash
-# Install test dependencies
-pip install pytest
-
 # Run all tests
 pytest tests/ -v
 
 # Run with coverage
 pytest tests/ --cov=src --cov-report=html
+
+# Run specific test modules
+pytest tests/data_ingestion/ -v
+pytest tests/output_generation/ -v
+```
+
+### Integration Tests
+
+```bash
+# Test pipeline with sample data
+python src/run_pipeline.py --categories "Beef Chuck" --test-run
 ```
 
 ## 📈 Monitoring and Logs
 
-### Execution Logs
+### Real-time Monitoring
 
-All pipeline runs generate structured JSON logs in `logs/` with:
-- Execution timestamps and duration
-- Record counts and success rates
-- API usage and cost estimates
-- Error details and warnings
+All pipeline runs generate comprehensive logs:
 
-### Output Summary
+- **Pipeline Logs**: `logs/pipeline.log`
+- **Batch Processing**: `logs/fast_batch.log`
+- **Firebase Operations**: `logs/upload_reviewed.log`
 
-Each run produces a comprehensive summary:
+### Performance Metrics
+
+Each run provides detailed statistics:
 
 ```
-============================================================
-           MEAT INVENTORY PIPELINE SUMMARY
-============================================================
-Timestamp: 2024-01-15T10:30:00
-Categories Processed: 1
-Total Records: 1,250
-Clean Records: 1,180
-Flagged Records: 70
-Success Rate: 94.4%
-
-CATEGORY BREAKDOWN:
-----------------------------------------
-
-Beef Chuck:
-  Total Records: 1,250
-  Clean: 1,180 | Flagged: 70
-  Avg Confidence: 0.847
-  Species: {'Beef': 1250}
-  Grades: {'Choice': 650, 'Prime': 400, 'Select': 200}
-============================================================
-✅ All records processed successfully!
-============================================================
+📊 PIPELINE RESULTS:
+   Total products: 1,250
+   Successfully processed: 1,180
+   Fast path (skip review): 850
+   Full review path: 330
+   📝 Review bot flagged for review: 70
+   🚨 Review bot flagged miss-categorized: 12
+   📋 Clarification questions: 25
+   📈 Average confidence: 0.847
 ```
+
+## 🔧 Configuration
+
+### Environment Variables
+
+```bash
+# Core LLM Configuration
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_MODEL=gpt-4o-mini
+MAX_REQUESTS_PER_MINUTE=100
+
+# LangSmith Evaluation
+LANGCHAIN_API_KEY=your_langsmith_key
+LANGCHAIN_TRACING_V2=true
+
+# Firebase Configuration
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_CREDENTIALS_PATH=path/to/credentials.json
+
+# Logging
+LOG_LEVEL=INFO
+```
+
+### Workflow Configuration
+
+The LangGraph workflow can be customized in `src/AIs/graph.py`:
+
+- **Provider Selection**: OpenAI, Anthropic, or other LLM providers
+- **Confidence Thresholds**: Adjust confidence scoring for quality control
+- **Processing Paths**: Modify conditional workflow logic
+- **Review Criteria**: Customize review AI behavior
 
 ## 🔍 Troubleshooting
 
 ### Common Issues
 
-1. **Missing API Key**:
+1. **Missing API Keys**:
    ```
    Error: OPENAI_API_KEY not found in environment variables
    ```
-   Solution: Create `.env` file with your OpenAI API key
+   Solution: Create `.env` file with your API keys
 
-2. **No Supported Files**:
+2. **Firebase Connection**:
    ```
-   Error: No supported data files found in data/incoming/
+   Error: Firebase project not configured
    ```
-   Solution: Ensure Excel/CSV files are in `data/incoming/` directory
+   Solution: Initialize Firebase project and update `firebase.json`
 
-3. **Missing Required Columns**:
+3. **LangSmith Evaluation**:
    ```
-   Error: File supplier.xlsx is missing required columns: ['category_description']
+   Error: LangSmith API key not configured
    ```
-   Solution: Verify your files contain the required columns with supported naming conventions
+   Solution: Set `LANGCHAIN_API_KEY` environment variable
 
-4. **Rate Limit Exceeded**:
+4. **Memory Issues**:
    ```
-   Warning: Rate limit reached, sleeping for 30.2 seconds
+   Error: Out of memory during batch processing
    ```
-   Solution: Normal behavior - the pipeline will automatically wait and retry
+   Solution: Use `run_fast_batch.py` with checkpointing
 
 ### Debug Mode
 
-Enable verbose logging for detailed troubleshooting:
+Enable verbose logging:
 
 ```bash
-python src/run_pipeline.py --categories "Beef Chuck" --verbose
+python src/run_pipeline.py --categories "Beef Chuck" --test-run
+```
+
+## 🚀 Advanced Usage
+
+### Custom Workflow Development
+
+Extend the LangGraph workflow for new use cases:
+
+```python
+from src.AIs.graph import BeefProcessingWorkflow
+
+# Create custom workflow
+workflow = BeefProcessingWorkflow(provider='anthropic')
+
+# Process custom data
+results = workflow.process_batch(custom_products)
+```
+
+### Batch Processing Optimization
+
+For large datasets, use the optimized batch processor:
+
+```python
+from run_fast_batch import FastBatchProcessor
+
+processor = FastBatchProcessor()
+results = processor.run_fast_batch(test_run=False, upload_firebase=True)
 ```
 
 ## 🔮 Future Enhancements
 
-- [ ] Support for additional meat categories (Pork, Lamb, etc.)
-- [ ] Web-based UI for pipeline management
-- [ ] Real-time processing capabilities
-- [ ] Integration with inventory management systems
-- [ ] Advanced ML models for improved extraction accuracy
-- [ ] Batch processing optimization for large datasets
+- [ ] **Multi-Species Support**: Extend beyond beef to pork, lamb, and poultry
+- [ ] **Real-time Processing**: WebSocket-based real-time data processing
+- [ ] **Advanced ML Models**: Integration with custom-trained models
+- [ ] **Web Interface**: React-based management dashboard
+- [ ] **API Endpoints**: RESTful API for external integrations
+- [ ] **Advanced Analytics**: Predictive analytics and trend analysis
 
 ## 📄 License
 
@@ -291,16 +469,18 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🤝 Contributing
 
 1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/new-category`)
-3. Make your changes
-4. Add tests for new functionality
-5. Ensure all tests pass (`pytest`)
-6. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/new-enhancement`)
+3. Make your changes with tests
+4. Ensure all tests pass (`pytest`)
+5. Submit a pull request
 
 ## 📞 Support
 
-For questions, issues, or feature requests, please open an issue on the GitHub repository.
+For questions, issues, or feature requests:
+- Open an issue on GitHub
+- Check the troubleshooting section
+- Review the evaluation framework documentation
 
 ---
 
-**Built with ❤️ for the meat processing industry** 
+**Built with ❤️ for intelligent meat inventory processing** 

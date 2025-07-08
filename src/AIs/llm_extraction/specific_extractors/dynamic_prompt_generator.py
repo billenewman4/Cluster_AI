@@ -149,6 +149,13 @@ NOTE: Do NOT include 'primal' in the output - primal is determined from the prod
     - AA or Canadian AA = Select
     - A or Canadian A = Standard
 
+BRAND-SPECIFIC GRADE EQUIVALENCIES:
+- St. Helen's is a Canadian brand that uses Canadian grading system:
+    - St. Helen's A = n/r (no rating/standard)
+    - St. Helen's AA = Select
+    - St. Helen's AAA = Choice
+- When St. Helen's brand is detected with A, AA, or AAA grades, use the above equivalencies
+
 If any value including the subprimal cannot be determined, use null. Please only used the listed values for mapping DO NOT USE ANYTHING ELSE!
 
 Examples:

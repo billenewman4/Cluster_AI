@@ -45,38 +45,19 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 
-def main():
-    parser = argparse.ArgumentParser(
-        description='Run the meat inventory pipeline with LangGraph workflow',
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
-    # Core pipeline options
-    parser.add_argument(
-        '--categories', 
-        default='Beef Chuck',
-        help='Comma-separated list of categories to process'
-    )
-    parser.add_argument(
-        '--test-run',
-        action='store_true', 
-        help='Process only first 10 records for testing'
-    )
-    parser.add_argument(
-        '--upload-to-firebase',
-        action='store_true',
-        help='Upload master Excel file to Firebase Firestore'
-    )
-    parser.add_argument(
-        '--provider',
-        default='openai',
-        help='AI provider to use (openai, anthropic, etc.)'
-    )
+def process_categories(categories: list, test_run: bool = False, upload_to_firebase: bool = False, provider: str = 'openai'):
+    """
+    Core pipeline processing function that can be called from other scripts.
     
-    args = parser.parse_args()
+    Args:
+        categories: List of category names to process
+        test_run: If True, process only first 10 records per category
+        upload_to_firebase: If True, upload results to Firebase
+        provider: AI provider to use (openai, anthropic, etc.)
     
-    # Parse categories
-    categories = [cat.strip() for cat in args.categories.split(',')]
-    
+    Returns:
+        dict: Processing results and statistics
+    """
     try:
         # Create necessary directories
         os.makedirs('logs', exist_ok=True)
@@ -84,7 +65,7 @@ def main():
         
         logger.info("🚀 Starting Meat Inventory Pipeline with LangGraph Workflow")
         logger.info(f"Categories to process: {categories}")
-        logger.info(f"AI Provider: {args.provider}")
+        logger.info(f"AI Provider: {provider}")
         
         # Define paths
         project_root = Path(__file__).parent.parent
@@ -100,7 +81,7 @@ def main():
         processor = DataProcessor()
         
         # Determine limit for test runs
-        limit_per_category = 10 if args.test_run else None
+        limit_per_category = 10 if test_run else None
         
         df = processor.process_file(
             str(test_data_path), 
@@ -269,11 +250,71 @@ def main():
         
         logger.info("✅ Pipeline Complete!")
         
-        return 0
+        # Return results for programmatic use
+        return {
+            'success': True,
+            'total_processed': total_processed,
+            'successful': successful,
+            'conditional_processing': conditional_processing,
+            'full_review_processing': full_review_processing,
+            'needs_review_count': needs_review_count,
+            'miss_categorized_count': miss_categorized_count,
+            'avg_confidence': avg_confidence,
+            'total_questions': total_questions,
+            'output_files': output_files,
+            'results_df': results_df
+        }
             
     except Exception as e:
         logger.error(f"Pipeline failed: {e}")
-        return 1
+        return {
+            'success': False,
+            'error': str(e)
+        }
+
+def main():
+    """Command line interface for the pipeline."""
+    parser = argparse.ArgumentParser(
+        description='Run the meat inventory pipeline with LangGraph workflow',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    # Core pipeline options
+    parser.add_argument(
+        '--categories', 
+        default='Beef Chuck',
+        help='Comma-separated list of categories to process'
+    )
+    parser.add_argument(
+        '--test-run',
+        action='store_true', 
+        help='Process only first 10 records for testing'
+    )
+    parser.add_argument(
+        '--upload-to-firebase',
+        action='store_true',
+        help='Upload master Excel file to Firebase Firestore'
+    )
+    parser.add_argument(
+        '--provider',
+        default='openai',
+        help='AI provider to use (openai, anthropic, etc.)'
+    )
+    
+    args = parser.parse_args()
+    
+    # Parse categories
+    categories = [cat.strip() for cat in args.categories.split(',')]
+    
+    # Call the core processing function
+    result = process_categories(
+        categories=categories,
+        test_run=args.test_run,
+        upload_to_firebase=args.upload_to_firebase,
+        provider=args.provider
+    )
+    
+    # Return appropriate exit code
+    return 0 if result.get('success', False) else 1
 
 def _extract_primal_from_category(category: str) -> str:
     """Extract primal from category string."""

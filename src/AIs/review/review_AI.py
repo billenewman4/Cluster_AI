@@ -176,7 +176,16 @@ BRAND/ABBREVIATION RECOGNITION:
 - Chairman's Reserve ≠ Choice (it's a brand, not a grade)
 - Hereford is NOT a valid grade
 - AAA (Canadian) = Choice equivalent
+- AA (Canadian) = Select equivalent
+- A (Canadian) = Standard equivalent
 - SEC = Select (grade abbreviation)
+
+BRAND-SPECIFIC GRADE EQUIVALENCIES:
+- St. Helen's is a Canadian brand that uses Canadian grading system:
+    - St. Helen's A = n/r (no rating/standard)
+    - St. Helen's AA = Select
+    - St. Helen's AAA = Choice
+- When St. Helen's brand is detected with A, AA, or AAA grades, use the above equivalencies
 {primal_examples}
 
 GRADE EXTRACTION RULES:

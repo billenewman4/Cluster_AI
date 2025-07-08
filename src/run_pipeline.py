@@ -67,6 +67,15 @@ def process_categories(categories: list, test_run: bool = False, upload_to_fireb
         logger.info(f"Categories to process: {categories}")
         logger.info(f"AI Provider: {provider}")
         
+        # Refresh approved items cache to skip already processed items
+        try:
+            from Caching import refresh_cache
+            logger.info("🔄 Refreshing approved items cache...")
+            refresh_result = refresh_cache("07022025_Post_review_20250702_121651")
+            logger.info(f"Cache refresh: {refresh_result}")
+        except Exception as e:
+            logger.warning(f"Cache refresh failed (continuing anyway): {e}")
+        
         # Define paths
         project_root = Path(__file__).parent.parent
         test_data_path = project_root / "data" / "incoming" / "Product_Query_2025_06_06.csv"
@@ -99,14 +108,14 @@ def process_categories(categories: list, test_run: bool = False, upload_to_fireb
         logger.info("🧠 Stage 2: LangGraph Workflow Processing")
         
         # Initialize the workflow
-        workflow = BeefProcessingWorkflow(provider=args.provider)
+        workflow = BeefProcessingWorkflow(provider=provider)
         
         # Prepare products for the workflow
         products = []
         for _, row in df.iterrows():
             products.append({
-                'product_code': str(row.get('product_code', 'UNKNOWN')),
-                'product_description': str(row.get('product_description', '')),
+                'product_code': str(row.get('productcode', 'UNKNOWN')),
+                'product_description': str(row.get('productdescription', '')),
                 'category': str(row.get('category_description', '')) if pd.notna(row.get('category_description')) else None
             })
         
@@ -129,11 +138,11 @@ def process_categories(categories: list, test_run: bool = False, upload_to_fireb
             result_row = {
                 'Description': result['product_description'],
                 'Extracted': final_extraction,
-                'product_code': original_row.product_code,
-                'product_description': original_row.product_description,
+                'product_code': original_row.productcode,
+                'product_description': original_row.productdescription,
                 'category': getattr(original_row, 'category_description', original_row.category if hasattr(original_row, 'category') else ''),
                 'species': 'Beef',  # Default for now
-                'primal': _extract_primal_from_category(getattr(original_row, 'category_description', '')),
+                'primal': final_extraction.get('primal'),
                 'subprimal': final_extraction.get('subprimal'),
                 'grade': final_extraction.get('grade'),
                 'size': final_extraction.get('size'),
@@ -215,7 +224,7 @@ def process_categories(categories: list, test_run: bool = False, upload_to_fireb
             logger.info(f"Exported {len(clarification_data)} clarification questions to: {clarification_file}")
         
         # Stage 4: Firebase Upload (Optional)
-        if args.upload_to_firebase:
+        if upload_to_firebase:
             if not firebase_available:
                 logger.error("Firebase upload requested but ExcelToFirestore module not available")
                 logger.error("Please ensure Firebase dependencies are installed")
@@ -316,26 +325,6 @@ def main():
     # Return appropriate exit code
     return 0 if result.get('success', False) else 1
 
-def _extract_primal_from_category(category: str) -> str:
-    """Extract primal from category string."""
-    if not category:
-        return ''
-    
-    # Remove 'beef' prefix and normalize
-    primal = category.lower().replace('beef', '').strip()
-    
-    # Common primal mappings
-    primal_mapping = {
-        'chuck': 'Chuck',
-        'rib': 'Rib', 
-        'loin': 'Loin',
-        'round': 'Round',
-        'brisket': 'Brisket',
-        'plate': 'Plate',
-        'flank': 'Flank'
-    }
-    
-    return primal_mapping.get(primal, primal.title())
 
 if __name__ == '__main__':
     exit_code = main()

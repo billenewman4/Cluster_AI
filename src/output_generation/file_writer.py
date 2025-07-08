@@ -244,28 +244,29 @@ class FileWriter:
             # Get the extracted data dictionary
             extracted = extraction_row['Extracted']
             
-            # Find the corresponding original record by description
+            # Find the corresponding original record by product_code (more reliable than description)
+            product_code = extraction_row.get('product_code', '')
             original_record = original_df[
-                original_df['product_description'] == extraction_row['Description']
+                original_df['productcode'].astype(str) == str(product_code)
             ].iloc[0] if len(original_df[
-                original_df['product_description'] == extraction_row['Description']
+                original_df['productcode'].astype(str) == str(product_code)
             ]) > 0 else None
             
             if original_record is None:
-                logger.warning(f"Could not find original record for: {extraction_row['Description']}")
+                logger.warning(f"Could not find original record for product_code: {product_code}")
                 continue
             
-            # Create combined record with final schema
+            # Create combined record with final schema (use bracket notation for pandas Series)
             combined_record = {
-                'product_code': str(original_record.get('product_code', '') or ''),
-                'product_family': str(original_record.get('category_description', '') or '') + ' ' + str(extracted.get('subprimal', '') or '') + ' ' + str(extracted.get('grade', '') or ''),
-                'product_description': str(original_record.get('product_description', '') or ''),
-                'category_description': str(original_record.get('category_description', '') or ''),
+                'product_code': str(original_record['productcode'] if 'productcode' in original_record else ''),
+                'product_family': str(original_record['category_description'] if 'category_description' in original_record else '') + ' ' + str(extracted.get('subprimal', '') or '') + ' ' + str(extracted.get('grade', '') or ''),
+                'product_description': str(original_record['productdescription'] if 'productdescription' in original_record else ''),
+                'category_description': str(original_record['category_description'] if 'category_description' in original_record else ''),
                 'subprimal': str(extracted.get('subprimal', '') or ''),
                 'grade': str(extracted.get('grade', '') or ''),
                 'size': extracted.get('size', '') or '',
                 'size_uom': str(extracted.get('size_uom', '') or ''),
-                'brand': str(extracted.get('brand', '') or '') or str(original_record.get('brand_name', '') or ''),
+                'brand': str(extracted.get('brand', '') or '') or str(original_record['branddescription'] if 'branddescription' in original_record else ''),
                 'bone_in': extracted.get('bone_in', False),
                 'confidence': extracted.get('confidence', 0.0),
                 'needs_review': extracted.get('needs_review', False),

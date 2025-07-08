@@ -180,9 +180,16 @@ class ExcelToFirestore:
                 # Create the Family field by joining the components with spaces
                 record['family'] = ' '.join(filter(None, [species, primal, subprimal, grade]))
                 
-                # Add empty Approved and Comments fields
-                record['approved'] = ''
-                record['comments'] = ''
+                # Only add empty Approved and Comments fields if not present
+                # PATCH: handle approved as boolean true or omit
+                approved_val = record.get('approved', None)
+                approved_true_values = {True, 'true', 'TRUE', 'True', 1, '1', 'yes', 'y', '✓'}
+                if approved_val in approved_true_values:
+                    record['approved'] = True
+                else:
+                    record.pop('approved', None)  # Remove the field if not approved
+                if 'comments' not in record:
+                    record['comments'] = ''
                 
                 data.append(record)
             

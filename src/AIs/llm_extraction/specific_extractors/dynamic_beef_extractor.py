@@ -197,6 +197,7 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         if not description or not str(description).strip():
             logger.warning(f"Empty description provided for extraction")
             return ExtractionResult(
+                primal=None,
                 subprimal=None,
                 grade=None,
                 size=None,
@@ -217,6 +218,7 @@ class DynamicBeefExtractor(BaseLLMExtractor):
         
         # Initialize result with default values
         result = ExtractionResult(
+            primal=None,
             subprimal=None,
             grade=None,
             size=None,
@@ -273,6 +275,7 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             
             # First, populate an ExtractionResult from the JSON data
             raw_result = {
+                'primal': extraction_data.get('primal') or self.current_primal,
                 'subprimal': extraction_data.get('subprimal'),
                 'grade': extraction_data.get('grade'),
                 'size': extraction_data.get('size'),
@@ -288,9 +291,6 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             
             # Standardize subprimal to canonical name
             validated_result = self.standardize_to_canonical(validated_result)
-            
-            # Note: We can't add beef-specific fields to ExtractionResult as it doesn't have species/primal fields
-            # The calling code in run_pipeline.py handles species/primal mapping from category
             
             # Return the validated result
             return validated_result

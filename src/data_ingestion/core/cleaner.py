@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 class DataCleaner:
     """Handles data cleaning and normalization with optimized algorithms."""
     
-    REQUIRED_COLUMNS = ['product_code', 'product_description', 'category_description']
+    REQUIRED_COLUMNS = ['productcode', 'productdescription', 'category_description']
     
     def normalize_column_names(self, df: pd.DataFrame) -> pd.DataFrame:
         """
@@ -141,10 +141,10 @@ class DataCleaner:
         # Get indices where category is missing
         missing_category = df['category_description'].isna()
         
-        if missing_category.any() and 'product_description' in df.columns:
+        if missing_category.any() and 'productdescription' in df.columns:
             for category, pattern in category_patterns.items():
-                # Use vectorized operations for matching
-                mask = missing_category & df['product_description'].str.contains(pattern, na=False)
+                # Use vectorized operations for matching (regex=False to avoid warning)
+                mask = missing_category & df['productdescription'].str.contains(pattern, na=False, regex=True)
                 df.loc[mask, 'category_description'] = category
                 
             # Set default for anything still uncategorized

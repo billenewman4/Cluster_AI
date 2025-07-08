@@ -101,8 +101,9 @@ class BeefProcessingWorkflow:
             # Perform extraction
             result = self.extractor.extract(state['product_description'])
             
-            # Convert ExtractionResult to dictionary
+            # Convert ExtractionResult to dictionary - INCLUDE primal field
             extraction_dict = {
+                'primal': result.primal,
                 'subprimal': result.subprimal,
                 'grade': result.grade,
                 'size': result.size,
@@ -124,6 +125,7 @@ class BeefProcessingWorkflow:
             logger.error(error_msg)
             state['errors'].append(error_msg)
             state['initial_extraction'] = {
+                'primal': None,
                 'subprimal': None,
                 'grade': None,
                 'size': None,
@@ -175,8 +177,9 @@ class BeefProcessingWorkflow:
                 category=state.get('category', '')
             )
             
-            # Convert ReviewResults to dictionary
+            # Convert ReviewResults to dictionary - INCLUDE primal field
             final_extraction = {
+                'primal': state['initial_extraction'].get('primal'),  # Preserve primal from initial extraction
                 'subprimal': review_result.subprimal,
                 'grade': review_result.grade,
                 'size': review_result.size,

@@ -1,7 +1,266 @@
 product_code,product_family,product_description,category_description,subprimal,grade,size,size_uom,brand,bone_in,confidence,needs_review,miss_categorized
-13021014,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder XT, IBP (Ch) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,IBP,,0.9,False,False
-13081142,Beef Chuck Chuck Roll (Other) Angus Brands,"Chuck Roll N/off, Wester R. (CAngus) ChuckRlCh+",Beef Chuck,Chuck Roll,(Other) Angus Brands,,,Western Reserve,False,0.9,False,False
-10074944,Beef Chuck Top Blade USDA Choice,BF CLOD TOP BLADE CH *__ 114D-3 USDA CHOICE BFCLODTOPB,Beef Chuck,Top Blade,USDA Choice,,,USDA,False,1.0,False,False
+10019891,Beef Chuck Bone-In Arm USDA Choice,BF CHUCK BI ARM/SEC CH *__ 113A USDA CHOICE BFCHUCKBIA,Beef Chuck,Bone-In Arm,USDA Choice,,,USDA,True,1.0,False,False
+10038189,Beef Chuck Clod Hearts USDA Choice,BF CHUCK SHL-CLOD-HRT-z CH GRF 114E-3 USDA CHOICE 100% GRASS-FED BFCHUCKSHL,Beef Chuck,Clod Hearts,USDA Choice,,,GRASS RUN FARMS,False,0.9,False,False
+1003830,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH GRF 116A-3 USDA CHOICE 100% GRASS FED BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,GRASS RUN FARMS,False,1.0,False,False
+10073306,Beef Chuck Teres Major USDA Choice,BF STK CLOD-TND/TM CH 06S 4/2.25#VP 1114F USDA CHOICE - TERES MAJOR BFSTKCLODT,Beef Chuck,Teres Major,USDA Choice,2.25,lb,FULTON MARKET,False,0.95,False,False
+10074080,Beef Chuck Teres Major USDA Choice,BF CHUCK SHL-CLOD TENDR/TM CH *__ 114F-5 USDA CHOICE - TERES MAJOR BFCHUCKSHL,Beef Chuck,Teres Major,USDA Choice,,,USDA,False,1.0,False,False
+10074086,Beef Chuck Teres Major USDA Select,BF CHUCK SHL-CLOD TENDR/TM SEL OMA 114F-5 USDA SELECT - TERES MAJOR BFCHUCKSHL,Beef Chuck,Teres Major,USDA Select,,,GREATER OMAHA,False,1.0,False,False
+100741,Beef Chuck Teres Major USDA Choice,BF CHUCK SHL-CLOD TENDR/TM CH CRK-M 114F-5 USDA CHOICE - TERES MAJOR BFCHUCKSHL,Beef Chuck,Teres Major,USDA Choice,,,CREEKSTONE,False,0.9,False,False
+1007545,Beef Chuck Clod USDA Choice,BF CLOD TOP BLD-FLAT IRON CH BLM BFCLODTOPB,Beef Chuck,Clod,USDA Choice,,,BLACK MOUNTAIN,False,0.9,False,False
+10081223,Beef Chuck Clod Shoulder USDA Prime,BF CHUCK SHL CLOD XT PR-z OMA 114A-3 USDA PRIME BFCHUCKSHL,Beef Chuck,Clod Shoulder,USDA Prime,,,GREATER OMAHA,False,0.9,False,False
+10089894,Beef Chuck Clod Shoulder USDA Choice,BF CHUCK SHL CLOD XT CH NAT 114A-3 USDA CHOICE BFCHUCKSHL,Beef Chuck,Clod Shoulder,USDA Choice,,,NATIONAL BEEF,False,1.0,False,False
+1008A2G1,Beef Chuck Clod Shoulder ,BF CHUCK SHL CLOD XT ANG OMC GREATER OMAHA-GO CLASSIC #25114 BFCHUCKSHL,Beef Chuck,Clod Shoulder,,,,GREATER OMAHA,,0.9,False,False
+1008A2GO,Beef Chuck Clod Shoulder USDA Choice,BF CHUCK SHL CLOD XT CH OMA 114A-3 USDA CHOICE BFCHUCKSHL,Beef Chuck,Clod Shoulder,USDA Choice,,,GREATER OMAHA,,0.9,False,False
+1009079,Beef Chuck ScottyTender USDA Choice,BF CHUCK SCOTCH TENDER CH AUR 116B-1 USDA CHOICE BFCHUCKSCO,Beef Chuck,ScottyTender,USDA Choice,,,AURORA,False,0.9,False,False
+100913,Beef Chuck ScottyTender USDA Choice,BF CHUCK SCOTCH TENDER CH BLM 116B-1 USDA CHOICE BFCHUCKSCO,Beef Chuck,ScottyTender,USDA Choice,,,BLACK MOUNTAIN,False,0.9,False,False
+100915,Beef Chuck ScottyTender USDA Choice,BF CHUCK SCOTCH TENDER CH-STR IBP 116B-1 USDA CHOICE BFCHUCKSCO,Beef Chuck,ScottyTender,USDA Choice,,,IBP,False,0.9,False,False
+10104,Beef Chuck ScottyTender USDA Select,BF CHUCK SCOTCH TENDER SEL OMA 116B-1 USDA SELECT BFCHUCKSCO,Beef Chuck,ScottyTender,USDA Select,,,GREATER OMAHA,False,0.9,False,False
+120808,Beef Chuck  ,"CHUCK GROUND PATTY 80/20, 8OZ GrndChuck80",Beef Chuck,,,8,oz,nan,False,0.9,False,False
+124003,Beef Chuck Clod USDA Choice,"CLOD TENDER, CH CHOICECLOD",Beef Chuck,Clod,USDA Choice,,,nan,False,0.9,False,False
+128003,Beef Chuck Chuck Flap Wagyu / Kobe,"BEEF CHUCKTAIL FLAP, IMPORTED WAGYU IMPORTEDWA",Beef Chuck,Chuck Flap,Wagyu / Kobe,,,nan,False,1.0,False,False
+128009,Beef Chuck Teres Major Wagyu / Kobe,TERES MAJOR IMPORTED WAGYU MBS #3 MARBLE SCORE #3 IMPORTEDWA,Beef Chuck,Teres Major,Wagyu / Kobe,,,nan,False,1.0,False,False
+128010,Beef Chuck Teres Major Wagyu / Kobe,TERES MAJOR IMPORTED WAGYU MBS #7 MARBLE SCORE #7 IMPORTEDWA,Beef Chuck,Teres Major,Wagyu / Kobe,,,nan,False,1.0,False,False
+112002JB,Beef Chuck Chuck Roll No-Roll (Ungraded),Beef Chuck Roll-Neckoff NR JBS CHUCK ROLL,Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,nan,False,0.9,False,False
+11312411,Beef Chuck Chuck Short Rib ,"Beef Chuck Short Ribs Boneless Korean Style Cut 1/4"" SHORT RIB",Beef Chuck,Chuck Short Rib,,,,nan,False,0.9,False,False
+10380188,Beef Chuck Chuck Flap No-Roll (Ungraded),BF CHUCK FLAP-z NR UIB 116G-4 USDA NO ROLL BFCHUCKFLA,Beef Chuck,Chuck Flap,No-Roll (Ungraded),,,UPPER IOWA BF,False,0.9,False,False
+10388103,Beef Chuck Chuck Flap USDA Prime,BF CHUCK FLAP PR OMA 12/3# 116G-4 USDA PRIME BFCHUCKFLA,Beef Chuck,Chuck Flap,USDA Prime,3,lb,GREATER OMAHA,False,1.0,False,False
+10388654,Beef Chuck Chuck Flap USDA Choice,BF CHUCK FLAP CH-AAA HAR 167A-4 IMP CANADA CHOICE+ BFCHUCKFLA,Beef Chuck,Chuck Flap,USDA Choice,,,HARMONY BEEF,False,1.0,False,False
+1038870,Beef Chuck Chuck Flap USDA Select,BF CHUCK FLAP-z SE NAT 116G-4 USDA SELECT BFCHUCKFLA,Beef Chuck,Chuck Flap,USDA Select,,,NATIONAL BEEF,False,0.9,False,False
+10388NX1,Beef Chuck Chuck Flap ,BF CHUCK FLAP OMA-HRF 116G-4 HEREFORD-OMAHA #61285 BFCHUCKFLA,Beef Chuck,Chuck Flap,,,,GREATER OMAHA,False,0.9,False,False
+11101405,Beef Chuck Flat Iron USDA Choice,Beef Flat Iron Steak Choice 5oz IRON,Beef Chuck,Flat Iron,USDA Choice,5,oz,nan,False,1.0,False,False
+1086A2IB,Beef Chuck Clod Shoulder USDA Choice,BF CHUCK SHL CLOD-z XT CH IBP 114A-3 USDA CHOICE BFCHUCKSHL,Beef Chuck,Clod Shoulder,USDA Choice,,,IBP,False,0.9,False,False
+10870510,Beef Chuck Chuck Roll USDA Choice,BF DICED STEW/CHUCK 00-in 2/5#-VP 135 USDA CHOICE CHUCK ROLL BFDICEDSTE,Beef Chuck,Chuck Roll,USDA Choice,2.5,lb,FULTON MARKET,False,1.0,False,False
+10870522,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL->ROAST 2/5# USDA CHOICE - ROAST BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,2,lb,FULTON MARKET,,1.0,False,False
+1087876,Beef Chuck Chuck Roll (Other) Angus Brands,BF CHUCK ROLL N/OFF CAB OMA 116A-3 USDA CAB BFCHUCKROL,Beef Chuck,Chuck Roll,(Other) Angus Brands,,,GREATER OMAHA,False,0.9,False,False
+10878769,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CA AUR #61620 116A-3 USDA CHOICE ANGUS BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,AURORA,False,1.0,False,False
+10879898,Beef Chuck Chuck Roll USDA Prime,BF CHUCK ROLL N/OFF PR OMA 116A-3 USDA PRIME BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Prime,,,GREATER OMAHA,False,1.0,False,False
+1087A114,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF-CA HAR AAA 116A-3 CANADA AAA - CH BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,HARMONY BEEF,False,1.0,False,False
+1087A116,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF-CA CAD AAA 116A-3 CANADA AAA - CH BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,CANADIAN DIAMON,False,1.0,False,False
+1087A2GB,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH OMA 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,GREATER OMAHA,False,1.0,False,False
+1087AAIB,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH IBP D1307AH 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,IBP,False,1.0,False,False
+1087NPL,Beef Chuck Chuck Roll No-Roll (Ungraded),BF CHUCK ROLL N/OFF NR IBP 116A-3 USDA NO-ROLL BFCHUCKROL,Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,IBP,False,0.9,False,False
+124005,Beef Chuck Clod USDA Choice,"CLOD TENDER PEELED, CH, 10#A PLDCLODTNDR",Beef Chuck,Clod,USDA Choice,10,lb,nan,False,1.0,False,False
+13171120,Beef Chuck Chuck Roll ,"Chuck Roll Bone/In, Mex Praderas ChuckRlCh+",Beef Chuck,Chuck Roll,,,,Praderas Huastecas,True,0.9,False,False
+120089,Beef Chuck ScottyTender USDA Choice,"CHUCK TENDER, CH CHUCKTEND",Beef Chuck,ScottyTender,USDA Choice,,,nan,False,0.9,False,False
+13021014,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder XT, IBP (Ch) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,IBP,,1.0,False,False
+13109984,Beef Chuck ScottyTender USDA Choice,"Chuck Tender (Scotties), (Ch) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Choice,,,Various,False,1.0,False,False
+13083554,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, Heartland (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Heartland,False,1.0,False,False
+13081201,Beef Chuck Chuck Roll USDA Prime,"Chuck Roll N/off, Creekstone (Prime) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Prime,,,Creekstone Farms,False,1.0,False,False
+13081176,Beef Chuck Chuck Roll No-Roll (Ungraded),"Chuck Roll N/off, Demkota (NR) ChuckRlNRU",Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,Demkota Ranch Beef,False,1.0,False,False
+13081014,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, IBP (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,IBP,False,1.0,False,False
+13081016,Beef Chuck Chuck Roll No-Roll (Ungraded),"Chuck Roll N/off, IBP (NR) ChuckRlNRU",Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,IBP,False,0.9,False,False
+13089982,Beef Chuck Chuck Roll (Other) Angus Brands,"Chuck Roll N/off, (CAngus) ChuckRlCh+",Beef Chuck,Chuck Roll,(Other) Angus Brands,,,Various,False,0.9,False,False
+13081024,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, National (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,National Beef,False,1.0,False,False
+13083344,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll Trim, Diamond Beef (AAA) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,DiamondBeef,False,0.9,False,False
+13083354,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, Swift (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Swift,False,1.0,False,False
+13083356,Beef Chuck Chuck Roll No-Roll (Ungraded),"Chuck Roll N/off, Swift (NR) ChuckRlNRU",Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,Swift,False,1.0,False,False
+13101004,Beef Chuck ScottyTender USDA Choice,"Chuck Tender Scotties, GreaterOmaha (Ch) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Choice,,,Greater Omaha,False,0.9,False,False
+13021024,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder XT, National (Ch) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,National Beef,,0.9,False,False
+13081160,Beef Chuck Chuck Roll No-Roll (Ungraded),"Chuck Roll N/off, Iowa Premium (NR) ChuckRlNRU",Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,Iowa Premium,False,1.0,False,False
 13153790,Beef Chuck Bone-In Arm USDA Choice,"Arm Portion Bone In, Black Mountain (Ch) ArmPortion",Beef Chuck,Bone-In Arm,USDA Choice,,,Black Mountain,True,1.0,False,False
-128703,Beef Chuck Chuck Roll (Other) Angus Brands,PURE ANGUS GRASS FED CHUCK ROLL PURE ANGUS G,Beef Chuck,Chuck Roll,(Other) Angus Brands,,,nan,False,0.9,False,False
+13083556,Beef Chuck Chuck Roll No-Roll (Ungraded),"Chuck Roll N/off, Heartland (N/R) ChuckRlNRU",Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,Heartland,False,0.9,False,False
+13094497,Beef Chuck Chuck Roll ,"Chuck Roll N/off, Harmony (A) ChuckRlCh+",Beef Chuck,Chuck Roll,,,,Harmony,False,0.9,False,False
+13101002,Beef Chuck ScottyTender (Other) Angus Brands,"Chuck Tender Scotties, GreaterO(C_Angus) ChuckTdrCh+",Beef Chuck,ScottyTender,(Other) Angus Brands,,,Greater Omaha,False,0.9,False,False
+13081001,Beef Chuck Chuck Roll USDA Prime,"Chuck Roll N/off, GreaterOmaha (Prime) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Prime,,,Greater Omaha,False,1.0,False,False
+13901054,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, AFG S. B. (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,American Foods Group,False,1.0,False,False
+11100300,Beef Chuck Clod Shoulder USDA Select,Beef Chuck Clod Select CLOD,Beef Chuck,Clod Shoulder,USDA Select,,,nan,,0.9,False,False
+11321409,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Boneless 8oz SHORT RIB,Beef Chuck,Chuck Short Rib,,8,oz,nan,False,0.9,False,False
+13081120,Beef Chuck Chuck Roll ,"Chuck Roll N/off, Mex Praderas Huastecas ChuckRlNRU",Beef Chuck,Chuck Roll,,,,Praderas Huastecas,False,0.9,False,False
+13081003,Beef Chuck Chuck Roll ,"Chuck Roll N/off, GreaterOmaha (Ch_Angu) ChuckRlCh+",Beef Chuck,Chuck Roll,,,,Greater Omaha,False,1.0,False,False
+11401009,Beef Chuck Teres Major USDA Choice,"Beef Chunks (Teres Major) 1 1/2"" Choice Beef Chunks",Beef Chuck,Teres Major,USDA Choice,1.5,lb,Anmar,False,0.9,False,False
+11321404,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Boneless 4oz SHORT RIB,Beef Chuck,Chuck Short Rib,,4,oz,nan,False,0.9,False,False
+11202012,Beef Chuck Chuck Roll ,"Beef Chuck Roll-Neckoff Cut 1.5 X 1.5"" 2# CVP Bag 55/ dwn case wt. CHUCK ROLL",Beef Chuck,Chuck Roll,,2,lb,nan,False,0.95,False,False
+13021055,Beef Chuck Clod Shoulder USDA Select,"Clod Shoulder, AFG (Sel) ClodSel",Beef Chuck,Clod Shoulder,USDA Select,,,American Foods Group,,0.9,False,False
+13081204,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, Creekstone (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Creekstone Farms,False,1.0,False,False
+13101216,Beef Chuck ScottyTender No-Roll (Ungraded),"Chuck Tender Scotties, Creekstone (N/R) ChuckTdrnru",Beef Chuck,ScottyTender,No-Roll (Ungraded),,,Creekstone Farms,False,0.9,False,False
+11310416,Beef Chuck Chuck Short Rib ,"Beef Chuck Short Ribs Bone In CUT 2"" SHORT RIB",Beef Chuck,Chuck Short Rib,,2,lb,nan,True,1.0,False,False
+13083896,Beef Chuck Chuck Roll No-Roll (Ungraded),"Chuck Roll N/off, Clear River (NR) ChuckRlNRU",Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,Clear River,False,0.9,False,False
+13084496,Beef Chuck Chuck Roll ,"Chuck Roll N/off, Harmony ChuckRlNRU",Beef Chuck,Chuck Roll,,,,Harmony,False,0.9,False,False
+13081205,Beef Chuck Chuck Roll USDA Select,"Chuck Roll N/off, Creekstone (Sel) ChuckRSel",Beef Chuck,Chuck Roll,USDA Select,,,Creekstone Farms,False,0.9,False,False
+13081012,Beef Chuck Chuck Roll (Other) Angus Brands,"Chuck Roll N/off, IBP (CAngus) ChuckRlCh+",Beef Chuck,Chuck Roll,(Other) Angus Brands,,,IBP,False,0.9,False,False
+11300006,Beef Chuck Chuck Flap ,Beef Chuck Flap Tail 6oz Boneless Flap Tail 12,Beef Chuck,Chuck Flap,,6,oz,Anmar,False,1.0,False,False
+11300004,Beef Chuck Chuck Flap ,Beef Chuck Flap Tail 4oz Boneless Flap Tail 12,Beef Chuck,Chuck Flap,,4,oz,Anmar,False,1.0,False,False
+11321403,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Boneless 3oz SHORT RIB,Beef Chuck,Chuck Short Rib,,3,oz,nan,False,1.0,False,False
+1000002,Beef Chuck Clod ,Beef Boneless Clod XT CMB JBS CHUCK,Beef Chuck,Clod,,,,nan,False,0.8,False,False
+10078012,Beef Chuck Clod Shoulder USDA Choice,BF CHUCK SHL CLOD-z XT CH-COMB-OMA 114A-3 USDA CHOICE - COMBO 2K BFCHUCKSHL,Beef Chuck,Clod Shoulder,USDA Choice,,,GREATER OMAHA,,0.9,False,False
+13083551,Beef Chuck Chuck Roll USDA Prime,"Chuck Roll N/off, Heartland (Prime) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Prime,,,Heartland,False,1.0,False,False
+13081395,Beef Chuck Chuck Roll USDA Select,"Chuck Roll N/off, Excel,1x1(AA) Canada ChuckRl AA",Beef Chuck,Chuck Roll,USDA Select,1,lb,Cargill,False,0.9,False,False
+11110401,Beef Chuck Clod USDA Choice,Beef Chuck Clods Choice cut 1/2 inch 10# CASE Beef Chuck C,Beef Chuck,Clod,USDA Choice,10,lb,nan,,0.9,False,False
+11100500,Beef Chuck Clod Hearts (Other) Angus Brands,Beef Chuck Clod Choice XT hearts Angus CLOD,Beef Chuck,Clod Hearts,(Other) Angus Brands,,,UPPER IOWA BF,False,0.9,False,False
+11101300,Beef Chuck Flat Iron USDA Choice,Beef Chuck Top Blade Choice (UI) Whole Flat Iron Angus IRON,Beef Chuck,Flat Iron,USDA Choice,,,UPPER IOWA BF,False,1.0,False,False
+11310500,Beef Chuck Chuck Short Rib (Other) Angus Brands,Beef Chuck Short Ribs (UI) Angus Bone In SHORT RIB,Beef Chuck,Chuck Short Rib,(Other) Angus Brands,,,nan,True,1.0,False,False
+1007546,Beef Chuck Flat Iron USDA Choice,BF CLOD TOP BLD-FLAT IRON CH SWI SWIFT BFCLODTOPB,Beef Chuck,Flat Iron,USDA Choice,,,SWIFT,False,0.9,False,False
+10089859,Beef Chuck Clod Shoulder USDA Choice,BF CHUCK SHL CLOD CAB CH NAT 114-1 USDA CHOICE BFCHUCKSHL,Beef Chuck,Clod Shoulder,USDA Choice,,,NATIONAL BEEF,False,0.9,False,False
+13081164,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, Iowa Premium (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Iowa Premium,False,1.0,False,False
+13021144,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder XT,WesternReserve (CH) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,Western Reserve,,0.9,False,False
+100730,Beef Chuck Teres Major USDA Choice,BF STK CLOD-TND/TM CH 00S 11# 1114F USDA CHOICE - TERES MAJOR BFSTKCLODT,Beef Chuck,Teres Major,USDA Choice,11,lb,FULTON MARKET,,0.9,False,False
+100733,Beef Chuck Teres Major USDA Choice,BF STK CLOD-TND/TM CH 03S 4/2.8#-VP 1114F USDA CHOICE - TERES MAJOR BFSTKCLODT,Beef Chuck,Teres Major,USDA Choice,2.8,lb,FULTON MARKET,False,1.0,False,False
+10074944,Beef Chuck Top Blade USDA Choice,BF CLOD TOP BLADE CH *__ 114D-3 USDA CHOICE BFCLODTOPB,Beef Chuck,Top Blade,USDA Choice,,,USDA,False,1.0,False,False
+10075015,Beef Chuck Top Blade USDA Choice,BF CLOD TOP BLADE CH OMA 114D-3 USDA CHOICE BFCLODTOPB,Beef Chuck,Top Blade,USDA Choice,,,GREATER OMAHA,False,1.0,False,False
+100761,Beef Chuck Teres Major (Other) Angus Brands,BF CHUCK SHL-CLOD TENDR/TM ANG OMA 114F-5 USDA ANGUS - TERES MAJOR BFCHUCKSHL,Beef Chuck,Teres Major,(Other) Angus Brands,,,GREATER OMAHA,False,0.9,False,False
+10086000,Beef Chuck Blade Meat USDA Choice,BF CHUCK BI BLAD/SEC-N/O CH *__ 113B USDA CHOICE BFCHUCKBIB,Beef Chuck,Blade Meat,USDA Choice,113,lb,USDA,True,0.9,False,False
+100904,Beef Chuck ScottyTender USDA Choice,BF CHUCK SCOTCH TENDER CH EXCEL 116B-1 USDA CHOICE BFCHUCKSCO,Beef Chuck,ScottyTender,USDA Choice,116,lb,EXCEL,False,0.9,False,False
+100907,Beef Chuck ScottyTender USDA Choice,BF CHUCK SCOTCH TENDER CH IBP 116B-1 USDA CHOICE BFCHUCKSCO,Beef Chuck,ScottyTender,USDA Choice,,,IBP,False,0.9,False,False
+10090870,Beef Chuck ScottyTender USDA Choice,BF CHUCK SCOTCH TENDER CH OMA 116B-1 USDA CHOICE BFCHUCKSCO,Beef Chuck,ScottyTender,USDA Choice,,,GREATER OMAHA,False,1.0,False,False
+11400510,Beef Chuck Teres Major (Other) Angus Brands,Beef Chuck Tender Choice IND Pack Angus (Teres Major) Petite Tender TERES MAJOR,Beef Chuck,Teres Major,(Other) Angus Brands,,,Upper Iowa,False,0.9,False,False
+120007,Beef Chuck Chuck Short Rib ,CHUCK BNLSWHOLE SHORT RIBS BNLSCHUCKS,Beef Chuck,Chuck Short Rib,,,,nan,True,0.9,False,False
+11400200,Beef Chuck Teres Major ,Beef Chuck Clod Tender NR (Teres Major) TERES MAJOR,Beef Chuck,Teres Major,,,,nan,False,0.8,False,False
+123060,Beef Chuck  (Other) Angus Brands,"CHUCK OVAL PATTY, ANGUS, 6OZ 6OZOVALANG",Beef Chuck,,(Other) Angus Brands,6,oz,nan,False,1.0,False,False
+11100201,Beef Chuck Clod ,Beef Chuck Clod NR XT CLOD,Beef Chuck,Clod,,,,nan,False,0.9,False,False
+10380183,Beef Chuck Chuck Flap No-Roll (Ungraded),BF CHUCK FLAP NR OMA 116G-4 USDA NO ROLL BFCHUCKFLA,Beef Chuck,Chuck Flap,No-Roll (Ungraded),,,GREATER OMAHA,False,0.9,False,False
+10388108,Beef Chuck Chuck Flap (Other) Angus Brands,BF CHUCK FLAP ANG OMC 116G-4 USDA ANGUS BFCHUCKFLA,Beef Chuck,Chuck Flap,(Other) Angus Brands,,,GREATER OMAHA,False,0.9,False,False
+10388NX3,Beef Chuck Chuck Flap USDA Choice,BF CHUCK FLAP HRF-CLS 116G-4 USDA CHOICE BFCHUCKFLA,Beef Chuck,Chuck Flap,USDA Choice,,,GREATER OMAHA,False,1.0,False,False
+11101410,Beef Chuck Flat Iron USDA Choice,Beef Flat Iron Steak Choice 10oz IRON,Beef Chuck,Flat Iron,USDA Choice,10,oz,nan,False,1.0,False,False
+11101404,Beef Chuck Flat Iron USDA Choice,Beef Flat Iron Steak Choice 4oz IRON,Beef Chuck,Flat Iron,USDA Choice,4,oz,nan,False,1.0,False,False
+11101408,Beef Chuck Flat Iron USDA Choice,Beef Flat Iron Steak Choice 8oz IRON,Beef Chuck,Flat Iron,USDA Choice,8,oz,nan,False,1.0,False,False
+124040,Beef Chuck Teres Major ,"PETITE TENDER FILLET, 4OZ PetiteFil",Beef Chuck,Teres Major,,4,oz,nan,False,0.9,False,False
+124050,Beef Chuck Teres Major ,"PETITE TENDER FILLET, 5OZ PetiteFil",Beef Chuck,Teres Major,,5,oz,nan,False,0.9,False,False
+11600404,Beef Chuck ScottyTender USDA Choice,Beef Chuck Tender Steak Choice 4oz (Chuck Tender) SCOTTIES,Beef Chuck,ScottyTender,USDA Choice,4,oz,nan,False,1.0,False,False
+10870526,Beef Chuck Clod USDA Choice,BF DICED STEW/CHUCK 01-in 5/1#-VP 135 USDA CHOICE CHUCK BFDICEDSTE,Beef Chuck,Clod,USDA Choice,5,lb,FULTON MARKET,False,0.9,False,False
+10871274,Beef Chuck Chuck Roll No-Roll (Ungraded),BF CHUCK ROLL N/OFF NR AMH 116A-3 USDA NO-ROLL BFCHUCKROL,Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,AMERICAN HEARTL,False,1.0,False,False
 1087677,Beef Chuck Flat Iron USDA Choice,BF STK FLAT IRON CH CTS USDA CHOICE BFSTKFLATI,Beef Chuck,Flat Iron,USDA Choice,,,FULTON MARKET,False,0.9,False,False
+108774,Beef Chuck Chuck Roll No-Roll (Ungraded),BF CHUCK ROLL N/OFF NR NAT 116A-3 USDA NO-ROLL BFCHUCKROL,Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,NATIONAL BEEF,False,1.0,False,False
+1087765A,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH CRK-MC 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,CREEKSTONE,False,0.9,False,False
+10877660,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH CRK-CT 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,CREEKSTONE,False,1.0,False,False
+1087A118,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF-CA JBS AAA 116A-3 CANADA AAA - CH BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,nan,False,1.0,False,False
+1087A210,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH OMA-HAL 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,GREATER OMAHA,False,1.0,False,False
+1087A2CS,Beef Chuck Chuck Roll USDA Prime,BF CHUCK ROLL N/OFF PR CRK-MC 116A-3 USDA CAB BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Prime,,,CREEKSTONE,False,1.0,False,False
+1087A2NA,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH NAT 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,NATIONAL BEEF,False,1.0,False,False
+1087AAIC,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH AUR #21620 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,AURORA,False,1.0,False,False
+1087HCAN,Beef Chuck Chuck Roll ,BF CHUCK ROLL N/OFF CAN-HER BFCHUCKROL,Beef Chuck,Chuck Roll,,,,HERITAGE ANGUS,False,1.0,False,False
+120018,Beef Chuck Chuck Roll USDA Choice,"CHUCK ROLL, GRASS RUN FARMS, CH CHOICE GRASSRUNFA",Beef Chuck,Chuck Roll,USDA Choice,,,nan,False,1.0,False,False
+13011204,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder, Creekstone (Choice) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,Creekstone Farms,False,0.9,False,False
+120276,Beef Chuck Flat Iron ,"FLAT IRON STEAK, IBP, 27/6OZ IBP 27/6OZ F",Beef Chuck,Flat Iron,,6,oz,nan,False,0.9,False,False
+120237,Beef Chuck Flat Iron ,"FLAT IRON STEAK, IBP, 23/7OZ IBP 23/7OZ F",Beef Chuck,Flat Iron,,23,oz,nan,False,0.9,False,False
+13081002,Beef Chuck Chuck Roll (Other) Angus Brands,"Chuck Roll N/off, GreaterOmaha (CAngus) ChuckRlCh+",Beef Chuck,Chuck Roll,(Other) Angus Brands,,,Greater Omaha,False,0.9,False,False
+13069980,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll Block Ready, Ch, ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Various,False,1.0,False,False
+120805,Beef Chuck  ,GROUND CHUCK PATTY 80/20 5.5OZ 30/5.5oz GrndChuck80,Beef Chuck,,,5.5,oz,nan,False,0.9,False,False
+11310412,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 12oz Bone In SHORT RIB,Beef Chuck,Chuck Short Rib,,12,oz,nan,True,1.0,False,False
+13094495,Beef Chuck Chuck Roll USDA Select,"Chuck Roll N/off, Harmony (AA) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Select,,,Harmony,False,0.9,False,False
+13083571,Beef Chuck Chuck Roll USDA Prime,"Chuck Roll N/off, IBP (Prime) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Prime,,,IBP,False,0.9,False,False
+13083575,Beef Chuck Chuck Roll USDA Select,"Chuck Roll N/off, IBP (Sel) ChuckRlNRU",Beef Chuck,Chuck Roll,USDA Select,,,IBP,False,1.0,False,False
+13021004,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder XT, GreaterOmaha (Ch) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,Greater Omaha,,0.9,False,False
+13021201,Beef Chuck Clod Shoulder USDA Prime,"Clod Shoulder XT, Creekstone (Prime) ClodCh+",Beef Chuck,Clod Shoulder,USDA Prime,,,Creekstone Farms,False,1.0,False,False
+13094494,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, Harmony (AAA) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Harmony,False,0.9,False,False
+11300490,Beef Chuck Chuck Flap USDA Choice,Beef Chuck Flap Tail Choice (UI)Angus FLAPTAIL,Beef Chuck,Chuck Flap,USDA Choice,,,nan,False,1.0,False,False
+13173680,Beef Chuck Chuck Roll ,"Chuck Roll Bone/In, Mex SuKarne ChuckRlNRU",Beef Chuck,Chuck Roll,,,,Sukarne,True,0.9,False,False
+13011056,Beef Chuck Clod Shoulder No-Roll (Ungraded),"Clod Shoulder, AFG (NR) ClodNRU",Beef Chuck,Clod Shoulder,No-Roll (Ungraded),,,American Foods Group,,0.9,False,False
+13021164,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder XT, Iowa Premium (Ch) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,Iowa Premium,,0.9,False,False
+11310410,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 9oz Bone In SHORT RIB,Beef Chuck,Chuck Short Rib,,9,oz,nan,True,0.9,False,False
+11310406,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 6oz Bone In Single Bone SHORT RIB,Beef Chuck,Chuck Short Rib,,6,oz,nan,True,1.0,False,False
+11101512,Beef Chuck Flat Iron USDA Choice,Beef Flat Iron Steak Choice 12oz Angus IRON,Beef Chuck,Flat Iron,USDA Choice,12,oz,nan,False,1.0,False,False
+11310414,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 14 oz Bone In SHORT RIB,Beef Chuck,Chuck Short Rib,,14,oz,nan,True,1.0,False,False
+11310422,Beef Chuck Chuck Short Rib ,"Beef Chuck Short Ribs Bone In 1.5 X 1.5"" Sliced 2# CVP Bag SHORT RIB",Beef Chuck,Chuck Short Rib,,2,lb,nan,True,1.0,False,False
+11321441,Beef Chuck Chuck Short Rib ,"Beef Chuck Short Ribs- Bone in 1/4"" Korean Style SHORT RIB",Beef Chuck,Chuck Short Rib,,,,nan,True,1.0,False,False
+11321410,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Boneless 10oz SHORT RIB,Beef Chuck,Chuck Short Rib,,10,oz,nan,False,0.95,False,False
+11300410,Beef Chuck Chuck Flap ,Beef Chuck Flap Tail 10oz Boneless Flap Tail 12,Beef Chuck,Chuck Flap,,10,oz,Anmar,False,1.0,False,False
+13103334,Beef Chuck ScottyTender USDA Choice,"Chuck Tender Scotties, Upper Iowa (Ch) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Choice,,,UpperIowa,False,0.9,False,False
+11300005,Beef Chuck Chuck Flap ,Beef Chuck Flap Tail 5oz Boneless Flap Tail 12,Beef Chuck,Chuck Flap,,5,oz,Anmar,False,0.9,False,False
+11324109,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Boneless 9OZ SQUARE CUT SHORT RIB,Beef Chuck,Chuck Short Rib,,9,oz,nan,False,1.0,False,False
+11321413,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Boneless 9oz Square SHORT RIB,Beef Chuck,Chuck Short Rib,,9,oz,nan,False,1.0,False,False
+13083563,Beef Chuck Chuck Roll ,"Chuck Roll N/off, IBP Star Ranch (Ch_Ang ChuckRlCh+",Beef Chuck,Chuck Roll,,,,Star Ranch,False,1.0,False,False
+13031024,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder, National (Ch) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,National Beef,,1.0,False,False
+13083345,Beef Chuck Chuck Roll USDA Select,"Chuck Roll Trim, Diamond Beef (AA) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Select,,,DiamondBeef,False,0.9,False,False
+13081026,Beef Chuck Chuck Roll No-Roll (Ungraded),"Chuck Roll N/off, National (N/R) ChuckRlNR",Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,National Beef,False,0.9,False,False
+10388100,Beef Chuck Chuck Flap ,BF CHUCK FLAP CAB OMA GREATER OMAHA BFCHUCKFLA,Beef Chuck,Chuck Flap,,,,GREATER OMAHA,False,0.9,False,False
+10871162,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CA IAP 116A-3 USDA CHOICE ANGUS BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,IOWA PREMIUM,False,1.0,False,False
+13081141,Beef Chuck Chuck Roll USDA Prime,"Chuck Roll N/off, Western R. (Prime) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Prime,,,Western Reserve,False,0.9,False,False
+13084541,Beef Chuck Chuck Roll USDA Prime,"Chuck Roll N/off, 5 Star (Prime) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Prime,,,5Star,False,1.0,False,False
+13024544,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder, 5 Star (Ch) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,5Star,,0.9,False,False
+10075024,Beef Chuck Top Blade USDA Choice,BF CLOD TOP BLADE CH NAT 114D-3 USDA CHOICE BFCLODTOPB,Beef Chuck,Top Blade,USDA Choice,,,NATIONAL BEEF,False,1.0,False,False
+10089S,Beef Chuck Blade Meat ,BF CHUCK BI BLAD/SEC-N/O ME SUK 50# 113B IMP MEXICO BFCHUCKBIB,Beef Chuck,Blade Meat,,50,lb,SUKARNE,True,0.9,False,False
+10090872,Beef Chuck ScottyTender USDA Choice,BF CHUCK SCOTCH TENDER CH OMA-H 116B-1 USDA CHOICE BFCHUCKSCO,Beef Chuck,ScottyTender,USDA Choice,,,GREATER OMAHA,False,0.9,False,False
+120002,Beef Chuck Chuck Roll ,"CHUCK ROLL, BUFFALO BUFFALOCHU",Beef Chuck,Chuck Roll,,,,nan,False,1.0,False,False
+122000,Beef Chuck  (Other) Angus Brands,"CHUCK GROUND, ANGUS, 5LB ANGUSGROUN",Beef Chuck,,(Other) Angus Brands,5,lb,nan,False,0.9,False,False
+123030,Beef Chuck  (Other) Angus Brands,"CHUCK PATTY 3/1, ANGUS PLATE #3841 4.25IN DIA 3/1ANGUSCH",Beef Chuck,,(Other) Angus Brands,4.25,in,nan,False,0.8,False,False
+123070,Beef Chuck  (Other) Angus Brands,"CHUCK PATTY, ANGUS, 7OZ 7OZANGUSCH",Beef Chuck,,(Other) Angus Brands,7,oz,nan,False,0.9,False,False
+128004,Beef Chuck Clod Wagyu / Kobe,"BEEF SHOULDER CLODS, IMPORTED WAGYU WAGYUBEEFS",Beef Chuck,Clod,Wagyu / Kobe,,,nan,,0.9,False,False
+128005,Beef Chuck  ,"CHUCK GROUND 80/20, 5LB GrndBf80",Beef Chuck,,,5,lb,nan,False,0.9,False,False
+128008,Beef Chuck Teres Major Wagyu / Kobe,"BEEF TERES MAJOR, IMPORTED WAGYU, MBS #5 MARBLE SCORE #5 IMPORTEDWA",Beef Chuck,Teres Major,Wagyu / Kobe,,,nan,False,1.0,False,False
+128011,Beef Chuck  ,"CHUCK GROUND PATTY 80/20, 10OZ GrndChuck80",Beef Chuck,,,10,oz,nan,False,1.0,False,False
+10388048,Beef Chuck Chuck Flap USDA Choice,BF CHUCK FLAP->CH 00-oz 10#-VP 116G-4 USDA CHOICE BFCHUCKFLA,Beef Chuck,Chuck Flap,USDA Choice,10,lb,FULTON MARKET,False,1.0,False,False
+10388106,Beef Chuck Chuck Flap USDA Select,BF CHUCK FLAP SE OMA 116G-4 USDA SELECT BFCHUCKFLA,Beef Chuck,Chuck Flap,USDA Select,,,GREATER OMAHA,False,1.0,False,False
+1038865N,Beef Chuck Chuck Flap USDA Choice,BF CHUCK FLAP-z CH NAT 116G-4 USDA CHOICE BFCHUCKFLA,Beef Chuck,Chuck Flap,USDA Choice,,,NATIONAL BEEF,False,1.0,False,False
+10388NXL,Beef Chuck Chuck Flap USDA Choice,BF CHUCK FLAP CH OMA 116G-4 USDA CHOICE BFCHUCKFLA,Beef Chuck,Chuck Flap,USDA Choice,,,GREATER OMAHA,False,1.0,False,False
+11101406,Beef Chuck Flat Iron USDA Choice,Beef Flat Iron Steak Choice 6oz IRON,Beef Chuck,Flat Iron,USDA Choice,6,oz,nan,False,1.0,False,False
+11600400,Beef Chuck ScottyTender ,Beef Chuck Tender Scotties Choice (Chuck Tender) SCOTTIES,Beef Chuck,ScottyTender,,,,nan,False,0.9,False,False
+10870531,Beef Chuck Chuck Roll No-Roll (Ungraded),BF CHUCK ROLL->3X3 SQC/JAC 10# 116A-3 USDA - FMC BFCHUCKROL,Beef Chuck,Chuck Roll,No-Roll (Ungraded),10,lb,FULTON MARKET,False,0.9,False,False
+10871004,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CA IBP STR 116A-3 USDA CHOICE ANGUS BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,IBP,False,1.0,False,False
+1087108,Beef Chuck Chuck Roll ,BF CHUCK ROLL N/OFF OMA-HRF 116A-3 USDA HEREFORD BFCHUCKROL,Beef Chuck,Chuck Roll,,,,GREATER OMAHA,False,0.9,False,False
+10872014,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF-CA STH AAA 116A-3 IMP CANADA AAA - CH BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,ST. HELEN,False,1.0,False,False
+1087456,Beef Chuck Chuck Roll No-Roll (Ungraded),BF CHUCK ROLL N/OFF NR DMK 116A-3 USDA NO-ROLL BFCHUCKROL,Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,DEMKOTA,False,1.0,False,False
+1087A2EX,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH EXC 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,EXCEL,False,1.0,False,False
+1087A5AR,Beef Chuck Chuck Roll USDA Prime,BF CHUCK ROLL N/OFF PR *__ 116A-3 USDA PRIME BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Prime,,,USDA,False,1.0,False,False
+13011000,Beef Chuck Clod Shoulder ,"Clod Shoulder, GreaterOmaha (Hereford) ClodCh+",Beef Chuck,Clod Shoulder,,,,Greater Omaha,,0.9,False,False
+13021001,Beef Chuck Clod Shoulder USDA Prime,"Clod Shoulder XT, GreaterOmaha (Prime) ClodCh+",Beef Chuck,Clod Shoulder,USDA Prime,,,Greater Omaha,,0.9,False,False
+13101024,Beef Chuck ScottyTender USDA Choice,"Chuck Tender Scotties, National (Ch) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Choice,,,National Beef,False,1.0,False,False
+13081004,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, GreaterOmaha (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Greater Omaha,False,0.95,False,False
+18061014,Beef Chuck Clod Hearts USDA Choice,"Clod Heart, IBP (Ch) ClodHrtCh+",Beef Chuck,Clod Hearts,USDA Choice,,,IBP,False,1.0,False,False
+121701,Beef Chuck Flat Iron ,IBP TOP BLADE FLAT IRON-NOT PORTIONED IBP 18/9OZ F,Beef Chuck,Flat Iron,,18,oz,nan,False,0.9,False,False
+124007,Beef Chuck Clod USDA Choice,CHOICE CLOD TENDER-PROCESSED CHOICECLOD,Beef Chuck,Clod,USDA Choice,,,nan,False,1.0,False,False
+11310400,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Bone In Sliced SHORT RIB,Beef Chuck,Chuck Short Rib,,,,nan,True,1.0,False,False
+11321440,Beef Chuck Chuck Short Rib USDA Choice,"Beef Chuck Short Ribs Choice Boneless 1-1/4"" Korean Style SHORT RIB",Beef Chuck,Chuck Short Rib,USDA Choice,0.25,lb,nan,False,1.0,False,False
+128015,Beef Chuck Chuck Flap ,MISHIMA CHUCK TAIL FLAP IMPORTEDWA,Beef Chuck,Chuck Flap,,,,nan,,0.9,False,False
+128016,Beef Chuck Teres Major ,MISHIMA CHUCK TERES MAJOR ULTRA IMPORTEDWA,Beef Chuck,Teres Major,,,,nan,False,0.9,False,False
+120882,Beef Chuck Flat Iron ,BNLS TOP BLADE FLAT IRON DICES-3/10# JBS 65882 BNLS TOP BLA,Beef Chuck,Flat Iron,,0.3,lb,nan,False,0.9,False,False
+13083555,Beef Chuck Chuck Roll USDA Select,"Chuck Roll N/off, Heartland (Sel) ChuckRlNRU",Beef Chuck,Chuck Roll,USDA Select,,,Heartland,False,0.9,False,False
+13101001,Beef Chuck ScottyTender USDA Prime,"Chuck Tender Scotties, Greater O (Prime) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Prime,,,Greater Omaha,False,0.9,False,False
+11400400,Beef Chuck Teres Major USDA Choice,Beef Chuck Clod Tender Choice (Teres Major) Teres Major,Beef Chuck,Teres Major,USDA Choice,,,nan,False,0.8,False,False
+13081162,Beef Chuck Chuck Roll (Other) Angus Brands,"Chuck Roll N/off, Iowa Premium (CAngus) ChuckRlCh+",Beef Chuck,Chuck Roll,(Other) Angus Brands,,,Iowa Premium,False,1.0,False,False
+13173745,Beef Chuck Chuck Roll USDA Select,"Chuck Roll Bone/In, Excel (AA) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Select,,,Excel,True,0.9,False,False
+13043556,Beef Chuck Chuck Roll (Other) Angus Brands,"Chuck Roll N/off, Heartland Angus ChuckRlNRU",Beef Chuck,Chuck Roll,(Other) Angus Brands,,,Heartland,False,0.9,False,False
+11321412,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 12oz Boneless SHORT RIB,Beef Chuck,Chuck Short Rib,,12,oz,Anmar,False,1.0,False,False
+11101509,Beef Chuck Flat Iron USDA Choice,Beef Flat Iron Steak Angus Choice 9oz IRON,Beef Chuck,Flat Iron,USDA Choice,9,oz,Upper Iowa,False,1.0,False,False
+11310510,Beef Chuck Chuck Short Rib (Other) Angus Brands,Beef Chuck Short Ribs (UI)-pack 1per Angus Bone In SHORT RIB,Beef Chuck,Chuck Short Rib,(Other) Angus Brands,,,nan,True,1.0,False,False
+11321406,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Boneless 6oz SHORT RIB,Beef Chuck,Chuck Short Rib,,6,oz,nan,False,0.9,False,False
+13081320,Beef Chuck Chuck Roll ,"Chuck Roll N/off, Mex Gusi ChuckRlNRU",Beef Chuck,Chuck Roll,,,,Gusi,False,0.9,False,False
+13101214,Beef Chuck ScottyTender USDA Choice,"Chuck Tender Scotties, Creekstone (Ch) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Choice,,,Creekstone Farms,False,0.95,False,False
+11300412,Beef Chuck Chuck Flap ,Beef Chuck Flap Tail 12oz Boneless Flap Tail 12,Beef Chuck,Chuck Flap,,12,oz,Anmar,False,1.0,False,False
+13103694,Beef Chuck ScottyTender USDA Choice,"Chuck Tender Scotties, Aurora (Ch) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Choice,,,Aurora,False,1.0,False,False
+11300003,Beef Chuck Chuck Flap ,Beef Chuck Flap Tail 3oz Boneless Flap Tail 12,Beef Chuck,Chuck Flap,,3,oz,Anmar,False,1.0,False,False
+13083744,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, Excel (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Excel,False,1.0,False,False
+10388NX5,Beef Chuck Chuck Flap ,BF CHUCK FLAP HRF-CLS-H GREATER OMAHA HEREFORD CLASSIC BFCHUCKFLA,Beef Chuck,Chuck Flap,,,,GREATER OMAHA,False,0.9,False,False
+13025763,Beef Chuck Clod Shoulder (Other) Angus Brands,"Clod Shoulder XT, Est 8 Angus (Ch_Angus) ClodCh+",Beef Chuck,Clod Shoulder,(Other) Angus Brands,,,Est. 8 Angus,,0.9,False,False
+13101874,Beef Chuck ScottyTender USDA Choice,"Chuck Tender Scotties, Nebraska B. (Ch) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Choice,,,Nebraska Beef,False,0.9,False,False
+13081142,Beef Chuck Chuck Roll (Other) Angus Brands,"Chuck Roll N/off, Wester R. (CAngus) ChuckRlCh+",Beef Chuck,Chuck Roll,(Other) Angus Brands,,,Western Reserve,False,0.9,False,False
+13083751,Beef Chuck Chuck Roll USDA Prime,"Chuck Roll N/off, St. Helen`s (Prime) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Prime,,,St. Helens,False,1.0,False,False
+13023744,Beef Chuck Clod Shoulder USDA Choice,"Clod Shoulder XT, Excel (Ch) ClodCh+",Beef Chuck,Clod Shoulder,USDA Choice,,,Excel,False,0.9,False,False
+10019887,Beef Chuck Bone-In Arm USDA Choice,BF CHUCK BI ARM/SEC CH AUR 113A USDA CHOICE BFCHUCKBIA,Beef Chuck,Bone-In Arm,USDA Choice,,,AURORA,True,0.9,False,False
+10089858,Beef Chuck Clod Shoulder USDA Choice,BF CHUCK SHL CLOD CH OMA 114-1 USDA CHOICE BFCHUCKSHL,Beef Chuck,Clod Shoulder,USDA Choice,,,GREATER OMAHA,False,0.9,False,False
+120005,Beef Chuck Chuck Flap ,CHUCK FLAP MEAT BEEF FlapMeatCh,Beef Chuck,Chuck Flap,,,,nan,False,0.9,False,False
+123080,Beef Chuck  (Other) Angus Brands,"CHUCK PATTY, ANGUS, 8OZ 8OZANGUSCH",Beef Chuck,,(Other) Angus Brands,8,oz,nan,False,1.0,False,False
+124002,Beef Chuck Chuck Roll USDA Choice,"CHUCK EYEROLL, CH CHOICECHUC",Beef Chuck,Chuck Roll,USDA Choice,,,nan,False,0.9,False,False
+124004,Beef Chuck Clod USDA Choice,"CLODS BEEF, CH CHOICEBEEF",Beef Chuck,Clod,USDA Choice,,,nan,False,1.0,False,False
+128507,Beef Chuck  ,"CHUCK GROUND PATTY 85/15, 7OZ GrndChuck80",Beef Chuck,,,7,oz,nan,False,0.8,False,False
+11321000,Beef Chuck Chuck Short Rib USDA Choice,Beef Chuck Short Ribs Boneless choice SHORT RIB,Beef Chuck,Chuck Short Rib,USDA Choice,,,nan,False,1.0,False,False
+10388055,Beef Chuck ScottyTender USDA Choice,BF HANGING TENDER-z >CH 6oz 116G-4 USDA CHOICE BFHANGINGT,Beef Chuck,ScottyTender,USDA Choice,6,oz,FULTON MARKET,False,0.9,False,False
+11101510,Beef Chuck Flat Iron USDA Choice,Beef Flat Iron Steak Angus Choice 10oz IRON,Beef Chuck,Flat Iron,USDA Choice,10,oz,nan,False,1.0,False,False
+11101490,Beef Chuck Flat Iron USDA Choice,Beef Chuck Top Blade Choice Cleaned Peeled Flat Iron IRON,Beef Chuck,Flat Iron,USDA Choice,,,nan,False,0.9,False,False
+124030,Beef Chuck Teres Major ,"PETITE TENDER FILLET, 3OZ PetiteFil",Beef Chuck,Teres Major,,3,oz,nan,False,0.9,False,False
+10870577,Beef Chuck Chuck Roll ,BF CHUCK ROLL->1/8-in SLC 3CT-VP 116A-3 USDA BFCHUCKROL,Beef Chuck,Chuck Roll,,3,,FULTON MARKET,False,0.9,False,False
+1087A1CS,Beef Chuck Chuck Roll (Other) Angus Brands,BF CHUCK ROLL N/OFF CAB IBP 116A-3 USDA CAB BFCHUCKROL,Beef Chuck,Chuck Roll,(Other) Angus Brands,,,IBP,False,0.9,False,False
+1087A1IC,Beef Chuck Chuck Roll USDA Select,BF CHUCK ROLL-z N/OFF SE IBP 116A-3 USDA SELECT BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Select,,,IBP,,0.9,False,False
+1087A2CF,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL-z ROAST CH-GF WGF 9# USDA 100% GRASS-FED BEEF BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,9,lb,WISC MEADOWS,,1.0,False,False
+13159984,Beef Chuck Bone-In Arm USDA Choice,"Arm Portion B/In, (Ch) ArmPortion",Beef Chuck,Bone-In Arm,USDA Choice,,,Various,True,0.9,False,False
+13091000,Beef Chuck Chuck Roll ,"Chuck Roll N/off, GreaterOmaha HALAL ChuckRlHal",Beef Chuck,Chuck Roll,,,,Greater Omaha,False,1.0,False,False
+13081036,Beef Chuck Chuck Roll No-Roll (Ungraded),"Chuck Roll N/off, JBS (NR) ChuckRlNRU",Beef Chuck,Chuck Roll,No-Roll (Ungraded),,,JBS,False,0.9,False,False
+11321804,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 4oz Boneless Down to silver SHORT RIB,Beef Chuck,Chuck Short Rib,,4,oz,nan,False,0.9,False,False
+128703,Beef Chuck Chuck Roll (Other) Angus Brands,PURE ANGUS GRASS FED CHUCK ROLL PURE ANGUS G,Beef Chuck,Chuck Roll,(Other) Angus Brands,,,nan,False,0.9,False,False
+13081054,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, AFG (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,American Foods Group,False,1.0,False,False
+11310408,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 8oz Bone In Single Bone SHORT RIB,Beef Chuck,Chuck Short Rib,,8,oz,nan,True,1.0,False,False
+11200500,Beef Chuck Chuck Roll USDA Choice,Beef Chuck Roll-Neckoff Choice (UI) Angus CHUCK ROLL,Beef Chuck,Chuck Roll,USDA Choice,,,Upper Iowa,False,1.0,False,False
+11311414,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 14 oz Long Bone Bone In English Style Single Bone-bulk SHORT RIB,Beef Chuck,Chuck Short Rib,,14,oz,nan,True,1.0,False,False
+13081025,Beef Chuck Chuck Roll USDA Select,"Chuck Roll N/off, National (Sel) ChuckRSel",Beef Chuck,Chuck Roll,USDA Select,,,National Beef,False,1.0,False,False
+11310417,Beef Chuck Chuck Short Rib ,Beef plate Short Ribs BONE IN SINGLE BONE ENGLISH STYLE SHORT RIB,Beef Chuck,Chuck Short Rib,,,,nan,True,0.9,False,False
+13083544,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, IBP Open Prairie (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,IBP Open Prairie,False,1.0,False,False
+13101211,Beef Chuck ScottyTender USDA Prime,"Chuck Tender Scotties,Creekstone (Prime) ChuckTdrPr",Beef Chuck,ScottyTender,USDA Prime,,,Creekstone Farms,False,0.9,False,False
+157600001,Beef Chuck Chuck Roll ,"Chuck Roll N/off, Heritage EL PALOMINO ChuckRlNRU",Beef Chuck,Chuck Roll,,,,Heritage Beef,False,0.9,False,False
+11105110,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs 10 oz Bone In Single Bone SHORT RIB,Beef Chuck,Chuck Short Rib,,10,oz,nan,True,1.0,False,False
+13103574,Beef Chuck ScottyTender USDA Choice,"Chuck Tender Scotties, IBP (Ch) ChuckTdrCh+",Beef Chuck,ScottyTender,USDA Choice,,,IBP,False,1.0,False,False
+11300007,Beef Chuck Chuck Flap ,Beef Chuck Flap Tail 7oz Boneless Flap Tail 12,Beef Chuck,Chuck Flap,,7,oz,Anmar,False,1.0,False,False
+11321407,Beef Chuck Chuck Short Rib ,Beef Chuck Short Ribs Boneless 7oz SHORT RIB,Beef Chuck,Chuck Short Rib,,7,oz,nan,False,1.0,False,False
+13081034,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll Trim, Blue Ribbon (AAA) JBS Canada ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,JBS,False,1.0,False,False
+1087A2AR,Beef Chuck Chuck Roll USDA Choice,BF CHUCK ROLL N/OFF CH SWI 116A-3 USDA CHOICE BFCHUCKROL,Beef Chuck,Chuck Roll,USDA Choice,,,IBP,False,1.0,False,False
+13081144,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, Western Reserve (Ch) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,Western Reserve,False,1.0,False,False
+13083754,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, St. Helen`s (AAA) ChuckRlCh+",Beef Chuck,Chuck Roll,USDA Choice,,,St. Helens,False,1.0,False,False
+13083553,Beef Chuck Chuck Roll USDA Choice,"Chuck Roll N/off, Heartland (Ch-Angus) ChuckRlCh+An",Beef Chuck,Chuck Roll,USDA Choice,,,Heartland,False,1.0,False,False

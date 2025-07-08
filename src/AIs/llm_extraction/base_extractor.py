@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class ExtractionResult:
     """Base result structure for LLM extraction."""
+    primal: Optional[str] = None
     subprimal: Optional[str] = None
     grade: Optional[str] = None
     size: Optional[float] = None
@@ -38,7 +39,7 @@ class BaseLLMExtractor(ABC):
     # Common valid attributes across all meat types
     VALID_GRADES = {
         'prime', 'choice', 'select', 'utility', 'wagyu', 'angus', 'certified angus', 
-        'creekstone angus', 'no grade'
+       'Hereford', 'creekstone angus', 'no grade', "A", "AA", "AAA"
     }
     
     VALID_SIZE_UNITS = {'oz', 'lb', 'g', 'kg', 'in', 'inch', 'inches'}
@@ -49,7 +50,7 @@ class BaseLLMExtractor(ABC):
         self.model = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
         
         # o3 and 4o-mini models use temperature=1.0, other models use 0.8
-        temperature = 1.0 if self.model in ["o3", "gpt-4o-mini"] else 0.8
+        temperature = 1.0 if self.model in ["o3", "gpt-4o-mini"] else 0.2
         
         self.api_manager = APIManager(api_key=api_key, model=self.model, temperature=temperature)
         self.result_parser = ResultParser()
@@ -97,6 +98,7 @@ class BaseLLMExtractor(ABC):
         result = ExtractionResult()
         
         # Extract fields
+        result.primal = raw_result.get('primal')
         result.subprimal = raw_result.get('subprimal')
         result.grade = raw_result.get('grade') 
         result.size = raw_result.get('size')
@@ -111,6 +113,13 @@ class BaseLLMExtractor(ABC):
         # Validation and confidence scoring (only as fallback)
         confidence_score = 0.5  # Base confidence
         validation_needs_review = False
+
+        #validate primal
+        if result.primal:
+            confidence_score += 0.0
+        else:
+            validation_needs_review = True
+            logger.warning(f"Unknown primal for {self.get_category_name()}: {result.primal}")
         
         # Validate subprimal (case-insensitive)
         subprimal_mapping = self.get_subprimal_mapping()
@@ -148,6 +157,7 @@ class BaseLLMExtractor(ABC):
                 if grade_mapping:
                     for standard_grade, variations in grade_mapping.items():
                         if grade_lower in [v.lower() for v in [standard_grade] + variations]:
+                            print("Changing grade from", grade_lower, "to", standard_grade)
                             result.grade = standard_grade
                             break
             else:

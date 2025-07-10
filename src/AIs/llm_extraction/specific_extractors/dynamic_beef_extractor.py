@@ -1,6 +1,8 @@
 """
-Dynamic Beef Extractor
-Specialized extractor for beef products using dynamic prompt generation.
+Dynamic Beef Subprimal Extractor
+Specialized extractor for beef subprimals using dynamic prompt generation.
+Focuses exclusively on subprimal extraction, with grade and USDA code extraction
+handled by separate specialized extractors.
 """
 
 
@@ -12,11 +14,19 @@ from typing import Dict, List, Optional, Set, Any
 from dataclasses import dataclass
 from pathlib import Path
 import pandas as pd
+from pydantic import BaseModel, Field
 from dotenv import load_dotenv
 
 # Import the base extractor class
-from ..base_extractor import BaseLLMExtractor, ExtractionResult
+from ..base_extractor import BaseLLMExtractor
 from .dynamic_prompt_generator import DynamicPromptGenerator
+
+# Define a simple Pydantic model for subprimal extraction output
+class SubprimalExtractionResult(BaseModel):
+    """Simple model for subprimal extraction output."""
+    subprimal: Optional[str] = Field(None, description="The identified subprimal or null if not found")
+    confidence: float = Field(0.0, description="Confidence level in the extraction")
+    needs_review: bool = Field(True, description="Whether human review is needed")
 
 # Import reference data loader with absolute import to avoid relative import issues
 try:
@@ -33,9 +43,11 @@ load_dotenv()
 logger = logging.getLogger(__name__)
 
 class DynamicBeefExtractor(BaseLLMExtractor):
-    """Dynamic beef extractor using the OpenAI API.
+    """Specialized extractor for beef subprimals using the OpenAI API.
     
-    Uses primal cut specific prompts to improve extraction quality.
+    This extractor is focused EXCLUSIVELY on subprimal extraction, with grade and USDA code
+    extraction handled by separate specialized extractors. Uses primal cut specific
+    prompts to improve extraction quality.
     """
     
     def __init__(self, reference_data_path: str = "data/incoming/beef_cuts.xlsx", processed_dir: str = "data/processed"):
@@ -178,35 +190,25 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             
         return grade_mapping
     
-    def extract(self, description: str) -> ExtractionResult:
-        """Extract structured data from beef product description.
+    def extract(self, description: str) -> SubprimalExtractionResult:
+        """Extract ONLY subprimal data from beef product description.
         
         Uses specialized dynamic prompting based on the current primal cut.
+        This method is focused exclusively on subprimal extraction, with grade 
+        and other attributes handled by separate specialized extractors.
         
         Args:
             description: The product description to extract data from
             
         Returns:
-            ExtractionResult: Structured data extracted from the description
-        
-        Raises:
-            ValueError: If extraction fails
+            SubprimalExtractionResult: Structured data with only subprimal information
         """
-        # Input validation 
-        logger.debug(f"Extracting from: '{description[:50]}...'")
+        logger.debug(f"Extracting subprimal from: '{description[:50]}...'")
+        
+        # Return empty result for empty description
         if not description or not str(description).strip():
-            logger.warning(f"Empty description provided for extraction")
-            return ExtractionResult(
-                primal=None,
-                subprimal=None,
-                grade=None,
-                size=None,
-                size_uom=None,
-                brand=None,
-                bone_in=False,
-                confidence=0.0,
-                needs_review=True
-            )
+            logger.warning(f"Empty description provided for subprimal extraction")
+            return SubprimalExtractionResult()
         
         # If no current primal is set, try to infer from description
         if not self.current_primal:
@@ -217,14 +219,8 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             )
         
         # Initialize result with default values
-        result = ExtractionResult(
-            primal=None,
+        result = SubprimalExtractionResult(
             subprimal=None,
-            grade=None,
-            size=None,
-            size_uom=None,
-            brand=None,
-            bone_in=False,
             confidence=0.0,
             needs_review=True
         )
@@ -233,17 +229,15 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             # Use dynamic prompt generator if primal is known
             if not self.current_primal:
                 logger.warning(f"No primal cut identified for description: {description[:50]}")
-                
                 # Set for review as we can't create a specialized prompt
-                result.needs_review = True
                 return result
                 
-            # Generate specialized prompts based on the primal cut
+            # Generate specialized prompts based on the primal cut for subprimal extraction only
             system_prompt = self.prompt_generator.generate_system_prompt(self.current_primal)
             expanded_description = self.expand_abbreviations(description)
             user_prompt = self.prompt_generator.generate_user_prompt(self.current_primal, expanded_description)
             
-            logger.info(f"Using specialized prompt for {self.current_primal} primal cut, extracting: '{description[:50]}...'")
+            logger.info(f"Using specialized prompt for {self.current_primal} subprimal extraction: '{description[:50]}...'")
             
             # Make API call using prompt generator output
             response = self.api_manager.call_with_retry(
@@ -253,56 +247,59 @@ class DynamicBeefExtractor(BaseLLMExtractor):
                 
             if not response:
                 logger.error(f"API call returned None or empty response")
-                
-                result.needs_review = True
                 return result
                 
-            logger.debug(f"API call successful for {self.current_primal} extraction")
+            logger.debug(f"API call successful for {self.current_primal} subprimal extraction")
             
             # Parse JSON response
             extraction_data = ResultParser.parse_json_response(response)
             
             if extraction_data:
                 logger.debug(f"Successfully parsed extraction response")
-                logger.debug(f"Extracted data: {extraction_data}")
+                logger.debug(f"Extracted subprimal data: {extraction_data}")
             else:
                 logger.error(f"Failed to parse JSON response from API")
-                result.needs_review = True
                 return result
             
-            # Update result with extracted data
-            # Note: species/primal mapping is handled by calling code, not stored in ExtractionResult
+            # Update result with extracted subprimal data
+            result.subprimal = extraction_data.get('subprimal')
+            result.confidence = extraction_data.get('confidence', 0.0)
+            result.needs_review = extraction_data.get('needs_review', True)
             
-            # First, populate an ExtractionResult from the JSON data
-            raw_result = {
-                'primal': extraction_data.get('primal') or self.current_primal,
-                'subprimal': extraction_data.get('subprimal'),
-                'grade': extraction_data.get('grade'),
-                'size': extraction_data.get('size'),
-                'size_uom': extraction_data.get('size_uom'),
-                'brand': extraction_data.get('brand'),
-                'bone_in': extraction_data.get('bone_in', False),
-                'confidence': extraction_data.get('confidence', 0.0),
-                'needs_review': extraction_data.get('needs_review', True)
-            }
+            # Validate and standardize the subprimal name
+            if result.subprimal and self.current_primal:
+                # Get valid subprimals for this primal
+                valid_subprimals = self.reference_data.get_subprimals(self.current_primal)
+                
+                # Check if subprimal is valid (direct match or through synonym)
+                subprimal_lower = result.subprimal.lower()
+                
+                # First check direct matches
+                if result.subprimal in valid_subprimals:
+                    # Already a canonical name, keep it as is
+                    pass
+                else:
+                    # Check for synonym matches
+                    found = False
+                    for canonical_name in valid_subprimals:
+                        synonyms = self.reference_data.get_subprimal_synonyms(self.current_primal, canonical_name)
+                        if any(synonym.lower() == subprimal_lower for synonym in synonyms):
+                            result.subprimal = canonical_name
+                            found = True
+                            break
+                    
+                    if not found:
+                        logger.warning(f"Unknown subprimal: {result.subprimal} for primal {self.current_primal}")
+                        result.needs_review = True
             
-            # Use the base class's validation and scoring logic
-            validated_result = self.validate_and_score(raw_result, description)
-            
-            # Standardize subprimal to canonical name
-            validated_result = self.standardize_to_canonical(validated_result)
-            
-            # Return the validated result
-            return validated_result
+            return result
             
         except Exception as e:
-            logger.error(f"Extraction failed with error: {str(e)}")
+            logger.error(f"Subprimal extraction failed with error: {str(e)}")
+            return SubprimalExtractionResult(needs_review=True)
             
-            # If anything goes wrong, return a result flagged for review
-            result.needs_review = True
-            return result
     
-    def extract_batch(self, descriptions: List[str], primal: Optional[str] = None) -> List[ExtractionResult]:
+    def extract_batch(self, descriptions: List[str], primal: Optional[str] = None) -> List[SubprimalExtractionResult]:
         """Extract data from a batch of descriptions."""
         results = []
         
@@ -731,61 +728,4 @@ class DynamicBeefExtractor(BaseLLMExtractor):
             '193': 'Flank, Flank Steak (IM)',
             '194': 'Flank, Rose Meat (IM)',
         }
-
-    def standardize_to_canonical(self, result: ExtractionResult) -> ExtractionResult:
-        """Standardize subprimal and grade names to canonical forms using reference data."""
-        
-        # Standardize subprimal
-        if result.subprimal and self.current_primal:
-            subprimal_lower = result.subprimal.lower().strip()
-            
-            # Find the canonical name for this subprimal
-            for canonical in self.reference_data.get_subprimals(self.current_primal):
-                # Check if it's already the canonical name
-                if canonical.lower() == subprimal_lower:
-                    result.subprimal = canonical  # Ensure exact case match
-                    break
-                    
-                # Check synonyms for this canonical name
-                synonyms = self.reference_data.get_subprimal_synonyms(self.current_primal, canonical)
-                if synonyms:
-                    for synonym in synonyms:
-                        if synonym.lower().strip() == subprimal_lower:
-                            logger.info(f"Standardized subprimal '{result.subprimal}' → '{canonical}' (canonical)")
-                            result.subprimal = canonical
-                            break
-                    else:
-                        continue
-                    break
-            else:
-                # If no match found, log warning but keep original
-                logger.warning(f"Could not standardize subprimal '{result.subprimal}' for {self.current_primal}")
-        
-        # Standardize grade using ReferenceDataLoader methods
-        if result.grade:
-            grade_lower = result.grade.lower().strip()
-            
-            # Get all official grades from reference data
-            for canonical_grade in self.reference_data.get_grades():
-                # Check if it's already the canonical name
-                if canonical_grade.lower().strip() == grade_lower:
-                    result.grade = canonical_grade  # Ensure exact case match
-                    break
-                    
-                # Check synonyms for this canonical grade
-                synonyms = self.reference_data.get_grade_synonyms(canonical_grade)
-                if synonyms:
-                    for synonym in synonyms:
-                        if synonym.lower().strip() == grade_lower:
-                            logger.info(f"Standardized grade '{result.grade}' → '{canonical_grade}' (canonical)")
-                            result.grade = canonical_grade
-                            break
-                    else:
-                        continue
-                    break
-            else:
-                # If no match found, log warning but keep original
-                logger.warning(f"Could not standardize grade '{result.grade}'")
-        
-        return result
 

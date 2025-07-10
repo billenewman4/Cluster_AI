@@ -9,10 +9,7 @@ sys.path.append(str(Path(__file__).resolve().parents[1]))
 
 from Evals.model_caller.model_caller import call_model_on_list
 from langsmith import Client
-from Evals.model_caller.model_caller import DynamicBeefExtractor
 from Evals.Data_processing.langsmith.langSmithTabels import create_langsmith_dataset
-
-extractor = DynamicBeefExtractor()
 
 client = Client()
 
@@ -44,6 +41,7 @@ def eval_process(dataset_name: str = "Beef Extraction Evaluation"):
         evaluators=[
             subprimal_evaluator,
             grade_evaluator,
+            usda_code_evaluator,  # Add USDA code evaluator
         ],
         experiment_prefix="beef-extraction-eval",
         max_concurrency=2,
@@ -52,16 +50,22 @@ def eval_process(dataset_name: str = "Beef Extraction Evaluation"):
     print(f"Evaluation completed! Results: {experiment_results}")
 
 def target_function(inputs: dict) -> dict:
-    """Target function that calls our beef extractor for a single input"""
+    """Target function that calls our beef extraction workflow for a single input"""
     # call_model_on_list expects a list, so wrap single input in list
-    result_list = call_model_on_list(product_descriptions=[inputs["product_description"]], primal=inputs["primal"])
+    result_list = call_model_on_list(
+        product_descriptions=[inputs["product_description"]], 
+        primal=inputs["primal"]
+    )
     
     # Extract the first (and only) result
     result = result_list[0]
     
+    # Return the full unified output format
     return {
         "subprimal": result["subprimal_pred"],
-        "grade": result["grade_pred"]
+        "grade": result["grade_pred"],
+        "usda_code": result["usda_code_pred"],
+        "needs_review": result["needs_review"]
     }
 
 def subprimal_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
@@ -87,10 +91,25 @@ def grade_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
     score = 1.0 if predicted == expected else 0.0
     
     return {
-        "key": "grade_accuracy", 
+        "key": "grade_accuracy",
         "score": score,
         "comment": f"Predicted: {predicted}, Expected: {expected}"
     }
+
+def usda_code_evaluator(inputs: dict, outputs: dict, reference_outputs: dict):
+    """Evaluate USDA code extraction accuracy"""
+    predicted = outputs.get("usda_code", "")
+    expected = reference_outputs.get("usda_code", "")
+    
+    # Simple exact match for now - USDA codes should be exact
+    score = 1.0 if predicted == expected else 0.0
+    
+    return {
+        "key": "usda_code_accuracy",
+        "score": score,
+        "comment": f"Predicted: {predicted}, Expected: {expected}"
+    }
+
 
 if __name__ == "__main__":
     eval_process()

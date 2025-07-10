@@ -1,21 +1,44 @@
 """
 LangGraph Workflow for Beef Product Processing Pipeline
-Orchestrates: Dynamic Beef Extractor -> Clarification Processor -> Review AI
+Orchestrates: Dynamic Beef Extractor 
 """
 
 import logging
 from typing import Dict, Any, List, Optional, TypedDict
 from dataclasses import asdict
+from pydantic import BaseModel, Field
 
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
 
-from .llm_extraction.specific_extractors.dynamic_beef_extractor import DynamicBeefExtractor
-from .Calrifications.clarification_processor import ClarificationProcessor, process_products_for_clarification
-from .review.review_AI import ReviewProcessor, process_product_for_review
+# Import specialized extractors and their result models
+from .llm_extraction.specific_extractors.dynamic_beef_extractor import DynamicBeefExtractor, SubprimalExtractionResult
+from .llm_extraction.specific_extractors.grade_extractor import GradeExtractor, GradeExtractionResult
+from .llm_extraction.specific_extractors.usda_codes_extractor import USDACodesExtractor, USDACodeExtractionResult
 
 logger = logging.getLogger(__name__)
 
+# Define unified extraction result Pydantic model to combine all extractor outputs
+class BeefExtractionResult(BaseModel):
+    """Unified extraction result model combining outputs from all specialized extractors."""
+    # Primal is known externally (from category or user input) - not extracted
+    primal: Optional[str] = Field(None, description="The primal cut (set externally, not extracted)")
+    subprimal: Optional[str] = Field(None, description="The identified subprimal")
+    
+    # From GradeExtractionResult
+    grade: Optional[str] = Field(None, description="The identified grade")
+    
+    # From USDACodeExtractionResult
+    usda_code: Optional[str] = Field(None, description="The identified USDA code")
+    
+    # Common metadata fields
+    confidence: float = Field(0.0, description="Overall confidence level in the extraction")
+    needs_review: bool = Field(True, description="Whether human review is needed")
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """Convert model to dictionary for backward compatibility."""
+        return self.model_dump()
+        
 class ProcessingState(TypedDict):
     """State schema for the processing pipeline."""
     # Input data
@@ -24,13 +47,7 @@ class ProcessingState(TypedDict):
     category: Optional[str]
     
     # Extraction results
-    initial_extraction: Optional[Dict[str, Any]]
-    
-    # Clarification results
-    clarification_questions: Optional[List[str]]
-    
-    # Review results
-    final_extraction: Optional[Dict[str, Any]]
+    extraction_result: Optional[Dict[str, Any]]
     
     # Processing metadata
     current_step: str
@@ -38,7 +55,7 @@ class ProcessingState(TypedDict):
     processing_complete: bool
 
 class BeefProcessingWorkflow:
-    """LangGraph workflow for processing beef products through extraction, clarification, and review."""
+    """LangGraph workflow for processing beef products through extraction."""
     
     def __init__(self, provider: str = "openai"):
         """Initialize the workflow with AI components."""
@@ -46,10 +63,11 @@ class BeefProcessingWorkflow:
         
         # Initialize components
         try:
-            self.extractor = DynamicBeefExtractor()
-            self.clarification_processor = ClarificationProcessor(provider=provider)
-            self.review_processor = ReviewProcessor(provider=provider)
-            logger.info("Initialized all workflow components successfully")
+            # Initialize specialized extractors
+            self.subprimal_extractor = DynamicBeefExtractor()
+            self.grade_extractor = GradeExtractor()
+            self.usda_extractor = USDACodesExtractor()
+            logger.info("Initialized all extraction components successfully")
         except Exception as e:
             logger.error(f"Failed to initialize workflow components: {e}")
             raise
@@ -64,175 +82,87 @@ class BeefProcessingWorkflow:
         
         # Add nodes
         workflow.add_node("extract", self._extraction_node)
-        workflow.add_node("clarify", self._clarification_node)
-        workflow.add_node("complete_without_review", self._complete_without_review_node)
+        workflow.add_node("complete", self._complete_node)
         
-        # Define the flow with conditional logic
+        # Define the flow with simple sequential logic
         workflow.set_entry_point("extract")
         
-        # After extraction, decide whether to continue with clarification/review
-        workflow.add_conditional_edges(
-            "extract",
-            self._should_review_decision,
-            {
-                "review_needed": "clarify",
-                "no_review_needed": "complete_without_review"
-            }
-        )
-        
-        # If clarification runs, always go to review
-        workflow.add_edge("clarify", "complete_without_review")
-        workflow.add_edge("complete_without_review", END)
+        # After extraction, complete the workflow
+        workflow.add_edge("extract", "complete")
+        workflow.add_edge("complete", END)
         
         return workflow.compile()
     
     def _extraction_node(self, state: ProcessingState) -> ProcessingState:
-        """Node 1: Extract initial data using Dynamic Beef Extractor."""
+        """Node 1: Extract data using specialized extractors."""
         logger.debug(f"Starting extraction for product: {state['product_code']}")
         
         try:
+            # Initialize the unified extraction result
+            unified_result = BeefExtractionResult()
+            description = state['product_description']
+            
             # Set primal if category is available
             if state.get('category'):
-                primal = self.extractor.infer_primal_from_category(state['category'])
+                primal = self.subprimal_extractor.infer_primal_from_category(state['category'])
                 if primal:
-                    self.extractor.set_primal(primal)
+                    self.subprimal_extractor.set_primal(primal)
                     logger.debug(f"Set primal to: {primal}")
             
-            # Perform extraction
-            result = self.extractor.extract(state['product_description'])
+            # 1. Extract subprimal using DynamicBeefExtractor
+            subprimal_result = self.subprimal_extractor.extract(description)
+            if subprimal_result:
+                # Set primal from the extractor's current_primal setting (not from extraction result)
+                unified_result.primal = self.subprimal_extractor.current_primal
+                unified_result.subprimal = subprimal_result.subprimal
+                # Start with subprimal extractor's confidence
+                unified_result.confidence = subprimal_result.confidence
+                unified_result.needs_review = subprimal_result.needs_review
             
-            # Convert ExtractionResult to dictionary - INCLUDE primal field
-            extraction_dict = {
-                'primal': result.primal,
-                'subprimal': result.subprimal,
-                'grade': result.grade,
-                'size': result.size,
-                'size_uom': result.size_uom,
-                'brand': result.brand,
-                'bone_in': result.bone_in,
-                'confidence': result.confidence,
-                'needs_review': result.needs_review
-            }
+            # 2. Extract grade using GradeExtractor
+            grade_result = self.grade_extractor.extract(description)
+            if grade_result:
+                unified_result.grade = grade_result.grade
+                # Update confidence (simple average for now)
+                if grade_result.confidence > 0:
+                    unified_result.confidence = (unified_result.confidence + grade_result.confidence) / 2
+                # Need review if either extractor flags for review
+                unified_result.needs_review = unified_result.needs_review or grade_result.needs_review
             
-            # Update state
-            state['initial_extraction'] = extraction_dict
+            # 3. Extract USDA code using USDACodesExtractor
+            usda_result = self.usda_extractor.extract(description)
+            if usda_result:
+                unified_result.usda_code = usda_result.usda_code
+                # Update confidence if we have a code
+                if usda_result.confidence > 0:
+                    unified_result.confidence = (unified_result.confidence * 2 + usda_result.confidence) / 3
+                # Need review if any extractor flags for review
+                unified_result.needs_review = unified_result.needs_review or usda_result.needs_review
+            
+            # Convert unified result to dictionary for state update (backward compatibility)
+            state['extraction_result'] = unified_result.to_dict()
             state['current_step'] = 'extraction_complete'
             
-            logger.debug(f"Extraction completed for {state['product_code']}: confidence={result.confidence:.2f}")
+            logger.debug(f"Extraction completed for {state['product_code']}: confidence={unified_result.confidence:.2f}")
             
         except Exception as e:
             error_msg = f"Extraction failed: {str(e)}"
             logger.error(error_msg)
             state['errors'].append(error_msg)
-            state['initial_extraction'] = {
-                'primal': None,
-                'subprimal': None,
-                'grade': None,
-                'size': None,
-                'size_uom': None,
-                'brand': None,
-                'bone_in': False,
-                'confidence': 0.0,
-                'needs_review': True
-            }
+            # Use empty BeefExtractionResult for errors
+            state['extraction_result'] = BeefExtractionResult(needs_review=True).to_dict()
         
         return state
     
-    def _clarification_node(self, state: ProcessingState) -> ProcessingState:
-        """Node 2: Generate clarification questions if needed."""
-        logger.debug(f"Starting clarification for product: {state['product_code']}")
+    def _complete_node(self, state: ProcessingState) -> ProcessingState:
+        """Complete processing after extraction."""
+        logger.info(f"Completing processing for {state['product_code']}")
         
-        try:
-            # Generate clarification questions based on initial extraction
-            clarification_result = self.clarification_processor.analyze_product(
-                description=state['product_description'],
-                previous_extraction=state['initial_extraction'],
-                product_code=state['product_code']
-            )
-            
-            # Update state with questions
-            state['clarification_questions'] = clarification_result.questions
-            state['current_step'] = 'clarification_complete'
-            
-            logger.debug(f"Clarification completed for {state['product_code']}: {len(clarification_result.questions)} questions generated")
-            
-        except Exception as e:
-            error_msg = f"Clarification failed: {str(e)}"
-            logger.error(error_msg)
-            state['errors'].append(error_msg)
-            state['clarification_questions'] = []
-        
-        return state
-    
-    def _review_node(self, state: ProcessingState) -> ProcessingState:
-        """Node 3: Review and correct extraction using Review AI."""
-        logger.info(f"🔍 REVIEW: Starting review for product {state['product_code']}")
-        
-        try:
-            # Use the existing review processor instance directly
-            review_result = self.review_processor.analyze_product(
-                description=state['product_description'],
-                previous_extraction=state['initial_extraction'],
-                product_code=state['product_code'],
-                category=state.get('category', '')
-            )
-            
-            # Convert ReviewResults to dictionary - INCLUDE primal field
-            final_extraction = {
-                'primal': state['initial_extraction'].get('primal'),  # Preserve primal from initial extraction
-                'subprimal': review_result.subprimal,
-                'grade': review_result.grade,
-                'size': review_result.size,
-                'size_uom': review_result.size_uom,
-                'brand': review_result.brand,
-                'bone_in': review_result.bone_in,
-                'confidence': review_result.confidence,
-                'needs_review': review_result.needs_review,
-                'miss_categorized': review_result.miss_categorized
-            }
-            
-            # Update state
-            state['final_extraction'] = final_extraction
-            state['current_step'] = 'review_complete'
-            state['processing_complete'] = True
-            
-            logger.debug(f"✅ REVIEW: Completed for {state['product_code']}")
-            
-        except Exception as e:
-            error_msg = f"Review failed: {str(e)}"
-            logger.error(f"❌ REVIEW ERROR: {error_msg} for {state['product_code']}")
-            state['errors'].append(error_msg)
-            # Use initial extraction as fallback
-            state['final_extraction'] = state['initial_extraction'].copy()
-            state['final_extraction']['needs_review'] = True
-            state['processing_complete'] = True
-        
-        return state
-    
-    def _should_review_decision(self, state: ProcessingState) -> str:
-        """Decision function to determine if clarification/review is needed."""
-        initial_extraction = state.get('initial_extraction', {})
-        needs_review = initial_extraction.get('needs_review', True)
-        confidence = initial_extraction.get('confidence', 0.0)
-        
-        if needs_review:
-            logger.info(f"🔄 WORKFLOW: {state['product_code']} → Full review (confidence={confidence:.2f})")
-            return "review_needed"
-        else:
-            logger.info(f"⚡ WORKFLOW: {state['product_code']} → Skip review (confidence={confidence:.2f})")
-            return "no_review_needed"
-    
-    def _complete_without_review_node(self, state: ProcessingState) -> ProcessingState:
-        """Complete processing without review when AI is confident."""
-        logger.info(f"Completing processing for {state['product_code']} without review")
-        
-        # Use initial extraction as final extraction
-        state['final_extraction'] = state['initial_extraction'].copy()
-        state['clarification_questions'] = []  # No questions needed
-        state['current_step'] = 'completed_without_review'
+        # Mark the process as complete
+        state['current_step'] = 'completed'
         state['processing_complete'] = True
         
-        logger.info(f"Processing completed for {state['product_code']} without additional review")
+        logger.info(f"Processing completed for {state['product_code']}")
         
         return state
     
@@ -242,7 +172,7 @@ class BeefProcessingWorkflow:
         product_description: str, 
         category: Optional[str] = None
     ) -> Dict[str, Any]:
-        """Process a single product through the complete pipeline.
+        """Process a single product through the extraction pipeline.
         
         Args:
             product_code: Unique identifier for the product
@@ -250,18 +180,16 @@ class BeefProcessingWorkflow:
             category: Optional category (e.g., 'Beef Chuck') to help with primal identification
             
         Returns:
-            Dictionary containing all processing results
+            Dictionary containing extraction results
         """
-        logger.info(f"Starting pipeline processing for product: {product_code}")
+        logger.info(f"Starting extraction processing for product: {product_code}")
         
         # Initialize state
         initial_state = ProcessingState(
             product_code=product_code,
             product_description=product_description,
             category=category,
-            initial_extraction=None,
-            clarification_questions=None,
-            final_extraction=None,
+            extraction_result=None,
             current_step='initialized',
             errors=[],
             processing_complete=False
@@ -276,9 +204,7 @@ class BeefProcessingWorkflow:
                 'product_code': final_state['product_code'],
                 'product_description': final_state['product_description'],
                 'category': final_state.get('category'),
-                'initial_extraction': final_state['initial_extraction'],
-                'clarification_questions': final_state['clarification_questions'],
-                'final_extraction': final_state['final_extraction'],
+                'extraction_result': final_state['extraction_result'],
                 'processing_steps_completed': final_state['current_step'],
                 'errors': final_state['errors'],
                 'processing_complete': final_state['processing_complete']
@@ -295,9 +221,7 @@ class BeefProcessingWorkflow:
                 'product_code': product_code,
                 'product_description': product_description,
                 'category': category,
-                'initial_extraction': None,
-                'clarification_questions': None,
-                'final_extraction': None,
+                'extraction_result': None,
                 'processing_steps_completed': 'failed',
                 'errors': [error_msg],
                 'processing_complete': False
@@ -338,7 +262,7 @@ def process_beef_product(
         provider: AI provider to use
         
     Returns:
-        Complete processing results
+        Extraction results
     """
     workflow = BeefProcessingWorkflow(provider=provider)
     return workflow.process_product(product_code, product_description, category)

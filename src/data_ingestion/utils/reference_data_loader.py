@@ -209,6 +209,17 @@ class ReferenceDataLoader:
             
         return result
         
+    def build_grade_mapping(self) -> Dict[str, List[str]]:
+        """
+        Get the mapping of official grade names to their synonyms.
+        
+        Used by the GradeExtractor to validate and standardize grades.
+        
+        Returns:
+            Dictionary mapping official grade names to lists of synonyms
+        """        
+        return self.grade_mappings
+        
     def get_synonyms(self, term_type: str, term_name: str, primal: Optional[str] = None) -> List[str]:
         """
         General method to get synonyms for different types of terms.
